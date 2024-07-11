@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { RiMailLine } from "react-icons/ri";
 import { Input } from "../../components/ui/input";
-
+import { sendImageToBB } from "../../utils/sendImageToBB";
 
 interface RegisterFormInputs {
   name: string;
@@ -21,23 +21,24 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterFormInputs>();
   const [showPassword, setShowPassword] = useState(false);
-  const [imageData, setImageData] = useState<string | ArrayBuffer | null>(null);
+  const [imageData, setImageData] = useState<File | null>(null);
 
-  const onSubmit: SubmitHandler<RegisterFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     console.log(data);
+
+    const imageUrl = await sendImageToBB(imageData as File);
+
+    console.log(imageUrl);
+
     // Handle registration logic here
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageData(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }else{
-        setImageData(null)
+      setImageData(file);
+    } else {
+      setImageData(null);
     }
   };
 
@@ -103,11 +104,10 @@ const Register = () => {
             )}
           </div>
           <div className="relative">
-            
             <Input
               type="file"
-              
               accept="image/*"
+              multiple
               className="w-full py-2 h-11"
               {...register("image", { required: "Image is required" })}
               onChange={handleImageChange}
@@ -121,7 +121,7 @@ const Register = () => {
           {imageData && (
             <div className="text-center">
               <img
-                src={imageData as string}
+                src={URL.createObjectURL(imageData)}
                 alt="Selected"
                 className="w-32 h-32 object-cover mx-auto mt-4 rounded-full"
               />
