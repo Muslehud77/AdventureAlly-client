@@ -1,3 +1,5 @@
+import LoginPage from "./pages/loginRegister/Login"
+import Register from "./pages/loginRegister/Register"
 
 
 function App() {
@@ -5,7 +7,8 @@ function App() {
 
   return (
     <div>
-     <h1>Hello world</h1>
+ <LoginPage/>
+ <Register/>
     </div>
   )
 }
