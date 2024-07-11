@@ -1,6 +1,7 @@
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import  { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdMailOutline } from "react-icons/md";
 
@@ -21,6 +22,12 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
     console.log(data);
     // Handle login logic here
+
+    // toast.promise(new Promise, {
+    //   loading: "Saving...",
+    //   success: <b>Settings saved!</b>,
+    //   error: <b>Could not save.</b>,
+    // });
   };
 
   return (
