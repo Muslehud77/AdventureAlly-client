@@ -4,6 +4,9 @@ import Register from "./pages/loginRegister/Register"
 import toast from "react-hot-toast"
 import AllProducts from "./pages/AllProducts/AllProducts"
 import ProductDetails from "./pages/ProductDetails/ProductDetails"
+import AddProduct from "./pages/AddProduct/AddProduct"
+import Cart from "./pages/Cart/Cart"
+import Navbar from "./components/Navbar/Navbar"
 
 
 function App() {
@@ -31,6 +34,9 @@ function App() {
 
   return (
     <div>
+      <Navbar/>
+      <Cart/>
+      <AddProduct/>
       <ProductDetails/>
       <AllProducts />
       <LoginPage />
