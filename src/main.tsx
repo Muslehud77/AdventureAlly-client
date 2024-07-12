@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
+import "@smastrom/react-rating/style.css";
 import "./index.css";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store.ts";
