@@ -1,11 +1,17 @@
-import { UserIcon } from "@heroicons/react/16/solid";
-import { LockClosedIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { RiMailLine } from "react-icons/ri";
+
+import { ImageIcon } from "@radix-ui/react-icons";
+import { Card } from "../../components/ui/card";
+import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 import { sendImageToBB } from "../../utils/sendImageToBB";
+import { useSignUpMutation } from "../../redux/features/auth/auth.api";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../../redux/hooks";
+import { signIn } from "../../redux/features/auth/authSlice";
 
 interface RegisterFormInputs {
   name: string;
@@ -22,15 +28,61 @@ const Register = () => {
   } = useForm<RegisterFormInputs>();
   const [showPassword, setShowPassword] = useState(false);
   const [imageData, setImageData] = useState<File | null>(null);
+  const [imageLink, setImageLink] = useState("");
+  const [error, setError] = useState("");
+
+  const [signUp, { isLoading }] = useSignUpMutation();
+
+
+  const dispatch = useAppDispatch()
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
-    console.log(data);
+    setError("");
+    const { name, email, password } = data;
 
-    const imageUrl = await sendImageToBB(imageData as File);
+    let image = ""
 
-    console.log(imageUrl);
+    if (imageData && !imageLink) {
+       image = (await sendImageToBB(imageData as File))
+      setImageLink(image);
+      
+    }
 
-    // Handle registration logic here
+
+
+    const userData = {
+      name,
+      email,
+      password,
+      image
+    };
+
+
+    toast.promise(signUp(userData), {
+      loading: "Logging in...",
+      success: (res: any) => {
+        if (res.error) {
+          throw new Error(res?.error?.data?.message);
+        }
+
+         dispatch(signIn({ user: res?.data?.data, token: res?.data?.token }));
+
+        return (
+          <p className="font-bold text-gray-500">
+            {res?.data?.data?.name} Welcome!
+          </p>
+        );
+      },
+      error: (err) => {
+        if (err.message === "Duplicate") {
+          setError("User already exist with this email!");
+          return <b>User already exist with this email!</b>;
+        } else {
+          setError(err.message);
+          return <b>{err.message}</b>;
+        }
+      },
+    });
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,98 +95,140 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="relative">
-            <UserIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
-            <input
-              type="text"
-              placeholder="Name"
-              className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              {...register("name", { required: "Name is required" })}
-            />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-            )}
+    <div className="flex items-center justify-center min-h-screen  bg-gray-200">
+      <Card className="w-full max-w-2xl flex flex-col md:flex-row shadow-lg gap-8 p-6 md:p-8 lg:p-12">
+        <div className="flex-1 space-y-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">Create an Account</h1>
+            <p className="text-muted-foreground">
+              Get started by filling out the form below.
+            </p>
           </div>
-          <div className="relative">
-            <RiMailLine className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email",
-                },
-              })}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
-          <div className="relative">
-            <LockClosedIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              className="w-full pl-10 pr-10 py-2 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              {...register("password", { required: "Password is required" })}
-            />
-            <div
-              className="absolute right-3 top-3 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <FaEyeSlash className="w-5 h-5 text-gray-400" />
-              ) : (
-                <FaEye className="w-5 h-5 text-gray-400" />
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2 relative">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Enter your name"
+                {...register("name", { required: "Name is required" })}
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
               )}
             </div>
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
+            <div className="space-y-2 relative">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                    message: "Enter a valid email",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter a password"
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                />
+                <div
+                  className="absolute right-4 top-2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash className="w-5 h-5 text-gray-400" />
+                  ) : (
+                    <FaEye className="w-5 h-5 text-gray-400" />
+                  )}
+                </div>
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+            {error && (
+              <p className="text-center text-red-500 font-semibold text-base">
+                {error}
               </p>
             )}
+            <Button disabled={isLoading} type="submit" className="w-full">
+              Create Account
+            </Button>
+          </form>
+        </div>
+        <div className="flex-1 space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold">Upload Profile Image</h2>
+            <p className="text-muted-foreground">
+              Choose an image to represent your account.
+            </p>
           </div>
-          <div className="relative">
+          <div className="flex items-center justify-center bg-muted rounded-lg p-4 h-46 border">
             <Input
               type="file"
               accept="image/*"
-              multiple
-              className="w-full py-2 h-11"
-              {...register("image", { required: "Image is required" })}
+              id="profile-image"
+              className="hidden h-1"
+              {...register("image")}
               onChange={handleImageChange}
             />
-            {errors.image && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.image.message}
-              </p>
-            )}
+            <label
+              htmlFor="profile-image"
+              className="flex flex-col items-center justify-center gap-2 cursor-pointer"
+            >
+              {imageData ? (
+                <>
+                  <img
+                    src={URL.createObjectURL(imageData as Blob)}
+                    alt="Selected"
+                    className="w-full max-h-40 object-cover mx-auto mt-4 rounded-lg"
+                  />
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                  <span className="text-muted-foreground">Upload Image</span>
+                </>
+              )}
+            </label>
           </div>
+
           {imageData && (
             <div className="text-center">
-              <img
-                src={URL.createObjectURL(imageData)}
-                alt="Selected"
-                className="w-32 h-32 object-cover mx-auto mt-4 rounded-full"
-              />
+              <Button
+                onClick={() => {
+                  setImageData(null);
+                  setImageLink("");
+                }}
+                variant="outline"
+              >
+                Remove Image
+              </Button>
             </div>
           )}
-          <button
-            type="submit"
-            className="w-full py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
-          >
-            Register
-          </button>
-        </form>
-      </div>
+        </div>
+      </Card>
     </div>
   );
 };

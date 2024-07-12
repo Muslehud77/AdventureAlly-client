@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -9,6 +8,11 @@ import { useLoginMutation } from "../../redux/features/auth/auth.api";
 import { useAppDispatch } from "../../redux/hooks";
 import { signIn } from "../../redux/features/auth/authSlice";
 import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Link } from "react-router-dom";
+import logo from "../../assets/logos/black-without-branding.png"
+
 
 interface LoginFormInputs {
   email: string;
@@ -16,7 +20,6 @@ interface LoginFormInputs {
 }
 
 const LoginPage = () => {
-  
   const {
     register,
     handleSubmit,
@@ -24,8 +27,6 @@ const LoginPage = () => {
   } = useForm<LoginFormInputs>({
     defaultValues: { email: "johndoe@example.com", password: "password123" },
   });
-
-
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -37,12 +38,12 @@ const LoginPage = () => {
     setError("");
     toast.promise(login(loginData), {
       loading: "Logging in...",
-      success: (res : any) => {
+      success: (res: any) => {
         if (res.error) {
           throw new Error(res?.error?.data?.message);
         }
         dispatch(signIn({ user: res?.data?.data, token: res?.data?.token }));
-        
+
         return (
           <p className="font-bold text-gray-500">
             {res?.data?.data?.name} Welcome!
@@ -50,60 +51,93 @@ const LoginPage = () => {
         );
       },
       error: (err) => {
-        setError(err.message)
+        setError(err.message);
         return <b>{err.message}</b>;
       },
     });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-h-96 max-w-md transition-all duration-200">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <div className="relative">
-            <MdMailOutline className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full pl-10 pr-4 py-2 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                  message: "Enter a valid email",
-                },
-              })}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
+    <div className="flex justify-center items-center min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-md space-y-8">
+        <div className="relative text-center space-y-4">
+          <div className="flex flex-col justify-center items-center">
+            <img src={logo} className="h-20" />
+            <h2 className="text-center mt-2 text-3xl font-bold tracking-tight text-foreground">
+              Sign In
+            </h2>
           </div>
-          <div className="relative">
-            <LockClosedIcon className="absolute w-5 h-5 text-gray-400 left-3 top-3" />
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              className="w-full pl-10 pr-10 py-2 border rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              {...register("password", { required: "Password is required" })}
-            />
-            <div
-              className="absolute right-3 top-3 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
+
+          <p className="font-extralight text-sm">
+            Join us for an Adventure of a Lifetime – Sign In Now and Explore!
+          </p>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <Label
+              htmlFor="email"
+              className="block text-sm font-medium text-muted-foreground"
             >
-              {showPassword ? (
-                <FaEyeSlash className="w-5 h-5 text-gray-400" />
-              ) : (
-                <FaEye className="w-5 h-5 text-gray-400" />
+              Email
+            </Label>
+            <div className="mt-1 relative">
+              <MdMailOutline className="absolute w-5 h-5 text-gray-400 left-3 top-2" />
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                required
+                placeholder="Email"
+                className="pl-10"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                    message: "Enter a valid email",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
+          </div>
+          <div>
+            <Label
+              htmlFor="password"
+              className="block text-sm font-medium text-muted-foreground"
+            >
+              Password
+            </Label>
+            <div className="mt-1 relative">
+              <LockClosedIcon className="absolute w-5 h-5 text-gray-400 left-3 top-2" />
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                required
+                placeholder="Password"
+                className="pl-10"
+                {...register("password", { required: "Password is required" })}
+              />
+              <div
+                className="absolute right-3 top-2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="w-5 h-5 text-gray-400" />
+                ) : (
+                  <FaEye className="w-5 h-5 text-gray-400" />
+                )}
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
           </div>
           {error && (
             <p className="text-center text-red-500 font-semibold text-base">
@@ -113,15 +147,25 @@ const LoginPage = () => {
           <Button
             disabled={isLoading}
             type="submit"
-            className="w-full py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+            className="w-full"
           >
-           
             Sign In
           </Button>
           <div className="text-center">
-            <a href="#" className="text-sm text-purple-600 hover:underline">
+            <a href="#" className="text-sm text-primary hover:text-primary/90">
               Forgot your password?
             </a>
+          </div>
+          <div className="text-center mt-2">
+            <p className="text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <Link
+                to="/sign-up"
+                className="text-sm text-primary hover:text-primary/90"
+              >
+                Sign Up
+              </Link>
+            </p>
           </div>
         </form>
       </div>
