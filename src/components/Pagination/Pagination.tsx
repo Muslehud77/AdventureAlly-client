@@ -21,10 +21,9 @@ type TPaginateProps = {
 };
 
 export function Paginate({ meta, setPage }: TPaginateProps) {
-    
-    const { total, pageNumber, limitDataCount, totalPage } = meta;
+  const { pageNumber, totalPage } = meta;
 
-    const arr = [...Array(totalPage).keys()].map((i) => i + 1);
+  const arr = [...Array(totalPage).keys()].map((i) => i + 1);
 
   return (
     <Pagination>

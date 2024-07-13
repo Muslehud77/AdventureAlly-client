@@ -5,14 +5,12 @@ const productApi = baseApi.injectEndpoints({
     getAllProducts: builder.query({
       query: (filter) => {
         const params = new URLSearchParams();
-        console.log(filter);
+
         if (filter) {
           Object.entries(filter).forEach(([key, value]) => {
             params.append(key, value as string);
           });
         }
-
-  
 
         return {
           url: `/products?${params.toString()}`,
@@ -55,4 +53,13 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateProductMutation,useUpdateProductMutation,useGetSingleProductQuery,useGetAllProductsQuery,useGetBestSellingQuery,useGetRandomThreeQuery,useDeleteProductMutation,useGetDeletedProductsQuery } = productApi;
+export const {
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useGetSingleProductQuery,
+  useGetAllProductsQuery,
+  useGetBestSellingQuery,
+  useGetRandomThreeQuery,
+  useDeleteProductMutation,
+  useGetDeletedProductsQuery,
+} = productApi;

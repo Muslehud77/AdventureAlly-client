@@ -18,30 +18,99 @@ export type TProduct = {
   sales?: number;
 };
 
+type TQuery = {
+  searchTerm?: string;
+  page: number;
+  limit: number;
+  sort?: string;
+  priceRange?: number;
+  category?: string;
+};
+
 export default function AllProducts() {
   const [filter, setFilter] = useState({});
   const [page, setPage] = useState(1);
-  const [priceSort, setPriceSort] = useState();
-
+  const [sort, setSort] = useState("");
+  const [range, setRange] = useState([0]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 500]);
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  const { data, isLoading } = useGetAllProductsQuery({ page, limit: 8 });
-  console.log(data);
+ useEffect(() => {
+   const handler = setTimeout(() => {
+     let categories = "";
+
+     if (selectedCategories.length > 0) {
+       selectedCategories.forEach((c, index) => {
+         categories += c;
+         if (index < selectedCategories.length - 1) {
+           categories += ",";
+         }
+       });
+     }
+
+     const query: TQuery = {
+       page,
+       limit: 8,
+     };
+
+     if (searchTerm) {
+       query["searchTerm"] = searchTerm;
+     }
+
+     if (sort) {
+       query["sort"] = sort;
+     }
+
+     if (range[0] > 0) {
+       query["priceRange"] = range[0];
+     }
+
+     if (categories) {
+       query["category"] = categories;
+     }
+
+  
+
+     setFilter(query);
+   }, 1000);
+
+   // Cleanup function to clear the timeout if dependencies change
+   return () => {
+     clearTimeout(handler);
+   };
+ }, [page, sort, range, searchTerm, selectedCategories]);
+
+
+  const { data, isLoading,isFetching } = useGetAllProductsQuery(filter);
+  // console.log(data);
   const products = data?.data;
   const meta = data?.meta;
 
-  const search = (e: FormEvent) => {
-    console.log(e.target.value);
-  };
+
+  const clearFilters = ()=>{
+    setSelectedCategories([]);
+     setSearchTerm("");
+     setRange([0]);
+     setSort("")
+  }
+
+
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-8">
-      <SearchAndFiltering search={search} />
+      <SearchAndFiltering
+        selectedCategories={selectedCategories}
+        setSelectedCategories={setSelectedCategories}
+        range={range}
+        setRange={setRange}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        sort={sort}
+        setSort={setSort}
+        clearFilters={clearFilters}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <SkeletonCards />
         ) : (
           products?.map((product: TProduct) => (

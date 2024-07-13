@@ -1,7 +1,6 @@
-
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Input } from "../../components/ui/input";
-import { Range } from "react-range";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -16,9 +15,49 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Button } from "../../components/ui/button";
 import PriceRangeSelector from "./PriceRangeSelector";
 
-const SearchAndFiltering = ({ search }) => {
-  const [range,setRange] = useState([0])
- 
+import { Dispatch, SetStateAction } from "react";
+
+type TSearchAndFilteringProps = {
+  searchTerm: string;
+  setSearchTerm: Dispatch<SetStateAction<string>>;
+  range: number[];
+  setRange: Dispatch<SetStateAction<number[]>>;
+  selectedCategories: string[];
+  setSelectedCategories: Dispatch<SetStateAction<string[]>>;
+  sort: string;
+  setSort: Dispatch<SetStateAction<string>>;
+  clearFilters: ()=>void;
+};
+const SearchAndFiltering = ({
+  searchTerm,
+  setSearchTerm,
+  range,
+  setRange,
+  selectedCategories,
+  setSelectedCategories,
+  sort,
+  setSort,
+  clearFilters,
+}: TSearchAndFilteringProps) => {
+  const handleCategoryChange = (category: string) => {
+    const find = selectedCategories?.find((cat) => cat === category);
+    if (!find) {
+      const selected = [...selectedCategories, category];
+      setSelectedCategories(selected);
+    } else {
+      const filter = selectedCategories?.filter((cat) => cat !== category);
+      setSelectedCategories(filter);
+    }
+  };
+
+  const handleSortOrderChange = (value: string) => {
+    setSort(value);
+  };
+
+  const search = (e: any) => {
+    e.preventDefault();
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-between mb-16">
@@ -26,7 +65,7 @@ const SearchAndFiltering = ({ search }) => {
         <Input
           onChange={search}
           placeholder="Search products..."
-          //   value={searchTerm}
+          value={searchTerm}
           className="w-full pl-10 pr-4 py-2 rounded-lg bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
         />
         <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -45,34 +84,28 @@ const SearchAndFiltering = ({ search }) => {
           <DropdownMenuContent className="w-[300px] p-4 rounded-lg shadow-lg">
             <div className="grid gap-4">
               <div>
-                <Label htmlFor="category" className="mb-2 font-medium">
+                <Label htmlFor="category" className="mb-2 text-xl">
                   Category
                 </Label>
-                <div className="grid gap-2">
-                  {[
-                    "Bags & Packs",
-                    "Cooking & Dining",
-                    "Sleeping Gear",
-                    "Footwear",
-                    "Lighting",
-                    "Accessories",
-                    "Apparel",
-                  ].map((category) => (
-                    <Label key={category} className="flex items-center gap-2">
-                      <Checkbox
-                      //   checked={selectedCategories.includes(category)}
-                      //   onCheckedChange={() => handleCategoryChange(category)}
-                      />
-                      {category}
-                    </Label>
-                  ))}
+                <div className="grid gap-2 mt-3">
+                  {["Backpack", "Cloth", "Kitchen", "Tent", "Footware"].map(
+                    (category) => (
+                      <Label key={category} className="flex items-center gap-2">
+                        <Checkbox
+                          checked={selectedCategories.includes(category)}
+                          onCheckedChange={() => handleCategoryChange(category)}
+                        />
+                        {category}
+                      </Label>
+                    )
+                  )}
                 </div>
               </div>
               <div>
-                <Label htmlFor="price-range" className="mb-2 font-medium">
+                <Label htmlFor="price-range" className="mb-2 text-xl">
                   Price Range
                 </Label>
-               <PriceRangeSelector/>
+                <PriceRangeSelector range={range} setRange={setRange} />
                 <div className="rounded-lg" />
               </div>
             </div>
@@ -90,13 +123,13 @@ const SearchAndFiltering = ({ search }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[200px] p-4 rounded-lg shadow-lg">
             <DropdownMenuRadioGroup
-            // value={sortOrder}
-            // onValueChange={handleSortOrderChange}
+              value={sort}
+              onValueChange={handleSortOrderChange}
             >
-              <DropdownMenuRadioItem value="asc">
+              <DropdownMenuRadioItem value="price">
                 Price: Low to High
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="desc">
+              <DropdownMenuRadioItem value="-price">
                 Price: High to Low
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
@@ -104,7 +137,7 @@ const SearchAndFiltering = ({ search }) => {
         </DropdownMenu>
         <Button
           variant="outline"
-          // onClick={handleClearFilters}
+          onClick={clearFilters}
           className="px-4 py-2 rounded-lg hover:bg-muted"
         >
           Clear Filters
@@ -115,7 +148,6 @@ const SearchAndFiltering = ({ search }) => {
 };
 
 export default SearchAndFiltering;
-
 
 function FilterIcon(props) {
   return (

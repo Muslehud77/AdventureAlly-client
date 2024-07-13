@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { Range, getTrackBackground } from "react-range";
 
 const STEP = 1;
@@ -6,9 +6,8 @@ const MIN = 0;
 const MAX = 100;
 
 
-const PriceRangeSelector = () => {
-
-    const [range,setRange] = useState([0])
+const PriceRangeSelector = ({ range, setRange }) => {
+ 
 
   return (
     <div
