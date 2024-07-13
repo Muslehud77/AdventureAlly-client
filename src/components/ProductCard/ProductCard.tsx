@@ -1,51 +1,56 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
-
+import defaultImg from "../../assets/default.webp"
 import { Rating } from "@smastrom/react-rating";
+import { TProduct } from '../../pages/AllProducts/AllProducts';
 
 
 
 type ProductCardProps = {
-  product : Record<string,unknown>
+  product: TProduct
 };
 
 const ProductCard = ({product}:ProductCardProps) => {
   return (
     <div className="bg-background rounded-lg shadow-lg overflow-hidden">
-      <Link to={"/"} className="block">
+      <div>
         <img
-          src="/placeholder.svg"
-          alt={product.name}
+          src={
+            product.images?.length
+              ? (product?.images as string[])[0]
+              : defaultImg
+          }
+          alt={product?.name}
           width={400}
           height={300}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-contain"
         />
-        <div className="p-4">
+        <div className="p-4 flex flex-col justify-between h-48">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Rating
                 style={{ maxWidth: 100 }}
-                value={Number(product.rating) as number}
+                value={Number(product?.ratings) as number}
                 readOnly
               />
               <span className="text-sm text-muted-foreground">
-                ({product.rating})
+                ({product?.ratings})
               </span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {product.category}
+              {product?.category}
             </span>
           </div>
-          <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-          <p className="text-muted-foreground mb-4">{product.description}</p>
+          <h3 className="text-lg font-semibold mb-2 ">{product?.name}</h3>
+          <p className="text-muted-foreground mb-4 ">{product?.description}</p>
           <div className="flex items-center justify-between">
             <span className="text-primary font-semibold">
-              ${product.price.toFixed(2)}
+              ${product?.price?.toFixed(2)}
             </span>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <ShoppingCartIcon className="w-4 h-4" />
-              <span>{product.totalSales}</span>
+              <span>{product.sales}</span>
             </div>
             <Button
               size="sm"
@@ -56,7 +61,7 @@ const ProductCard = ({product}:ProductCardProps) => {
             </Button>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

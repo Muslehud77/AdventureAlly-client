@@ -5,26 +5,28 @@ const productApi = baseApi.injectEndpoints({
     getAllProducts: builder.query({
       query: (filter) => {
         const params = new URLSearchParams();
-
+        console.log(filter);
         if (filter) {
           Object.entries(filter).forEach(([key, value]) => {
             params.append(key, value as string);
           });
         }
 
+  
+
         return {
-          url: "/products",
+          url: `/products?${params.toString()}`,
         };
       },
     }),
     getSingleProduct: builder.query({
-      query: (_id) => `/products/${_id}`,
+      query: (_id) => ({ url: `/products/${_id}` }),
     }),
     getBestSelling: builder.query({
-      query: () => `/products/best-selling`,
+      query: () => ({ url: `/products/best-selling` }),
     }),
     getRandomThree: builder.query({
-      query: () => `/products/random-products`,
+      query: () => ({ url: `/products/random-products` }),
     }),
 
     deleteProduct: builder.mutation({
@@ -41,7 +43,7 @@ const productApi = baseApi.injectEndpoints({
       }),
     }),
     updateProduct: builder.mutation({
-      query: ({_id,productData}) => ({
+      query: ({ _id, productData }) => ({
         url: `/products/${_id}`,
         method: "PATCH",
         body: productData,

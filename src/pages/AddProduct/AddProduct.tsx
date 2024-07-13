@@ -1,4 +1,3 @@
-
 import { Label } from "../../components/ui/label";
 import {
   Select,
@@ -10,121 +9,232 @@ import {
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { LuUpload } from "react-icons/lu";
+import { useForm, Controller } from "react-hook-form";
+import { useCreateProductMutation } from "../../redux/features/product/productApi";
+import toast from "react-hot-toast";
+import { sendImageToBB } from "../../utils/sendImageToBB";
 
 export default function AddProduct() {
-  const [imageData, setImageData] = useState<File[] | null>(null);
-
+  const [imageData, setImageData] = useState<File[] | []>([]);
+  const [imageLinks, setImageLinks] = useState<string[] | []>([]);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const fileArray = Array.from(files);
       setImageData(fileArray);
-     
     } else {
-      setImageData(null);
+      setImageData([]);
     }
+  };
+
+  const handleDeleteImage = (image: File) => {
+    const filtered = imageData?.filter((img) => img !== image);
+    setImageData(filtered as File[]);
   };
 
   const categories = ["Backpack", "Cloth", "Footwear", "Kitchen", "Tents"];
 
+  const [createProduct] = useCreateProductMutation();
+
+
+
+  const onSubmit = async (data: Record<string,unknown>) => {
+   
+
+    const { name, details, price, quantity, category } = data;
+
+    let images = [] as string[] | [];
+
+    
+
+    if (imageData.length && !imageLinks) {
+      const links = await sendImageToBB(imageData);
+      
+      images = links;
+      setImageLinks(links);
+    }
+
+
+    const formData = {
+      name,
+      price: Number(price),
+      stock: Number(quantity),
+      description: details,
+      ratings: 4,
+      images,
+      category,
+    };
+
+    toast.promise(createProduct(formData), {
+      loading: "Saving...",
+      success: (res) => {
+        if (res?.error) {
+          throw new Error("Could not save!");
+        }
+       
+        return <p>{res.data.message}</p>;
+      },
+      error: <b>Could not save!</b>,
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
-      <form className="grid gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="category">Category</Label>
-          <Select id="category">
-            <SelectTrigger>
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map((category) => (
-                <SelectItem value={category}>{category}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            name="category"
+            control={control}
+            defaultValue=""
+            rules={{ required: "Category is required" }}
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.category && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.category.message as ReactNode}
+            </p>
+          )}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="name">Product Name</Label>
-          <Input id="name" type="text" placeholder="Enter product name" />
+          <Input
+            id="name"
+            type="text"
+            placeholder="Enter product name"
+            {...register("name", { required: "Product name is required" })}
+          />
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.name.message as ReactNode}
+            </p>
+          )}
         </div>
         <div className="grid gap-2">
           <Label htmlFor="details">Product Details</Label>
-          <Textarea id="details" rows={4} placeholder="Describe the product" />
+          <Textarea
+            id="details"
+            rows={4}
+            placeholder="Describe the product"
+            {...register("details", {
+              required: "Product details are required",
+            })}
+          />
+          {errors.details && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.details.message as ReactNode}
+            </p>
+          )}
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           <div className="grid gap-2">
             <Label htmlFor="price">Price</Label>
-            <Input id="price" type="number" placeholder="Enter price" />
+            <Input
+              id="price"
+              type="number"
+              placeholder="Enter price"
+              {...register("price", {
+                required: "Price is required",
+                min: { value: 0, message: "Price cannot be negative" },
+              })}
+            />
+            {errors.price && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.price.message as ReactNode}
+              </p>
+            )}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="quantity">Quantity</Label>
-            <Input id="quantity" type="number" placeholder="Enter quantity" />
+            <Input
+              id="quantity"
+              type="number"
+              placeholder="Enter quantity"
+              {...register("quantity", {
+                required: "Quantity is required",
+                min: { value: 0, message: "Quantity cannot be negative" },
+                validate: (value) =>
+                  Number.isInteger(parseFloat(value)) ||
+                  "Quantity must be an integer",
+              })}
+            />
+            {errors.quantity && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors?.quantity?.message as ReactNode}
+              </p>
+            )}
           </div>
         </div>
         <div className="grid gap-2">
-          <Label>Product Images</Label>
+          <Label>Product Image</Label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground hover:border-primary transition-colors">
-              <UploadIcon className="w-6 h-6 text-muted-foreground" />
-            </button>
-            <img
-              src="/placeholder.svg"
-              alt="Product image"
-              width={150}
-              height={150}
-              className="aspect-square object-cover rounded-md"
+            <Label
+              htmlFor="product-image"
+              className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground hover:border-gray-500 cursor-pointer transition-colors"
+            >
+              <LuUpload className="w-6 h-6 text-muted-foreground" />
+            </Label>
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              id="product-image"
+              className="hidden h-1"
+              onChange={handleImageChange}
             />
+            
+            {imageData ? (
+              imageData.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(image as Blob)}
+                    alt="Product image"
+                    width={150}
+                    height={150}
+                    className="aspect-square object-cover rounded-md"
+                  />
+                  <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-white">
+                    <RiDeleteBin6Line
+                      className="hover:text-gray-400 cursor-pointer duration-200"
+                      onClick={() => handleDeleteImage(image)}
+                    />
+                  </div>
+                </div>
+              ))
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className="flex justify-end gap-2">
           <Button variant="outline">Cancel</Button>
-          <Button>Save Product</Button>
+          <Button type="submit">Save Product</Button>
         </div>
       </form>
     </div>
-  );
-}
-
-function UploadIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="17 8 12 3 7 8" />
-      <line x1="12" x2="12" y1="3" y2="15" />
-    </svg>
-  );
-}
-
-function XIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
   );
 }
