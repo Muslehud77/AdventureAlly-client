@@ -10,9 +10,9 @@ import { signIn } from "../../redux/features/auth/authSlice";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logos/black-without-branding.png"
-
+import { IoMdHome } from "react-icons/io";
 
 interface LoginFormInputs {
   email: string;
@@ -27,6 +27,8 @@ const LoginPage = () => {
   } = useForm<LoginFormInputs>({
     defaultValues: { email: "sheikmuslehud@gmail.com", password: "hello123" },
   });
+
+  const {state} = useLocation()
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -58,7 +60,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex relative justify-center items-center min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <Link to={"/"} className="absolute left-10 top-10 text-2xl">
+        <IoMdHome />
+      </Link>
       <div className="mx-auto w-full max-w-md space-y-8">
         <div className="relative text-center space-y-4">
           <div className="flex flex-col justify-center items-center">
@@ -144,11 +149,7 @@ const LoginPage = () => {
               {error}
             </p>
           )}
-          <Button
-            disabled={isLoading}
-            type="submit"
-            className="w-full"
-          >
+          <Button disabled={isLoading} type="submit" className="w-full">
             Sign In
           </Button>
           <div className="text-center">

@@ -12,6 +12,8 @@ import { useSignUpMutation } from "../../redux/features/auth/auth.api";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "../../redux/hooks";
 import { signIn } from "../../redux/features/auth/authSlice";
+import { Link } from "react-router-dom";
+import { IoMdHome } from "react-icons/io";
 
 interface RegisterFormInputs {
   name: string;
@@ -97,7 +99,10 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen  bg-gray-200">
+    <div className="flex relative items-center justify-center min-h-screen  bg-gray-200">
+      <Link to={"/"} className="absolute left-10 top-10 text-2xl">
+        <IoMdHome />
+      </Link>
       <Card className="w-full max-w-2xl flex flex-col md:flex-row shadow-lg gap-8 p-6 md:p-8 lg:p-12">
         <div className="flex-1 space-y-6">
           <div className="space-y-2">

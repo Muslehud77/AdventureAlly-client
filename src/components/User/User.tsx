@@ -30,10 +30,9 @@ const User = ({ isDashboard }: UserProps) => {
         <Button variant="ghost" size="icon" className="rounded-full">
           <img
             src={user?.image}
-            width={36}
-            height={36}
+          
             alt="Avatar"
-            className="rounded-full"
+            className="rounded-[50%] size-10"
           />
         </Button>
       </DropdownMenuTrigger>

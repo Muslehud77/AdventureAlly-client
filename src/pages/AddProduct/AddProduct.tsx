@@ -1,8 +1,4 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/0iAGNHEVQmN
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
+
 import { Label } from "../../components/ui/label";
 import {
   Select,
@@ -14,8 +10,25 @@ import {
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
+import { useState } from "react";
 
 export default function AddProduct() {
+  const [imageData, setImageData] = useState<File[] | null>(null);
+
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      setImageData(fileArray);
+     
+    } else {
+      setImageData(null);
+    }
+  };
+
+  const categories = ["Backpack", "Cloth", "Footwear", "Kitchen", "Tents"];
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
@@ -27,11 +40,9 @@ export default function AddProduct() {
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="electronics">Electronics</SelectItem>
-              <SelectItem value="clothing">Clothing</SelectItem>
-              <SelectItem value="home">Home</SelectItem>
-              <SelectItem value="beauty">Beauty</SelectItem>
-              <SelectItem value="sports">Sports</SelectItem>
+              {categories.map((category) => (
+                <SelectItem value={category}>{category}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -59,27 +70,6 @@ export default function AddProduct() {
             <button className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground hover:border-primary transition-colors">
               <UploadIcon className="w-6 h-6 text-muted-foreground" />
             </button>
-            <img
-              src="/placeholder.svg"
-              alt="Product image"
-              width={150}
-              height={150}
-              className="aspect-square object-cover rounded-md"
-            />
-            <img
-              src="/placeholder.svg"
-              alt="Product image"
-              width={150}
-              height={150}
-              className="aspect-square object-cover rounded-md"
-            />
-            <img
-              src="/placeholder.svg"
-              alt="Product image"
-              width={150}
-              height={150}
-              className="aspect-square object-cover rounded-md"
-            />
             <img
               src="/placeholder.svg"
               alt="Product image"

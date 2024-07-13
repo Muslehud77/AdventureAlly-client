@@ -1,14 +1,18 @@
 import { FaRegUser } from "react-icons/fa";
+import { AiOutlineProduct } from "react-icons/ai";
+import { MdFormatListBulletedAdd } from "react-icons/md";
+import { TbTruckDelivery } from "react-icons/tb";
+import { FaUsersCog } from "react-icons/fa";
+import { AiOutlineDelete } from "react-icons/ai";
 import Profile from "../pages/Profile/Profile";
-import Cart from "../pages/Cart/Cart";
-import { LuShoppingCart } from "react-icons/lu";
-
-import MyOrders from "../pages/MyOrders/MyOrders";
-import { FaListUl } from "react-icons/fa6";
-
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ProtectedForAdmin from "../ProtectedRoute/ProtectedForAdmin";
 import ManageProducts from "../pages/ManageProducts/ManageProducts";
+import AddProduct from "../pages/AddProduct/AddProduct";
+import ManageUsers from "../pages/ManageUsers/ManageUsers";
+import ManageOrders from "../pages/ManageOrders/ManageOrders";
+import DeletedProducts from "../pages/DeletedProducts/DeletedProducts";
+
 
 export const adminPaths = [
   {
@@ -22,6 +26,16 @@ export const adminPaths = [
     icon: <FaRegUser className="h-5 w-5" />,
   },
   {
+    name: "Manage Orders",
+    route: "manage-orders",
+    element: (
+      <ProtectedForAdmin>
+        <ManageOrders />
+      </ProtectedForAdmin>
+    ),
+    icon: <TbTruckDelivery className="h-5 w-5" />,
+  },
+  {
     name: "Manage Products",
     route: "manage-products",
     element: (
@@ -29,21 +43,41 @@ export const adminPaths = [
         <ManageProducts />
       </ProtectedForAdmin>
     ),
-    icon: <LuShoppingCart className="h-5 w-5" />,
+    icon: <AiOutlineProduct className="h-5 w-5" />,
   },
   {
-    name: "My Orders",
-    route: "my-orders",
+    name: "Deleted Products",
+    route: "deleted-products",
     element: (
       <ProtectedForAdmin>
-        <MyOrders />
+        <DeletedProducts />
       </ProtectedForAdmin>
     ),
-    icon: <FaListUl className="h-5 w-5" />,
+    icon: <AiOutlineDelete className="h-5 w-5" />,
+  },
+  {
+    name: "Add Product",
+    route: "add-product",
+    element: (
+      <ProtectedForAdmin>
+        <AddProduct />
+      </ProtectedForAdmin>
+    ),
+    icon: <MdFormatListBulletedAdd className="h-5 w-5" />,
+  },
+  {
+    name: "Manage Users",
+    route: "manage-users",
+    element: (
+      <ProtectedForAdmin>
+        <ManageUsers />
+      </ProtectedForAdmin>
+    ),
+    icon: <FaUsersCog className="h-5 w-5" />,
   },
 ];
 
-export const userDashboardRoutes = adminPaths.map((path) => {
+export const adminDashboardRoutes = adminPaths.map((path) => {
   return {
     path: path.route,
     element: path.element,

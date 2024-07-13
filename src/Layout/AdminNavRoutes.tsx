@@ -5,13 +5,12 @@ import {
   TooltipContent,
 } from "../components/ui/tooltip";
 import { NavLink, useLocation } from "react-router-dom";
-import { useCart } from "../hooks/useCart";
+
 import { adminPaths } from "../routes/AdminRoutes";
 
 export const AdminNavRoutes = () => {
   const { pathname } = useLocation();
 
-  const { cart } = useCart();
 
   return (
     <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
@@ -29,13 +28,7 @@ export const AdminNavRoutes = () => {
                     : ""
                 } transition-colors hover:text-foreground md:h-8 md:w-8`}
               >
-                {path.route === "cart" && cart.length ? (
-                  <div className="absolute rounded-full top-0 right-0 text-white bg-red-500 size-4 text-xs flex justify-center items-center">
-                    <span>{cart.length}</span>
-                  </div>
-                ) : (
-                  <></>
-                )}
+                
                 {path.icon}
                 <span className="sr-only">{path.name}</span>
               </NavLink>

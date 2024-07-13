@@ -11,6 +11,7 @@ import Dashboard from "./../Layout/Dashboard";
 import { userDashboardRoutes } from "./UserRoutes";
 import ProtectedRouteForLoginRegister from "../ProtectedRoute/ProtectedRouteForLoginRegister";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import { adminDashboardRoutes } from "./AdminRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -37,23 +38,24 @@ export const router = createBrowserRouter([
         path: "/add-product",
         element: <AddProduct />,
       },
-      {
-        path: "/login",
-        element: (
-          <ProtectedRouteForLoginRegister>
-            <LoginPage />
-          </ProtectedRouteForLoginRegister>
-        ),
-      },
-      {
-        path: "/register",
-        element: (
-          <ProtectedRouteForLoginRegister>
-            <Register />
-          </ProtectedRouteForLoginRegister>
-        ),
-      },
     ],
+  },
+
+  {
+    path: "/login",
+    element: (
+      <ProtectedRouteForLoginRegister>
+        <LoginPage />
+      </ProtectedRouteForLoginRegister>
+    ),
+  },
+  {
+    path: "/sign-up",
+    element: (
+      <ProtectedRouteForLoginRegister>
+        <Register />
+      </ProtectedRouteForLoginRegister>
+    ),
   },
   {
     path: "/dashboard",
@@ -62,6 +64,6 @@ export const router = createBrowserRouter([
         <Dashboard />
       </ProtectedRoute>
     ),
-    children: [...userDashboardRoutes],
+    children: [...userDashboardRoutes, ...adminDashboardRoutes],
   },
 ]);
