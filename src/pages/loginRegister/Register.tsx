@@ -40,7 +40,7 @@ const Register = () => {
     setError("");
     const { name, email, password } = data;
 
-    let image = ""
+    let image = imageLink
 
     if (imageData && !imageLink) {
        image = (await sendImageToBB(imageData as File))
@@ -61,9 +61,11 @@ const Register = () => {
     toast.promise(signUp(userData), {
       loading: "Logging in...",
       success: (res: any) => {
-        if (res.error) {
+     
+        if (res?.error) {
           throw new Error(res?.error?.data?.message);
         }
+
 
          dispatch(signIn({ user: res?.data?.data, token: res?.data?.token }));
 

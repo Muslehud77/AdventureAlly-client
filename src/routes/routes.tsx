@@ -7,6 +7,9 @@ import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import AddProduct from "../pages/AddProduct/AddProduct";
 import LoginPage from "../pages/loginRegister/Login";
 import Register from "../pages/loginRegister/Register";
+import Dashboard from "./../Layout/Dashboard";
+import { userDashboardRoutes } from "./UserRoutes";
+import ProtectedRouteForLoginRegister from "../ProtectedRoute/ProtectedRouteForLoginRegister";
 
 export const router = createBrowserRouter([
   {
@@ -15,32 +18,45 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home/>
+        element: <Home />,
       },
       {
         path: "/about",
-        element: <About/>
+        element: <About />,
       },
       {
         path: "/all-products",
-        element: <AllProducts/>
+        element: <AllProducts />,
       },
       {
         path: "/product-details/:id",
-        element: <ProductDetails/>
+        element: <ProductDetails />,
       },
       {
         path: "/add-product",
-        element: <AddProduct/>
+        element: <AddProduct />,
       },
       {
         path: "/login",
-        element : <LoginPage/>
+        element: (
+          <ProtectedRouteForLoginRegister>
+            <LoginPage />
+          </ProtectedRouteForLoginRegister>
+        ),
       },
       {
         path: "/register",
-        element : <Register/>
+        element: (
+          <ProtectedRouteForLoginRegister>
+            <Register />
+          </ProtectedRouteForLoginRegister>
+        ),
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [...userDashboardRoutes],
   },
 ]);

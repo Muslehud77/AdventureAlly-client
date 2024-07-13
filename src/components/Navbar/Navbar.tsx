@@ -1,14 +1,7 @@
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
+
 import { Link } from "react-router-dom";
 import logo from "../../assets/logos/black_wilthout_slogan.png"
+import User from "../User/User";
 
 
 export default function Navbar() {
@@ -26,46 +19,27 @@ export default function Navbar() {
           Home
         </Link>
         <Link
-          to="/"
+          to="/all-products"
           className="text-sm font-medium text-muted-foreground hover:text-foreground"
         >
           All Products
         </Link>
         <Link
-          to="/"
+          to="/about"
           className="text-sm font-medium text-muted-foreground hover:text-foreground"
         >
           About Us
         </Link>
-        <Link to="/" className="relative">
+
+
+        <Link to="/dashboard/cart" className="relative">
           <ShoppingCartIcon className="h-6 w-6 text-muted-foreground" />
           <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
             3
           </div>
         </Link>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <img
-                src="/placeholder.svg"
-                width={36}
-                height={36}
-                alt="Avatar"
-                className="rounded-full"
-              />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>John Doe</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to="/">Dashboard</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/">Logout</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+       <User/>
       </nav>
     </header>
   );
