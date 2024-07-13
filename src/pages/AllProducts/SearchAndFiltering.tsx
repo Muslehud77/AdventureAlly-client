@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Input } from "../../components/ui/input";
+import { Range } from "react-range";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,20 +14,19 @@ import { Label } from "../../components/ui/label";
 import { Checkbox } from "../../components/ui/checkbox";
 
 import { Button } from "../../components/ui/button";
+import PriceRangeSelector from "./PriceRangeSelector";
 
-const SearchAndFiltering = () => {
-
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [priceRange, setPriceRange] = useState([0, 500]);
-    const [sortOrder, setSortOrder] = useState("asc");
+const SearchAndFiltering = ({ search }) => {
+  const [range,setRange] = useState([0])
+ 
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-between mb-16">
       <div className="w-full md:w-1/2 mb-4 md:mb-0 relative">
         <Input
+          onChange={search}
           placeholder="Search products..."
-        //   value={searchTerm}
+          //   value={searchTerm}
           className="w-full pl-10 pr-4 py-2 rounded-lg bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
         />
         <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -72,6 +72,7 @@ const SearchAndFiltering = () => {
                 <Label htmlFor="price-range" className="mb-2 font-medium">
                   Price Range
                 </Label>
+               <PriceRangeSelector/>
                 <div className="rounded-lg" />
               </div>
             </div>
@@ -89,8 +90,8 @@ const SearchAndFiltering = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[200px] p-4 rounded-lg shadow-lg">
             <DropdownMenuRadioGroup
-              value={sortOrder}
-              // onValueChange={handleSortOrderChange}
+            // value={sortOrder}
+            // onValueChange={handleSortOrderChange}
             >
               <DropdownMenuRadioItem value="asc">
                 Price: Low to High

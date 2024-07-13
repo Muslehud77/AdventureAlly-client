@@ -6,32 +6,55 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "../ui/pagination";
 
-export function PaginationDemo() {
+type TMeta = {
+  total: number;
+  pageNumber: number;
+  limitDataCount: number;
+  totalPage: number;
+};
+
+type TPaginateProps = {
+  meta: TMeta;
+  setPage: (page: number) => void;
+};
+
+export function Paginate({ meta, setPage }: TPaginateProps) {
+    
+    const { total, pageNumber, limitDataCount, totalPage } = meta;
+
+    const arr = [...Array(totalPage).keys()].map((i) => i + 1);
+
   return (
     <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#" isActive>
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
-        </PaginationItem>
+      <PaginationContent className="cursor-pointer">
+        {pageNumber > 1 && (
+          <PaginationItem>
+            <PaginationPrevious onClick={() => setPage(pageNumber - 1)} />
+          </PaginationItem>
+        )}
+
+        {arr.map((page) => (
+          <PaginationItem key={page}>
+            <PaginationLink
+              onClick={() => setPage(page)}
+              isActive={page === pageNumber}
+            >
+              {page}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+
         <PaginationItem>
           <PaginationEllipsis />
         </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
+
+        {totalPage !== pageNumber && (
+          <PaginationItem>
+            <PaginationNext onClick={() => setPage(pageNumber + 1)} />
+          </PaginationItem>
+        )}
       </PaginationContent>
     </Pagination>
   );
