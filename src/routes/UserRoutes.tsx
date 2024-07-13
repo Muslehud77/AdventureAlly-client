@@ -6,13 +6,18 @@ import { LuShoppingCart } from "react-icons/lu";
 import MyOrders from "../pages/MyOrders/MyOrders";
 import { FaListUl } from "react-icons/fa6";
 import ProtectedForUser from "../ProtectedRoute/ProtectedForUser";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 
 export const userPaths = [
   {
     name: "Profile",
-    route: "profile",
-    element: <Profile />,
+    route: "",
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
     icon: <FaRegUser className="h-5 w-5" />,
   },
   {
@@ -41,6 +46,6 @@ export const userPaths = [
 
 
 export const userDashboardRoutes = userPaths.map(path=> {
-    return {path: path.route, element: path.element}
+    return {path: path.route, element: path.element , index: path.route? false : true}
 })
 

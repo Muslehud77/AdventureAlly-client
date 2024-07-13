@@ -5,21 +5,18 @@ import {
   TooltipContent,
 } from "../components/ui/tooltip";
 import { NavLink, useLocation } from "react-router-dom";
-import { userPaths } from "../routes/UserRoutes";
 import { useCart } from "../hooks/useCart";
+import { adminPaths } from "../routes/AdminRoutes";
 
-export const UserRoutes = () => {
+export const AdminNavRoutes = () => {
+  const { pathname } = useLocation();
 
-  const {pathname} = useLocation()
-
-  const {cart} = useCart()
-
-  
+  const { cart } = useCart();
 
   return (
     <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
       <TooltipProvider>
-        {userPaths.map((path) => (
+        {adminPaths.map((path) => (
           <Tooltip key={path.route}>
             <TooltipTrigger asChild>
               <NavLink

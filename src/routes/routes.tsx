@@ -10,6 +10,7 @@ import Register from "../pages/loginRegister/Register";
 import Dashboard from "./../Layout/Dashboard";
 import { userDashboardRoutes } from "./UserRoutes";
 import ProtectedRouteForLoginRegister from "../ProtectedRoute/ProtectedRouteForLoginRegister";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -56,7 +57,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: [...userDashboardRoutes],
   },
 ]);

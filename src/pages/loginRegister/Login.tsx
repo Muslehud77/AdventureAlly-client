@@ -25,7 +25,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>({
-    defaultValues: { email: "johndoe@example.com", password: "password123" },
+    defaultValues: { email: "sheikmuslehud@gmail.com", password: "hello123" },
   });
 
   const [showPassword, setShowPassword] = useState(false);

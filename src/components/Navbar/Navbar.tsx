@@ -1,14 +1,24 @@
 
 import { Link } from "react-router-dom";
-import logo from "../../assets/logos/black_wilthout_slogan.png"
+import logo from "../../assets/logos/black_without_slogan.png"
 import User from "../User/User";
+
+import { useUser } from "../../hooks/useUser";
+import { useCart } from "../../hooks/useCart";
 
 
 export default function Navbar() {
+
+  const {user} = useUser()
+
+
+  const {cart} = useCart()
+
+
   return (
     <header className="flex h-16 w-full items-center bg-background px-4 md:px-6">
       <Link to="/" className="mr-6 flex items-center">
-        <img src={logo} className="w-20"/>
+        <img src={logo} className="w-20" />
         <span className="sr-only">AdventureAlly</span>
       </Link>
       <nav className="ml-auto flex items-center gap-4 md:gap-6">
@@ -31,38 +41,36 @@ export default function Navbar() {
           About Us
         </Link>
 
-
-        <Link to="/dashboard/cart" className="relative">
-          <ShoppingCartIcon className="h-6 w-6 text-muted-foreground" />
-          <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-            3
-          </div>
-        </Link>
-
-       <User/>
+        {user ? (
+          user?.role === "admin" ? (
+            <>
+              <User />
+            </>
+          ) : (
+            <>
+              {" "}
+              <Link to="/dashboard/cart" className="relative">
+                <ShoppingCartIcon className="h-6 w-6 text-muted-foreground" />
+               {
+                cart.length ?  <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                 {cart.length}
+                </div> : <></>
+               }
+              </Link>
+              <User />
+            </>
+          )
+        ) : (
+          <>
+          <Link to={"/login"}>Login</Link>
+          </>
+        )}
       </nav>
     </header>
   );
 }
 
-function MountainIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
-  );
-}
+
 
 function ShoppingCartIcon(props) {
   return (
@@ -85,22 +93,3 @@ function ShoppingCartIcon(props) {
   );
 }
 
-function XIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  );
-}
