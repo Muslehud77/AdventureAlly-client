@@ -30,7 +30,7 @@ export const cartSlice = createSlice({
       } else {
         state.cart = state.cart.map((c) => {
           if (c._id === isExist._id) {
-            c.quantity += isExist.quantity;
+           c.quantity += action.payload.quantity;
           }
 
           return c;

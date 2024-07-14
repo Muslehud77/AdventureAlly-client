@@ -1,14 +1,16 @@
-
+import { Dispatch, SetStateAction } from "react";
 import { Range, getTrackBackground } from "react-range";
 
 const STEP = 1;
 const MIN = 0;
 const MAX = 100;
 
+type TPriceRangeSelectorProps = {
+  range: number[];
+  setRange: Dispatch<SetStateAction<number[]>>;
+};
 
-const PriceRangeSelector = ({ range, setRange }) => {
- 
-
+const PriceRangeSelector = ({ range, setRange }: TPriceRangeSelectorProps) => {
   return (
     <div
       style={{

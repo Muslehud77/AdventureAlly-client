@@ -12,6 +12,15 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({product}:ProductCardProps) => {
+
+  function truncateString(str) {
+    if (str.length > 70) {
+      return str.slice(0, ) + "...";
+    }
+    return str;
+  }
+
+
   return (
     <div className="bg-background rounded-lg shadow-lg overflow-hidden">
       <div>
@@ -43,7 +52,10 @@ const ProductCard = ({product}:ProductCardProps) => {
             </span>
           </div>
           <h3 className="text-lg font-semibold mb-2 ">{product?.name}</h3>
-          <p className="text-muted-foreground mb-4 ">{product?.description}</p>
+          <p className="text-muted-foreground mb-4 ">
+            {truncateString(product?.description)}
+          
+          </p>
           <div className="flex items-center justify-between">
             <span className="text-primary font-semibold">
               ${product?.price?.toFixed(2)}
@@ -52,13 +64,15 @@ const ProductCard = ({product}:ProductCardProps) => {
               <ShoppingCartIcon className="w-4 h-4" />
               <span>{product.sales}</span>
             </div>
-            <Button
-              size="sm"
-              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/80"
-            >
-              <ShoppingCartIcon className="w-4 h-4 mr-2" />
-              Add to Cart
-            </Button>
+            <Link to={`/product-details/${product?._id}`}>
+              <Button
+                size="sm"
+                className="px-4 py-2 rounded-lg  hover:bg-black/80"
+              >
+                <ShoppingCartIcon className="w-4 h-4 mr-2" />
+                Add to Cart
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
