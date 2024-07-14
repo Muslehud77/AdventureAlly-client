@@ -3,7 +3,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Rating, Star } from "@smastrom/react-rating";
 import ProductDetailsSkeleton from "../../components/Skeleton/ProductDetailsSkeleton";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useGetSingleProductQuery } from "../../redux/features/product/productApi";
 import { useEffect, useState } from "react";
 import Magnifier from "react-magnifier";
@@ -36,7 +36,7 @@ export default function ProductDetails() {
   const navigate = useNavigate()
 
   const {user} = useUser()
-
+  const role = user?.role
 
   useEffect(() => {
     if (product?.images) {
@@ -69,7 +69,7 @@ export default function ProductDetails() {
     if(cart.length >= 3){
       toast((t) => (
         <div className="">
-          <span> You have {cart.length} items on your cart</span>
+          <span> You have {cart.length+1} items on your cart</span>
           <div className="flex gap-2 mt-2">
             <Button variant="outline" onClick={() => toast.dismiss(t.id)}>
               Continue Shopping
@@ -154,21 +154,33 @@ export default function ProductDetails() {
               <p className="text-lg font-bold">${product?.price}</p>
               <p className="text-muted-foreground">{product?.description}</p>
             </div>
-            <form className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="quantity" className="text-base">
-                  Quantity
-                </Label>
-                <Input
-                  id="quantity"
-                  type="number"
-                  value={quantity}
-                  onChange={handleQuantityChange}
-                  className="w-24 font-bold"
-                />
-              </div>
-              <Button type="button" onClick={addToCart} size="lg">Add to cart</Button>
-            </form>
+            {role === "user" ? (
+              <form className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="quantity" className="text-base">
+                    Quantity
+                  </Label>
+                  <Input
+                    id="quantity"
+                    type="number"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    className="w-24 font-bold"
+                  />
+                </div>
+                <Button type="button" onClick={addToCart} size="lg">
+                  Add to cart
+                </Button>
+              </form>
+            ) : (
+              <>
+                <Link to={'/'}>
+                  <Button type="button" onClick={addToCart} size="lg">
+                    Add to cart
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

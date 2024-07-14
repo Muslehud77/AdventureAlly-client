@@ -12,6 +12,7 @@ import AddProduct from "../pages/AddProduct/AddProduct";
 import ManageUsers from "../pages/ManageUsers/ManageUsers";
 import ManageOrders from "../pages/ManageOrders/ManageOrders";
 import DeletedProducts from "../pages/DeletedProducts/DeletedProducts";
+import EditProduct from "../pages/EditProduct/EditProduct";
 
 
 export const adminPaths = [
@@ -74,6 +75,16 @@ export const adminPaths = [
       </ProtectedForAdmin>
     ),
     icon: <FaUsersCog className="h-5 w-5" />,
+  },
+  {
+    name: "Edit Product",
+    route: "edit-product/:id",
+    element: (
+      <ProtectedForAdmin>
+        <EditProduct />
+      </ProtectedForAdmin>
+    ),
+    icon: null,
   },
 ];
 

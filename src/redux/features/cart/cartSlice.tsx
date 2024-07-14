@@ -22,7 +22,6 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-   
     addCart: (state, action: PayloadAction<TCart>) => {
       const isExist = state.cart.find((c) => c._id === action.payload._id);
       if (!isExist) {
@@ -30,14 +29,14 @@ export const cartSlice = createSlice({
       } else {
         state.cart = state.cart.map((c) => {
           if (c._id === isExist._id) {
-           c.quantity += action.payload.quantity;
+            c.quantity += action.payload.quantity;
           }
 
           return c;
         });
       }
     },
-    removeACart: (state, action: PayloadAction<TCart>) => {
+    removeACart: (state, action: PayloadAction<{ _id: string }>) => {
       state.cart = state.cart.filter((c) => c._id !== action.payload._id);
     },
     clearCart: (state) => {
