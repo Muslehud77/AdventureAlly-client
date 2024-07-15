@@ -13,7 +13,7 @@ type ProductCardProps = {
 
 const ProductCard = ({product}:ProductCardProps) => {
 
-  function truncateString(str) {
+  function truncateString(str:string) {
     if (str.length > 70) {
       return str.slice(0, ) + "...";
     }
@@ -70,7 +70,7 @@ const ProductCard = ({product}:ProductCardProps) => {
                 className="px-4 py-2 rounded-lg  hover:bg-black/80"
               >
                 <ShoppingCartIcon className="w-4 h-4 mr-2" />
-                Add to Cart
+                Show Product
               </Button>
             </Link>
           </div>

@@ -11,17 +11,15 @@ import { adminPaths } from "../routes/AdminRoutes";
 export const AdminNavRoutes = () => {
   const { pathname } = useLocation();
 
-
   return (
     <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
       <TooltipProvider>
-        {adminPaths.map((path) =>
+        {adminPaths.map((path, i) =>
           path.icon !== null ? (
-            <div key={path.name}>
-              <Tooltip >
-                <TooltipTrigger asChild >
+            <div key={i + path.route}>
+              <Tooltip>
+                <TooltipTrigger asChild>
                   <NavLink
-                    
                     to={path.route}
                     className={`flex relative h-9 w-9 items-center justify-center rounded-lg ${
                       path.route

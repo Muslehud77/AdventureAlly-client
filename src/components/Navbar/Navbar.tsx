@@ -37,6 +37,7 @@ export default function Navbar() {
       <nav className="ml-auto flex items-center gap-4 md:gap-6">
         {navBarRoutes.map((route) => (
           <Link
+          key={route.path}
             to={route.path}
             className={`${
               pathname === route.path ? "text-gray-500" : "text-gray-800"
