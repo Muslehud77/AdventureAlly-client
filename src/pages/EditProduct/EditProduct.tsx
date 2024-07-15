@@ -9,11 +9,11 @@ import {
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { LuUpload } from "react-icons/lu";
 import { useForm, Controller } from "react-hook-form";
-import {  useDeleteProductMutation, useGetSingleProductQuery, useUpdateProductMutation } from "../../redux/features/product/productApi";
+import { useGetSingleProductQuery, useUpdateProductMutation } from "../../redux/features/product/productApi";
 import toast from "react-hot-toast";
 import { sendImageToBB } from "../../utils/sendImageToBB";
 import EditProductSkeleton from "../../components/Skeleton/EditProductSkeleton";

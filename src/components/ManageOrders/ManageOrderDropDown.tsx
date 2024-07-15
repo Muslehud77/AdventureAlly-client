@@ -9,6 +9,7 @@ import {
 
 import { Button } from "../ui/button";
 import { useChangeStatusMutation } from "../../redux/features/cart/cartApi";
+import toast from "react-hot-toast";
 
 type ManageOrderDropDownProps = {
   _id: string;
@@ -19,7 +20,45 @@ const ManageOrderDropDown = ({ _id, status }: ManageOrderDropDownProps) => {
   const [changeStatus] = useChangeStatusMutation();
 
   const handleStatusChange = async (_id: string, status: string) => {
-   await changeStatus({_id,status})
+    
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">
+                  Are you sure you want to change the status to {status}?
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                toast.promise(changeStatus({ _id, status }).unwrap(), {
+                  loading: "Changing status...",
+                  success: <b>Status changed successfully!</b>,
+                  error: <b>Could not change the status.</b>,
+                });
+              }}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      ));
   };
 
   return (

@@ -24,7 +24,7 @@ const ManageOrdersTable = ({ orders }: ManageOrdersTableProps) => {
   const data = orders?.data;
 
   return (
-    <CardContent>
+    <CardContent className="max-h-[80vh] overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -53,8 +53,8 @@ const ManageOrdersTable = ({ orders }: ManageOrdersTableProps) => {
                     order.status === "pending"
                       ? "outline"
                       : order.status === "delivering"
-                      ? "secondary"
-                      : "success"
+                      ? "destructive"
+                      : "secondary"
                   }
                 >
                   {order.status}

@@ -14,7 +14,7 @@ export default function Component() {
   const { data: orders, isLoading } = useGetAllCartsQuery(undefined);
 
   return (
-    <Card>
+    <Card >
       <CardHeader>
         <CardTitle>Orders</CardTitle>
         <CardDescription>
