@@ -16,9 +16,10 @@ const productApi = baseApi.injectEndpoints({
           url: `/products?${params.toString()}`,
         };
       },
+      providesTags: ["products"],
     }),
     getSingleProduct: builder.query({
-      query: (_id) => ({ url: `/products/${_id}` }),
+      query: (_id) => ({ url: `/products/${_id}`, providesTags: ["product"] }),
     }),
     getBestSelling: builder.query({
       query: () => ({ url: `/products/best-selling` }),
@@ -32,6 +33,7 @@ const productApi = baseApi.injectEndpoints({
         url: `/products/${_id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["products", "product"],
     }),
     createProduct: builder.mutation({
       query: (productData) => ({
@@ -39,6 +41,7 @@ const productApi = baseApi.injectEndpoints({
         method: "POST",
         body: productData,
       }),
+      invalidatesTags: ["products", "product"],
     }),
     updateProduct: builder.mutation({
       query: ({ _id, productData }) => ({
@@ -46,9 +49,10 @@ const productApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: productData,
       }),
+      invalidatesTags: ["products", "product"],
     }),
     getDeletedProducts: builder.query({
-      query: () => `/products/deleted-products`,
+      query: () => ({url:`/products/deleted-products`}),
     }),
   }),
 });

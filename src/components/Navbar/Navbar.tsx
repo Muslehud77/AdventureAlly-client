@@ -26,6 +26,8 @@ export default function Navbar() {
     },
   ];
 
+
+
   return (
     <header className="flex h-16 w-full items-center bg-background px-4 md:px-6">
       <Link to="/" className="mr-6 flex items-center">
@@ -37,9 +39,10 @@ export default function Navbar() {
           <Link
             to={route.path}
             className={`${
-              pathname === route.path && "font-extrabold"
-            } text-sm font-medium text-muted-foreground hover:text-foreground`}
+              pathname === route.path ? "text-gray-500" : "text-gray-800"
+            } text-sm font-medium hover:text-foreground`}
           >
+            
             {route.name}
           </Link>
         ))}

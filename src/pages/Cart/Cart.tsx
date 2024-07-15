@@ -11,14 +11,38 @@ import { Input } from "../../components/ui/input";
 import { ReactNode } from "react";
 import { useUser } from "../../hooks/useUser";
 import CartCard from "../../components/Cart/CartCard";
+import { useUpdateUserMutation } from "../../redux/features/user/userApi";
+import toast from "react-hot-toast";
+import { signIn } from "../../redux/features/auth/authSlice";
+import { useAddCartMutation } from "../../redux/features/cart/cartApi";
+import { Link, useNavigate } from "react-router-dom";
+
+export type TItems = {
+  product: string;
+  quantity: number;
+  totalAmount: number;
+};
+
+export type TCart = {
+  _id?: string;
+  user?: string;
+  orders: TItems[];
+  status?: "pending" | "delivering" | "delivered";
+  address: string;
+  phone: string;
+};
 
 export default function Cart() {
+  const navigate = useNavigate();
   const carts = useAppSelector(selectCart);
   const dispatch = useDispatch();
-  const { user } = useUser();
+  const { user, token } = useUser();
+  const [updateUser, { isLoading: updatingUser }] = useUpdateUserMutation();
 
-  const phoneNumber = user?.phone || "010";
-  const address = user?.address || "Address";
+  const [addCartToDataBase, {}] = useAddCartMutation();
+
+  const phoneNumber = user?.phone;
+  const address = user?.address;
 
   const {
     register,
@@ -38,12 +62,80 @@ export default function Cart() {
     0
   );
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Proceed with checkout process
+  const onSubmit = async (data: { address: string; phone: string }) => {
+    const cartDataForDataBase = {
+      user: user?._id,
+      address: data.address,
+      phone: data.phone,
+      orders: carts.map((c) => {
+        return {
+          product: c._id,
+          quantity: c.quantity,
+          totalAmount: Number((c.price * c.quantity).toFixed(2)),
+        };
+      }),
+    };
+
+    const saveCart = async (cartData: TCart) => {
+      const res = await addCartToDataBase(cartData);
+      if (res.data.success) {
+        dispatch(clearCart());
+        navigate("/dashboard/my-orders");
+      }
+
+      return res;
+    };
+
+    const userDataForUpdatingTheUser = {} as {
+      address?: string;
+      phone?: string;
+    };
+
+    if (!phoneNumber) {
+      userDataForUpdatingTheUser["phone"] = data?.phone;
+    }
+
+    if (!address) {
+      userDataForUpdatingTheUser["address"] = data?.address;
+    }
+
+    toast.promise(saveCart(cartDataForDataBase), {
+      loading: "Saving Cart...",
+      success: (response: any) => {
+        if (response?.error) {
+          throw new Error(response?.error?.message);
+        }
+
+        console.log(response, "=> cart response");
+
+        return <b>Settings saved!</b>;
+      },
+      error: (err) => <b>{err.message || "Could not save."}</b>,
+    });
+
+    if (Object.keys(userDataForUpdatingTheUser).length) {
+      const res = (await updateUser(userDataForUpdatingTheUser)) as any;
+
+      if (res?.error) {
+        throw new Error(res?.error?.message);
+      }else{
+        dispatch(signIn({ user: res?.data?.data, token }));
+
+        toast("Updated the user address and phone for upcoming orders!", {
+          icon: "👍",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      }
+      
+
+    }
   };
 
-  const isCartAvailable = !carts?.length
+  const isCartAvailable = !carts?.length || updatingUser;
 
   return (
     <section className="w-full py-12 border rounded-lg">
@@ -52,10 +144,12 @@ export default function Cart() {
           <div className="grid gap-1">
             <h1 className="text-2xl font-bold tracking-tight">My Cart</h1>
             <p className="text-muted-foreground">
-              Review and complete your order.
+              {carts.length
+                ? "Review and complete your order."
+                : "You haven't added anything to the cart."}
             </p>
           </div>
-          {!isCartAvailable && (
+          {carts.length ? (
             <Button
               size="lg"
               variant="outline"
@@ -64,6 +158,19 @@ export default function Cart() {
             >
               Clear Cart
             </Button>
+          ) : (
+            <div className="flex justify-end items-center w-full">
+              <Link to="/all-products">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="md:ml-auto shrink-0"
+                 
+                >
+                 Lets Shop
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
         <CartCard carts={carts} removeFromCart={removeFromCart} />
