@@ -106,9 +106,7 @@ export default function Cart() {
           throw new Error(response?.error?.message);
         }
 
-        console.log(response, "=> cart response");
-
-        return <b>Settings saved!</b>;
+        return <b>Cart saved!</b>;
       },
       error: (err) => <b>{err.message || "Could not save."}</b>,
     });
@@ -118,7 +116,7 @@ export default function Cart() {
 
       if (res?.error) {
         throw new Error(res?.error?.message);
-      }else{
+      } else {
         dispatch(signIn({ user: res?.data?.data, token }));
 
         toast("Updated the user address and phone for upcoming orders!", {
@@ -130,8 +128,6 @@ export default function Cart() {
           },
         });
       }
-      
-
     }
   };
 
@@ -165,9 +161,8 @@ export default function Cart() {
                   size="lg"
                   variant="outline"
                   className="md:ml-auto shrink-0"
-                 
                 >
-                 Lets Shop
+                  Lets Shop
                 </Button>
               </Link>
             </div>

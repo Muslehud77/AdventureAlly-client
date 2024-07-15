@@ -9,7 +9,7 @@ import {
 import { Button } from "../ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { logout, selectAuthUser } from "../../redux/features/auth/authSlice";
+import { logoutAndClearCart, selectAuthUser } from "../../redux/features/auth/authSlice";
 
 type UserProps = {
   isDashboard?: boolean;
@@ -32,7 +32,7 @@ const User = ({ isDashboard }: UserProps) => {
             src={user?.image}
           
             alt="Avatar"
-            className="rounded-full"
+            className="rounded-full size-10 object-contain bg-black"
           />
         </Button>
       </DropdownMenuTrigger>
@@ -51,7 +51,7 @@ const User = ({ isDashboard }: UserProps) => {
           )}
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link className="w-full" to="/" onClick={() => dispatch(logout())}>
+          <Link className="w-full" to="/" onClick={() => dispatch(logoutAndClearCart())}>
             Logout
           </Link>
         </DropdownMenuItem>

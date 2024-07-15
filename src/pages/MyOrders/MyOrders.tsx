@@ -4,6 +4,7 @@ import { TProduct } from "../AllProducts/AllProducts";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button"; // Assuming you have a Button component
 import MyCartSkeleton from "../../components/Skeleton/MyCartSkeleton";
+import { convertTimestamp } from "../../utils/convertTimeStamp";
 
 type TOrders = {
   address: string;
@@ -64,7 +65,7 @@ export default function MyOrders() {
                       <div className="grid gap-2 mt-2">
                         <div className="flex items-center justify-between">
                           <div>Order Date:</div>
-                          <div>{order.createdAt}</div>
+                          <div>{convertTimestamp(order.createdAt)}</div>
                         </div>
                         <div className="flex items-center justify-between">
                           <div>Shipping Address:</div>

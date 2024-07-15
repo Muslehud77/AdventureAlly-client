@@ -78,7 +78,7 @@ export default function AllProducts() {
       if (categories) {
         query["category"] = categories;
         if(filter.category !== categories){
-           query["page"] = 0;
+           query["page"] = 1;
         }
       }
 

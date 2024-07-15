@@ -23,7 +23,7 @@ export default function ProductDetails() {
   const [image, setImage] = useState("");
   const [quantity, setQuantity] = useState(1); // State to manage quantity
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const { id } = useParams();
 
@@ -31,12 +31,12 @@ export default function ProductDetails() {
 
   const product = data?.data as TProduct;
 
-  const cart = useAppSelector(selectCart)
+  const cart = useAppSelector(selectCart);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const {user} = useUser()
-  const role = user?.role
+  const { user } = useUser();
+  const role = user?.role;
 
   useEffect(() => {
     if (product?.images) {
@@ -48,16 +48,21 @@ export default function ProductDetails() {
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(1, parseInt(e.target.value));
-    setQuantity(value);
+
+    if (product.stock >= value) {
+      setQuantity(value);
+    }else{
+      toast.error("Sorry not enough in stock!");
+    }
+
   };
 
-  const addToCart = ()=>{
-
-    const {name,price} = product
+  const addToCart = () => {
+    const { name, price } = product;
 
     dispatch(
       addCart({
-        _id : product._id as string,
+        _id: product._id as string,
         name,
         image,
         price,
@@ -65,16 +70,22 @@ export default function ProductDetails() {
       })
     );
     toast.success(`Successfully added ${name} to the cart`);
-   
-    if(cart.length >= 3){
+
+    if (cart.length >= 3) {
       toast((t) => (
         <div className="">
-          <span> You have {cart.length+1} items on your cart</span>
+          <span> You have {cart.length + 1} items on your cart</span>
           <div className="flex gap-2 mt-2">
             <Button variant="outline" onClick={() => toast.dismiss(t.id)}>
               Continue Shopping
             </Button>
-            <Button variant="ghost" onClick={() => {navigate("/dashboard/cart"); toast.dismiss(t.id);}}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                navigate("/dashboard/cart");
+                toast.dismiss(t.id);
+              }}
+            >
               Cart
             </Button>
           </div>
@@ -82,8 +93,8 @@ export default function ProductDetails() {
       ));
     }
 
-    navigate('/all-products')
-  }
+    navigate("/all-products");
+  };
 
   return (
     <>
@@ -104,7 +115,7 @@ export default function ProductDetails() {
               }}
             />
             <div className="grid grid-cols-4 gap-4">
-              {product.images.map((img: string, i: number) => (
+              {product?.images?.map((img: string, i: number) => (
                 <button
                   key={i}
                   onClick={() => setImage(img)}
@@ -174,9 +185,14 @@ export default function ProductDetails() {
               </form>
             ) : (
               <>
-                <Link to={'/'}>
-                  <Button type="button" onClick={addToCart} size="lg">
-                    Add to cart
+                <Link to={`/dashboard/edit-product/${product._id}`}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="border animate-pulse hover:animate-none"
+                    size="lg"
+                  >
+                    Edit This Product
                   </Button>
                 </Link>
               </>

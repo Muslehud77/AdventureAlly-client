@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarImage } from "../ui/avatar";
 import { Label } from "../ui/label";
 import {
   Dialog,
@@ -13,9 +13,13 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useUser } from "../../hooks/useUser";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { TUser } from "../../redux/features/auth/authSlice";
+import { signIn, TUser } from "../../redux/features/auth/authSlice";
+import { useUpdateUserMutation } from "../../redux/features/user/userApi";
+import { sendImageToBB } from "../../utils/sendImageToBB";
+import { useAppDispatch } from "../../redux/hooks";
+import toast from "react-hot-toast";
 
 type ProfileFormValues = {
   username?: string;
@@ -25,11 +29,15 @@ type ProfileFormValues = {
 };
 
 const EditProfileForm = () => {
-  const initialRender = useRef(true);
-  const { user } = useUser();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const { user, token } = useUser();
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [imageData, setImageData] = useState<File | null>(null);
   const [imageLink, setImageLink] = useState<string | null>(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -38,72 +46,91 @@ const EditProfileForm = () => {
     watch,
   } = useForm<ProfileFormValues>();
 
-
-  const watchedFields = watch(["username", "address", "phone"]);
-
-  useEffect(() => {
-    
-
-    console.log(watchedFields);
-    const [username, address, phone] = watchedFields;
-    if (
-      username !== user?.name ||
-      address !== user?.address ||
-      phone !== user?.phone ||
-      imageData
-    ) {
-      setSubmitDisabled(false);
-    } else {
-      setSubmitDisabled(true);
-    }
-  }, [watchedFields, imageData]);
-
-
-  const onSubmit: SubmitHandler<ProfileFormValues> = (data) => {
-    console.log(data);
-    // Handle form submission here
+  const onSubmit: SubmitHandler<ProfileFormValues> = async (data) => {
+    setError(null);
 
     const updatedDataForUser = {} as Partial<TUser>;
 
-    if (data.username) {
-      updatedDataForUser["name"] = data.username;
+    let image = imageLink;
+
+    if (imageData) {
+      if (!imageLink) {
+        image = await sendImageToBB(imageData);
+        setImageLink(image);
+      }
     }
 
-    if (data.address) {
-      updatedDataForUser["address"] = data.address;
-    }
+    const saveUserData = async () => {
+      if (data.username) {
+        updatedDataForUser["name"] = data.username;
+      }
 
-    if (data.phone) {
-      updatedDataForUser["phone"] = data.phone;
-    }
+      if (data.address) {
+        updatedDataForUser["address"] = data.address;
+      }
 
-    if (imageLink) {
-      updatedDataForUser["image"] = imageLink;
-    }
+      if (data.phone) {
+        updatedDataForUser["phone"] = data.phone;
+      }
 
-    console.log(updatedDataForUser);
+      if (imageLink || image) {
+        updatedDataForUser["image"] = image as string;
+       
+      }
+
+     
+
+      if (Object.keys(updatedDataForUser).length) {
+        const res = (await updateUser(updatedDataForUser)) as any;
+
+        if (res?.error) {
+          setError(res?.error?.message || "Something went wrong");
+          throw new Error(res?.error?.message);
+        } else {
+          dispatch(signIn({ user: res?.data?.data, token }));
+          setOpen(false);
+           setImageLink(null);
+          toast("you are updated!", {
+            icon: "👍",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+      }
+    };
+
+    await saveUserData();
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setImageData(file);
-      setSubmitDisabled(false);
     } else {
       setImageData(null);
+    }
+  };
+
+  const handleSubmitter = () => {
+    const watchedFields = watch(["username", "address", "phone"]);
+    const [username, address, phone] = watchedFields;
+    if (
+      username !== (user?.name || "") ||
+      address !== (user?.address || "") ||
+      phone !== (user?.phone || "") ||
+      imageData
+    ) {
+      setSubmitDisabled(false);
+    } else {
       setSubmitDisabled(true);
     }
   };
 
-
-  const handleSubmitter = ()=>{
-    
-  }
-
-  
-
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger>
@@ -114,7 +141,11 @@ const EditProfileForm = () => {
             Update your profile information.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          onChange={handleSubmitter}
+          className="grid gap-4 py-4"
+        >
           <div className="grid items-center grid-cols-4 gap-4">
             <Label htmlFor="username" className="text-right">
               Username
@@ -167,6 +198,7 @@ const EditProfileForm = () => {
             <div className="col-span-3 flex items-center gap-2">
               <Avatar className="h-12 w-12">
                 <AvatarImage
+                className="object-contain"
                   src={
                     imageData
                       ? URL.createObjectURL(imageData as Blob)
@@ -174,7 +206,12 @@ const EditProfileForm = () => {
                   }
                 />
               </Avatar>
-              <Button variant="outline" size="sm">
+              <Button
+                onBlur={handleSubmitter}
+                type="button"
+                variant="outline"
+                size="sm"
+              >
                 <Label htmlFor="profile-image" className="cursor-pointer">
                   Change
                 </Label>
@@ -189,8 +226,13 @@ const EditProfileForm = () => {
               />
             </div>
           </div>
+          {error && <span className="text-red-500 text-center">{error}</span>}
           <DialogFooter>
-            <Button disabled={submitDisabled} type="submit" className="ml-auto">
+            <Button
+              disabled={submitDisabled || isLoading}
+              type="submit"
+              className="ml-auto"
+            >
               Save Changes
             </Button>
           </DialogFooter>

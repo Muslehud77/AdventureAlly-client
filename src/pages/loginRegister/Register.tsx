@@ -117,7 +117,13 @@ const Register = () => {
               <Input
                 id="name"
                 placeholder="Enter your name"
-                {...register("name", { required: "Name is required" })}
+                {...register("name", {
+                  required: "Name is required",
+                  minLength: {
+                    value: 5,
+                    message: "Name must be at least 5 characters",
+                  },
+                })}
               />
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">

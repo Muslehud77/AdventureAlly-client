@@ -50,4 +50,4 @@ export const { addCart,removeACart,clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const selectCart = (state: RootState) => state.cart.cart;
-// export const selectAuthUser = (state: RootState) => state.auth.user;
+

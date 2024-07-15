@@ -88,7 +88,7 @@ const SearchAndFiltering = ({
                   Category
                 </Label>
                 <div className="grid gap-2 mt-3">
-                  {["Backpack", "Cloth", "Kitchen", "Tent", "Footware"].map(
+                  {["Backpack", "Cloth", "Kitchen", "Tent", "Footwear"].map(
                     (category) => (
                       <Label key={category} className="flex items-center gap-2">
                         <Checkbox

@@ -7,18 +7,18 @@ import NavRoutes from "./NavRoutes";
 export default function Dashboard() {
   return (
     <div className="flex gap-5 min-h-screen w-full bg-background">
-      <aside className="fixed inset-y-0 left-0 z-10 bg-white w-14 pt-5 flex-col border-r bg-background sm:flex">
-        <Link to={"/"} className="flex justify-center items-center">
-          <img src={logo} className="w-10/12" />
-        </Link>
-        <hr className="border border-gray-400 border-b-1 mt-4" />
+      <aside className="fixed h-full w-14 py-5  px-2 flex flex-col justify-between ">
+        <div className="space-y-5">
+          <Link to={"/"} className="flex justify-center items-center">
+            <img src={logo} className="w-10/12" />
+          </Link>
+          <hr className="border border-gray-400 border-b-1" />
 
-        <NavRoutes />
-        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <User isDashboard={true} />
-        </nav>
+          <NavRoutes />
+        </div>
+        <User isDashboard={true} />
       </aside>
-      <div className="pl-16 w-full mt-10">
+      <div className="pl-16 w-full mt-10 pr-5">
         <Outlet />
       </div>
     </div>

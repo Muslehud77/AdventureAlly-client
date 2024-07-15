@@ -17,11 +17,11 @@ export default function Profile() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center  bg-muted max-h-fit md:max-h-[90vh]">
+    <div className="flex  items-center justify-center rounded-xl md:bg-gray-300 max-h-fit md:h-[90vh]">
       <Card className="w-full max-w-sm">
         <CardHeader className="flex flex-col items-center gap-4 bg-gray-800 text-gray-100 py-8 rounded-t-lg">
           <Avatar className="h-20 w-20">
-            <AvatarImage src={user?.image} />
+            <AvatarImage src={user?.image} className="object-contain bg-black"/>
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
           <div className="text-center">
