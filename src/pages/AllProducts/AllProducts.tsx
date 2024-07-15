@@ -4,6 +4,7 @@ import { useGetAllProductsQuery } from "../../redux/features/product/productApi"
 import SearchAndFiltering from "./SearchAndFiltering";
 import { Paginate } from "../../components/Pagination/Pagination";
 import SkeletonCards from "../../components/Skeleton/SkeletonProducts";
+import scrollToTop from "../../utils/scrollToTop";
 
 export type TProduct = {
   _id?: string;
@@ -84,7 +85,7 @@ export default function AllProducts() {
 
       if(filter!==query){
          setFilter(query);
-         window.scrollTo({ top: 0, behavior: "smooth" });
+         scrollToTop()
       }
       
       

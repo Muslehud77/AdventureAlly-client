@@ -2,12 +2,14 @@ import toast from "react-hot-toast";
 import { useDeleteProductMutation } from "../../redux/features/product/productApi";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { PiTrashSimple } from "react-icons/pi";
 
 type DeleteProductProps = {
-  id:string
+  id:string;
+  isIcon?:boolean
 };
 
-const DeleteProduct = ({id}:DeleteProductProps) => {
+const DeleteProduct = ({id,isIcon}:DeleteProductProps) => {
   const [deleteProduct] = useDeleteProductMutation();
 
   const navigate = useNavigate()
@@ -75,10 +77,12 @@ const DeleteProduct = ({id}:DeleteProductProps) => {
   return (
     <Button
       type="button"
+      size={isIcon? "sm" : "default"}
       variant="destructive"
       onClick={() => deleteProductHandler()}
     >
-      Delete Product
+      {isIcon ? <PiTrashSimple size={18} /> : " Delete Product"}
+    
     </Button>
   );
 };

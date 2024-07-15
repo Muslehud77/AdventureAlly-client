@@ -11,7 +11,7 @@ const SkeletonTable = () => {
         className="flex flex-col justify-center h-full items-center gap-5"
       >
         {arr.map((e) => (
-          <div key={e} className="grid gap-5 justify-center items-center">
+          <div key={e} className="grid gap-5 justify-center items-center pb-10">
             <Skeleton className="h-10 w-[90vw] " />
             <Skeleton className="h-2 w-[70vw]" />
           </div>

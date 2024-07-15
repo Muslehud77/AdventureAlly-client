@@ -9,29 +9,34 @@ import {
 import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
-import { ReactNode, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { LuUpload } from "react-icons/lu";
+import { ReactNode, useEffect, useState } from "react";
+
 import { useForm, Controller } from "react-hook-form";
-import { useGetSingleProductQuery, useUpdateProductMutation } from "../../redux/features/product/productApi";
+import {
+  useGetSingleProductQuery,
+  useUpdateProductMutation,
+} from "../../redux/features/product/productApi";
 import toast from "react-hot-toast";
 import { sendImageToBB } from "../../utils/sendImageToBB";
 import EditProductSkeleton from "../../components/Skeleton/EditProductSkeleton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DeleteProduct from "../../components/DeleteProduct/DeleteProduct";
-
+import EditImageOfTheProduct from "./EditImageOfTheProduct";
+import { TProduct } from "../AllProducts/AllProducts";
+import updateProductFunc from "../../utils/updateProductFunc";
+import RecoverProduct from "../../components/RecoverProduct/RecoverProduct";
 
 export default function EditProduct() {
-  const {id} = useParams()
-  const {data,isLoading,isFetching} = useGetSingleProductQuery(id)
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data, isLoading, isFetching } = useGetSingleProductQuery(id);
   const [imageData, setImageData] = useState<File[] | []>([]);
   const [imageLinks, setImageLinks] = useState<string[] | []>([]);
+  const [mainImage, setMainImage] = useState<File | string>("");
+  const [mainImageType, setMainImageType] = useState<"link" | "file">("link");
+  const product = data?.data as TProduct;
 
-
-  const product = data?.data
-
-  console.log(product);
-
+  // console.log(product);
 
   const {
     register,
@@ -40,62 +45,68 @@ export default function EditProduct() {
     formState: { errors },
   } = useForm();
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const fileArray = Array.from(files);
-      setImageData(fileArray);
-    } else {
-      setImageData([]);
-    }
-  };
-
-  const handleDeleteImage = (image: File) => {
-    const filtered = imageData?.filter((img) => img !== image);
-    setImageData(filtered as File[]);
-  };
-
   const categories = ["Backpack", "Cloth", "Footwear", "Kitchen", "Tents"];
 
   const [updateProduct] = useUpdateProductMutation();
 
+  useEffect(() => {
+    if (product) {
+      setImageLinks(product?.images as string[]);
+      setMainImage((product?.images as string[])[0]);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (mainImage) {
+      if (mainImage instanceof File) {
+        setMainImageType("file");
+      } else {
+        setMainImageType("link");
+      }
+    }
+  }, [mainImage]);
+
   const onSubmit = async (data: Record<string, unknown>) => {
     const { name, details, price, quantity, category } = data;
 
-    let images = [] as string[] | [];
+    let images = [...imageLinks] as string[];
 
-    if (imageData.length && !imageLinks) {
+    if (imageData.length) {
       const links = await sendImageToBB(imageData);
-
-      images = links;
-      setImageLinks(links);
+      if (mainImageType === "file") {
+        images = [...links, ...images];
+        setImageLinks(images);
+      } else {
+        images = [...images, ...links];
+        setImageLinks(images);
+      }
     }
 
-    const formData = {
+    const productData = {
       name,
       price: Number(price),
       stock: Number(quantity),
       description: details,
-      ratings: 4,
+
       images,
       category,
     };
 
-    toast.promise(updateProduct(formData), {
-      loading: "Updating...",
-      success: (res:any) => {
-        if (res?.error) {
-          throw new Error(res.error.message);
-        }
-
-        return <p>{res.data.message}</p>;
-      },
-      error: (err)=> <b>{err.message || "Could not update!"}</b>,
+    const res = await updateProductFunc({
+      _id: id as string,
+      data: productData,
+      isUpdating: true,
+      updateProduct,
     });
+
+   
+
+    if (res) {
+      navigate("/dashboard/manage-products");
+      setImageData([]);
+      setImageLinks([]);
+    }
   };
-
-
- 
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -109,7 +120,7 @@ export default function EditProduct() {
             <Controller
               name="category"
               control={control}
-              defaultValue=""
+              defaultValue={product?.category}
               rules={{ required: "Category is required" }}
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
@@ -137,6 +148,7 @@ export default function EditProduct() {
             <Input
               id="name"
               type="text"
+              defaultValue={product?.name}
               placeholder="Enter product name"
               {...register("name", { required: "Product name is required" })}
             />
@@ -151,6 +163,7 @@ export default function EditProduct() {
             <Textarea
               id="details"
               rows={4}
+              defaultValue={product.description}
               placeholder="Describe the product"
               {...register("details", {
                 required: "Product details are required",
@@ -168,6 +181,7 @@ export default function EditProduct() {
               <Input
                 id="price"
                 type="number"
+                defaultValue={product.price}
                 placeholder="Enter price"
                 {...register("price", {
                   required: "Price is required",
@@ -185,6 +199,7 @@ export default function EditProduct() {
               <Input
                 id="quantity"
                 type="number"
+                defaultValue={product.stock}
                 placeholder="Enter quantity"
                 {...register("quantity", {
                   required: "Quantity is required",
@@ -201,49 +216,21 @@ export default function EditProduct() {
               )}
             </div>
           </div>
-          <div className="grid gap-2">
-            <Label>Product Image</Label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Label
-                htmlFor="product-image"
-                className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground hover:border-gray-500 cursor-pointer transition-colors"
-              >
-                <LuUpload className="w-6 h-6 text-muted-foreground" />
-              </Label>
-              <Input
-                type="file"
-                accept="image/*"
-                multiple
-                id="product-image"
-                className="hidden h-1"
-                onChange={handleImageChange}
-              />
-
-              {imageData ? (
-                imageData.map((image, index) => (
-                  <div key={index} className="relative">
-                    <img
-                      src={URL.createObjectURL(image as Blob)}
-                      alt="Product image"
-                      width={150}
-                      height={150}
-                      className="aspect-square object-cover rounded-md"
-                    />
-                    <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-white">
-                      <RiDeleteBin6Line
-                        className="hover:text-gray-400 cursor-pointer duration-200"
-                        onClick={() => handleDeleteImage(image)}
-                      />
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <></>
-              )}
-            </div>
-          </div>
+          <EditImageOfTheProduct
+            imageData={imageData}
+            setImageData={setImageData}
+            imageLinks={imageLinks}
+            setImageLinks={setImageLinks}
+            mainImage={mainImage}
+            setMainImage={setMainImage}
+          />
           <div className="flex justify-end gap-2">
-              <DeleteProduct id={id as string}/>
+            {product.isDeleted ? (
+              <RecoverProduct _id={product._id as string} />
+            ) : (
+              <DeleteProduct id={id as string} />
+            )}
+
             <Button type="submit">Save Product</Button>
           </div>
         </form>

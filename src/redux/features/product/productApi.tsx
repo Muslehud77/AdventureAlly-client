@@ -33,7 +33,7 @@ const productApi = baseApi.injectEndpoints({
         url: `/products/${_id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["products", "product"],
+      invalidatesTags: ["products", "product", "deletedProducts"],
     }),
     createProduct: builder.mutation({
       query: (productData) => ({
@@ -49,10 +49,11 @@ const productApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: productData,
       }),
-      invalidatesTags: ["products", "product"],
+      invalidatesTags: ["products", "product", "deletedProducts"],
     }),
     getDeletedProducts: builder.query({
-      query: () => ({url:`/products/deleted-products`}),
+      query: () => ({ url: `/products/deleted-products` }),
+      providesTags: ["deletedProducts"],
     }),
   }),
 });
