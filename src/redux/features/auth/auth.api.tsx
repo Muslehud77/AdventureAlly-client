@@ -17,8 +17,15 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
-  
+    makeAdmin: builder.mutation({
+      query: ({ _id, password }) => ({
+        url: `/auth/role/${_id}`,
+        method: "PATCH",
+        body: { password },
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
-export const {useLoginMutation,useSignUpMutation} = authApi
+export const {useLoginMutation,useSignUpMutation,useMakeAdminMutation} = authApi

@@ -48,6 +48,9 @@ export default function ManageUsersSkeleton() {
               <TableHead>
                 <Skeleton className="h-4 w-16" />
               </TableHead>
+              <TableHead>
+                <Skeleton className="h-4 w-16" />
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -69,7 +72,11 @@ export default function ManageUsersSkeleton() {
                   <Skeleton className="h-4 w-32" />
                 </TableCell>
                 <TableCell>
+                  <Skeleton className="h-4 w-32" />
+                </TableCell>
+                <TableCell>
                   <div className="flex items-center gap-2">
+                    <Skeleton className="h-8 w-8" />
                     <Skeleton className="h-8 w-8" />
                     <Skeleton className="h-8 w-8" />
                   </div>

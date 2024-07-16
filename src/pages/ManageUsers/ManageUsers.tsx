@@ -16,7 +16,6 @@ export default function Component() {
   const {data,isLoading} = useGetAllUsersQuery(undefined)
 
 
-  console.log(data);
 
 const users = data?.data
 

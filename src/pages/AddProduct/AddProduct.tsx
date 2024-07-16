@@ -16,8 +16,10 @@ import { useForm, Controller } from "react-hook-form";
 import { useCreateProductMutation } from "../../redux/features/product/productApi";
 import toast from "react-hot-toast";
 import { sendImageToBB } from "../../utils/sendImageToBB";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
+  const navigate = useNavigate()
   const [imageData, setImageData] = useState<File[] | []>([]);
   const [imageLinks, setImageLinks] = useState<string[] | []>([]);
   const {
@@ -31,7 +33,11 @@ export default function AddProduct() {
     const files = event.target.files;
     if (files && files.length > 0) {
       const fileArray = Array.from(files);
-      setImageData(fileArray);
+      if (imageData.length) {
+        setImageData([...imageData, ...fileArray]);
+      } else {
+        setImageData(fileArray);
+      }
     } else {
       setImageData([]);
     }
@@ -46,24 +52,22 @@ export default function AddProduct() {
 
   const [createProduct] = useCreateProductMutation();
 
-
-
-  const onSubmit = async (data: Record<string,unknown>) => {
-   
-
+  const onSubmit = async (data: Record<string, unknown>) => {
     const { name, details, price, quantity, category } = data;
 
-    let images = [] as string[] | [];
+
+
+    let images = imageLinks as string[] | [];
 
     
 
-    if (imageData.length && !imageLinks) {
-      const links = await sendImageToBB(imageData);
+    if (imageData.length && !imageLinks.length) {
+      images = await sendImageToBB(imageData);
       
-      images = links;
-      setImageLinks(links);
-    }
 
+      
+      setImageLinks(images);
+    }
 
     const formData = {
       name,
@@ -75,13 +79,13 @@ export default function AddProduct() {
       category,
     };
 
-    toast.promise(createProduct(formData), {
+    await toast.promise(createProduct(formData), {
       loading: "Saving...",
       success: (res) => {
         if (res?.error) {
           throw new Error("Could not save!");
         }
-       
+        navigate("/dashboard/manage-products")
         return <p>{res.data.message}</p>;
       },
       error: <b>Could not save!</b>,
@@ -206,7 +210,7 @@ export default function AddProduct() {
               className="hidden h-1"
               onChange={handleImageChange}
             />
-            
+
             {imageData ? (
               imageData.map((image, index) => (
                 <div key={index} className="relative">

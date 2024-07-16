@@ -4,6 +4,7 @@ import { MdFormatListBulletedAdd } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { FaUsersCog } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
+import { ImStatsBars } from "react-icons/im";
 import Profile from "../pages/Profile/Profile";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import ProtectedForAdmin from "../ProtectedRoute/ProtectedForAdmin";
@@ -13,6 +14,7 @@ import ManageUsers from "../pages/ManageUsers/ManageUsers";
 import ManageOrders from "../pages/ManageOrders/ManageOrders";
 import DeletedProducts from "../pages/DeletedProducts/DeletedProducts";
 import EditProduct from "../pages/EditProduct/EditProduct";
+import Statistics from "../pages/Statistics/Statistics";
 
 
 export const adminPaths = [
@@ -25,6 +27,16 @@ export const adminPaths = [
       </ProtectedRoute>
     ),
     icon: <FaRegUser className="h-5 w-5" />,
+  },
+  {
+    name: "Statistics",
+    route: "statistics",
+    element: (
+      <ProtectedRoute>
+        <Statistics />
+      </ProtectedRoute>
+    ),
+    icon: <ImStatsBars className="h-5 w-5" />,
   },
   {
     name: "Manage Orders",
