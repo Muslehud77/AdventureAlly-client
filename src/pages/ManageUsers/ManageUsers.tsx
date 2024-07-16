@@ -1,10 +1,44 @@
 
-const ManageUsers = () => {
-  return (
-    <div>
-     <h1>This is ManageUsers</h1>
-    </div>
-  );
-};
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "../../components/ui/card";
 
-export default ManageUsers;
+
+import ManageUsersSkeleton from "../../components/Skeleton/ManageUserSkeleton";
+import { useGetAllUsersQuery } from "../../redux/features/user/userApi";
+import ManageUsersTable from "./ManageUsersTable";
+export default function Component() {
+
+  const {data,isLoading,isFetching} = useGetAllUsersQuery(undefined)
+
+
+  console.log(data);
+
+const users = data?.data
+
+  return (
+    <>
+      {isLoading || isFetching ? (
+        <ManageUsersSkeleton />
+      ) : (
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>User Management</CardTitle>
+            <CardDescription>
+              Manage all users on your platform.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ManageUsersTable users={users} />
+          </CardContent>
+        </Card>
+      )}
+    </>
+  );
+}
+
+

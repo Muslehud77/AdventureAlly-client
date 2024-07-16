@@ -7,7 +7,6 @@ type updateProductFuncProps = {
   isUpdating?: boolean;
   updateProduct: (arg: { _id: string; productData: TProduct }) => Promise<any>;
 };
-
 const updateProductFunc = async ({
   _id,
   data,

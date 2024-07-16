@@ -11,6 +11,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logoutAndClearCart, selectAuthUser } from "../../redux/features/auth/authSlice";
 
+import {Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
 type UserProps = {
   isDashboard?: boolean;
 };
@@ -23,17 +25,30 @@ const User = ({ isDashboard }: UserProps) => {
 
     const dispatch = useAppDispatch()
 
+    function getInitials(username:string) {
+    
+      const words = username.split(" ");
+
+    
+      const initials = words
+        .map((word:string) => word.charAt(0))
+        .join("")
+        .toUpperCase();
+
+      return initials;
+    }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <img
-            src={user?.image}
-          
-            alt="Avatar"
-            className="rounded-full size-10 object-contain bg-black"
-          />
+          <Avatar>
+            <AvatarImage
+              src={user?.image}
+              className="rounded-full size-10 object-contain bg-black "
+            />
+            <AvatarFallback>{getInitials(user?.name as string)}</AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={isDashboard ? "start" : "end"}>
@@ -51,7 +66,11 @@ const User = ({ isDashboard }: UserProps) => {
           )}
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link className="w-full" to="/" onClick={() => dispatch(logoutAndClearCart())}>
+          <Link
+            className="w-full"
+            to="/"
+            onClick={() => dispatch(logoutAndClearCart())}
+          >
             Logout
           </Link>
         </DropdownMenuItem>
