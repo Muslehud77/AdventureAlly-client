@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 import RecoverProduct from "../../components/RecoverProduct/RecoverProduct";
 
 export default function DeletedProducts() {
-  const { data, isLoading, isFetching } = useGetDeletedProductsQuery();
+  const { data, isLoading } = useGetDeletedProductsQuery(undefined);
 
   return (
     <Card>
@@ -31,7 +31,7 @@ export default function DeletedProducts() {
           View and recover your deleted products.
         </CardDescription>
       </CardHeader>
-      {isLoading || isFetching ? (
+      {isLoading  ? (
         <SkeletonTable />
       ) : (
         <CardContent>

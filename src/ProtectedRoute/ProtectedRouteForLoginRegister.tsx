@@ -4,22 +4,19 @@ import { selectAuthToken } from "../redux/features/auth/authSlice";
 import { Navigate, useLocation } from "react-router-dom";
 
 type ProtectedRouteProps = {
-  children:ReactNode
+  children: ReactNode;
 };
 
-const ProtectedRouteForLoginRegister = ({children}:ProtectedRouteProps) => {
+const ProtectedRouteForLoginRegister = ({ children }: ProtectedRouteProps) => {
+  const { state, pathname } = useLocation();
 
-  const {state,pathname} = useLocation()
+  const token = useAppSelector(selectAuthToken);
 
-  
-
-  const token = useAppSelector(selectAuthToken)
-
-  if(!token){
-    return children
+  if (!token) {
+    return children;
   }
 
-  return <Navigate to={state ? state : "/"} state={pathname} />;
+  return <Navigate to={state ? state : "/"} state={state ? state : pathname} />;
 };
 
 export default ProtectedRouteForLoginRegister;

@@ -13,7 +13,7 @@ import { useGetAllUsersQuery } from "../../redux/features/user/userApi";
 import ManageUsersTable from "./ManageUsersTable";
 export default function Component() {
 
-  const {data,isLoading,isFetching} = useGetAllUsersQuery(undefined)
+  const {data,isLoading} = useGetAllUsersQuery(undefined)
 
 
   console.log(data);
@@ -22,7 +22,7 @@ const users = data?.data
 
   return (
     <>
-      {isLoading || isFetching ? (
+      {isLoading  ? (
         <ManageUsersSkeleton />
       ) : (
         <Card className="w-full">

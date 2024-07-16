@@ -7,7 +7,7 @@ import NavRoutes from "./NavRoutes";
 export default function Dashboard() {
   return (
     <div className="flex gap-5 min-h-screen w-full bg-background">
-      <aside className="fixed h-full w-14 py-5  px-2 flex flex-col justify-between ">
+      <aside className="fixed z-50 h-full w-14 py-5  px-2 flex flex-col justify-between ">
         <div className="space-y-5">
           <Link to={"/"} className="flex justify-center items-center">
             <img src={logo} className="w-10/12" />

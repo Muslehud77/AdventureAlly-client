@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logoutAndClearCart, selectAuthUser } from "../../redux/features/auth/authSlice";
 
 import {Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { getInitials } from "../../utils/getInitialsForUserName";
 
 type UserProps = {
   isDashboard?: boolean;
@@ -25,18 +26,7 @@ const User = ({ isDashboard }: UserProps) => {
 
     const dispatch = useAppDispatch()
 
-    function getInitials(username:string) {
-    
-      const words = username.split(" ");
-
-    
-      const initials = words
-        .map((word:string) => word.charAt(0))
-        .join("")
-        .toUpperCase();
-
-      return initials;
-    }
+ 
 
   return (
     <DropdownMenu>

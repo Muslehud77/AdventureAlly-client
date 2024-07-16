@@ -3,7 +3,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { Rating, Star } from "@smastrom/react-rating";
 import ProductDetailsSkeleton from "../../components/Skeleton/ProductDetailsSkeleton";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGetSingleProductQuery } from "../../redux/features/product/productApi";
 import { useEffect, useState } from "react";
 import Magnifier from "react-magnifier";
@@ -21,8 +21,8 @@ const myStyles = {
 
 export default function ProductDetails() {
   const [image, setImage] = useState("");
-  const [quantity, setQuantity] = useState(1); // State to manage quantity
-
+  const [quantity, setQuantity] = useState(1);
+  const {pathname} = useLocation()
   const dispatch = useAppDispatch();
 
   const { id } = useParams();
@@ -51,49 +51,55 @@ export default function ProductDetails() {
 
     if (product.stock >= value) {
       setQuantity(value);
-    }else{
+    } else {
       toast.error("Sorry not enough in stock!");
     }
-
   };
 
   const addToCart = () => {
-    const { name, price } = product;
 
-    dispatch(
-      addCart({
-        _id: product._id as string,
-        name,
-        image,
-        price,
-        quantity,
-      })
-    );
-    toast.success(`Successfully added ${name} to the cart`);
+    if(!user){
+      navigate("/login",{state:pathname})
+    }else{
+       const { name, price } = product;
 
-    if (cart.length >= 3) {
-      toast((t) => (
-        <div className="">
-          <span> You have {cart.length + 1} items on your cart</span>
-          <div className="flex gap-2 mt-2">
-            <Button variant="outline" onClick={() => toast.dismiss(t.id)}>
-              Continue Shopping
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                navigate("/dashboard/cart");
-                toast.dismiss(t.id);
-              }}
-            >
-              Cart
-            </Button>
-          </div>
-        </div>
-      ));
+       dispatch(
+         addCart({
+           _id: product._id as string,
+           name,
+           image,
+           price,
+           quantity,
+         })
+       );
+       toast.success(`Successfully added ${name} to the cart`);
+
+       if (cart.length >= 3) {
+         toast((t) => (
+           <div className="">
+             <span> You have {cart.length + 1} items on your cart</span>
+             <div className="flex gap-2 mt-2">
+               <Button variant="outline" onClick={() => toast.dismiss(t.id)}>
+                 Continue Shopping
+               </Button>
+               <Button
+                 variant="ghost"
+                 onClick={() => {
+                   navigate("/dashboard/cart");
+                   toast.dismiss(t.id);
+                 }}
+               >
+                 Cart
+               </Button>
+             </div>
+           </div>
+         ));
+       }
+
+       navigate("/all-products");
     }
 
-    navigate("/all-products");
+   
   };
 
   return (
@@ -165,7 +171,7 @@ export default function ProductDetails() {
               <p className="text-lg font-bold">${product?.price}</p>
               <p className="text-muted-foreground">{product?.description}</p>
             </div>
-            {role === "user" ? (
+            {role !== "admin" ? (
               <form className="grid gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="quantity" className="text-base">

@@ -8,13 +8,15 @@ const usersApi = baseApi.injectEndpoints({
           url: `/users`,
         };
       },
+      providesTags: ["users"],
     }),
-  
+
     deleteUser: builder.mutation({
       query: (_id) => ({
         url: `/users/${_id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["users"],
     }),
 
     updateUser: builder.mutation({
@@ -23,13 +25,32 @@ const usersApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: userData,
       }),
+      invalidatesTags: ["users"],
     }),
-    
+
+    changeStatusOfUser: builder.mutation({
+      query: ({ _id, status }) => ({
+        url: `/users/status/${_id}`,
+        method: "PATCH",
+        body: {status},
+      }),
+      invalidatesTags: ["users"],
+    }),
+
+    makeAdmin: builder.mutation({
+      query: (_id) => ({
+        url: `/users/role/${_id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
 export const {
   useGetAllUsersQuery,
   useDeleteUserMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useChangeStatusOfUserMutation,
+  useMakeAdminMutation
 } = usersApi;
