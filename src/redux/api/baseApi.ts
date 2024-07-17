@@ -67,6 +67,7 @@ export const baseApi = createApi({
     "users",
     "product",
     "deletedProducts",
+    "stats",
   ],
   endpoints: () => ({}),
 });

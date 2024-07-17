@@ -17,14 +17,21 @@ const cartApi = baseApi.injectEndpoints({
         method: "POST",
         body: cartData,
       }),
-      invalidatesTags : ["mycart","products","product"]
+      invalidatesTags: ["mycart", "products", "product", "stats"],
     }),
     changeStatus: builder.mutation({
       query: ({ _id, status }) => ({
         url: `/carts/${_id}/${status}`,
         method: "PATCH",
       }),
-      invalidatesTags: ["cart"]
+      invalidatesTags: ["cart", "stats"],
+    }),
+    getStats: builder.query({
+      query: () => ({
+        url: `/carts/statistics`,
+      
+      }),
+      providesTags: ["stats"],
     }),
   }),
 });
@@ -34,4 +41,5 @@ export const {
   useMyCartsQuery,
   useAddCartMutation,
   useChangeStatusMutation,
+  useGetStatsQuery
 } = cartApi;
