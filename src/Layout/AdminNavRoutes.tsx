@@ -23,7 +23,8 @@ export const AdminNavRoutes = () => {
                     to={path.route}
                     className={`flex relative h-9 w-9 items-center justify-center rounded-lg ${
                       path.route
-                        ? pathname.includes(path.route) && "bg-black text-white"
+                        ? pathname.includes(path.route) &&
+                          "bg-black text-white hover:text-gray-300"
                         : pathname === "/dashboard"
                         ? "bg-gray-200 text-black"
                         : ""

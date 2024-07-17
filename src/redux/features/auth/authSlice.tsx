@@ -7,6 +7,7 @@ import {
 import { RootState } from "../../store";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { clearCart } from "../cart/cartSlice";
+import { clearCheckout } from "../checkout/checkoutSlice";
 export interface TUser {
   _id: string;
   name: string;
@@ -75,4 +76,5 @@ export const logoutAndClearCart: AsyncThunk<void, void, AsyncThunkConfig> =
   createAsyncThunk("auth/logoutAndClearCart", async (_, { dispatch }) => {
     dispatch(logout());
     dispatch(clearCart());
+    dispatch(clearCheckout())
   });

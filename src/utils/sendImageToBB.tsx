@@ -1,8 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-  //this is for the toast to load when image is uploading
-// Create a new promise and initialize resolve/reject functions
+
   let resolvePromise: (value?: unknown) => void;
   let rejectPromise: (reason?: any) => void;
 
@@ -56,7 +55,7 @@ export const sendImageToBB = async (imageData: File | File[]) => {
     });
 
     const photoURL = response.data.data.url;
-    console.log(photoURL);
+
     resolvePromise(); // Resolve the promise after successful upload
     return photoURL;
   } catch (error) {

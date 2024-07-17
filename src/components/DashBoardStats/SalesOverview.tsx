@@ -14,7 +14,7 @@ const SalesOverview = ({ sales }: { sales: Record<string, unknown>[] }) => {
   console.log(sales);
 
   return (
-    <div className="aspect-[9/4]">
+    <div className="aspect-[9/4] pt-10">
       <ChartContainer
         config={{
           sales:{}
@@ -32,10 +32,10 @@ const SalesOverview = ({ sales }: { sales: Record<string, unknown>[] }) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" className="hidden" />
 
-          <Tooltip content={<ChartTooltipContent />} />
-          <Legend />
+          <Tooltip active content={<ChartTooltipContent />} />
+         
           <Bar
             dataKey="sales"
             fill="black"

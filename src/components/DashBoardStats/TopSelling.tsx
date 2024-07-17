@@ -13,7 +13,8 @@ import {
   TableCell,
 } from "../../components/ui/table";
 import { FiPackage } from "react-icons/fi";
-const TopSellingTable = () => {
+const TopSellingTable = ({ sales }:{sales:Record<string,unknown>[]}) => {
+  
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -31,12 +32,14 @@ const TopSellingTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">
-                Gamer Gear Pro Controller
-              </TableCell>
-              <TableCell className="text-right">75</TableCell>
-            </TableRow>
+            {sales?.map((sale) => (
+              <TableRow key={sale?._id as string}>
+                <TableCell className="font-medium">
+                  {sale?.name as string}
+                </TableCell>
+                <TableCell className="text-right">{sale?.sales as number}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </CardContent>

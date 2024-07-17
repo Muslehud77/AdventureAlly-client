@@ -1,7 +1,9 @@
-
-
-
-import { Card, CardHeader, CardTitle, CardContent } from "../../components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "../../components/ui/card";
 
 import StatisticsSkeleton from "../../components/Skeleton/StatisticsSkeleton";
 import SalesOverview from "../../components/DashBoardStats/SalesOverview";
@@ -9,36 +11,28 @@ import TopSellingTable from "../../components/DashBoardStats/TopSelling";
 import { useGetStatsQuery } from "../../redux/features/cart/cartApi";
 import { useEffect } from "react";
 
-
 export default function Statistics() {
+  const { data, isLoading, isError } = useGetStatsQuery(undefined);
 
-    const {data,isLoading,isError} = useGetStatsQuery(undefined)
+  // const {
+  //   averageOrderValue,
+  //   orderCountByStatus,
+  //   productSales,
+  //   totalSales,
+  //   activeUsers,
+  // } = data?.data;
 
+  const stats = data?.data;
 
+  console.log(stats);
 
+  const orderCount = stats?.orderCountByStatus?.reduce(
+    (i: number, j: { count: number }) => {
+      return i + j.count;
+    },
+    0
+  );
 
-  
-
-
-    // const {
-    //   averageOrderValue,
-    //   orderCountByStatus,
-    //   productSales,
-    //   totalSales,
-    //   activeUsers,
-    // } = data?.data;
-
-    const stats = data?.data
-
-
-    const orderCount = stats?.orderCountByStatus?.reduce(
-      (i: number, j: { count: number }) => {
-        return i + j.count;
-      },
-      0
-    );
-   
-    
   return (
     <>
       {isLoading || isError ? (
@@ -110,7 +104,7 @@ export default function Statistics() {
               </Card>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <TopSellingTable />
+              <TopSellingTable sales={stats?.productSales} />
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -124,49 +118,24 @@ export default function Statistics() {
                 </CardContent>
               </Card>
             </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Delivered Orders
-                  </CardTitle>
-                  <TruckIcon className="w-4 h-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">8,750</div>
-                  <p className="text-xs text-muted-foreground">
-                    +15.2% from last month
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Pending Orders
-                  </CardTitle>
-                  <ClockIcon className="w-4 h-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">3,250</div>
-                  <p className="text-xs text-muted-foreground">
-                    +10.1% from last month
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Delivering Orders
-                  </CardTitle>
-                  <TruckIcon className="w-4 h-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">350</div>
-                  <p className="text-xs text-muted-foreground">
-                    +5.5% from last month
-                  </p>
-                </CardContent>
-              </Card>
+              {stats?.orderCountByStatus.map((count:{_id:string;count:number}) => (
+                <Card key={count._id}>
+                  <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <CardTitle className="text-sm font-medium capitalize">
+                      {count._id} Orders
+                    </CardTitle>
+                    <TruckIcon className="w-4 h-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{count.count}</div>
+                    <p className="text-xs text-muted-foreground">
+                      0% from last month
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </main>
         </div>
@@ -236,10 +205,6 @@ function DollarSignIcon(props) {
   );
 }
 
-
-
-
-
 function PackageIcon(props) {
   return (
     <svg
@@ -261,7 +226,6 @@ function PackageIcon(props) {
     </svg>
   );
 }
-
 
 function ShoppingCartIcon(props) {
   return (
@@ -328,4 +292,3 @@ function UsersIcon(props) {
     </svg>
   );
 }
-

@@ -20,6 +20,7 @@ import { useUpdateUserMutation } from "../../redux/features/user/userApi";
 import { sendImageToBB } from "../../utils/sendImageToBB";
 import { useAppDispatch } from "../../redux/hooks";
 import toast from "react-hot-toast";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
 
 type ProfileFormValues = {
   username?: string;
@@ -29,15 +30,16 @@ type ProfileFormValues = {
 };
 
 const EditProfileForm = () => {
-  const [updateUser, { isLoading }] = useUpdateUserMutation();
-  const { user, token } = useUser();
+  const { updateUser, updatingUser: isLoading } = useUpdateUser();
+
+  const { user } = useUser();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imageData, setImageData] = useState<File | null>(null);
   const [imageLink, setImageLink] = useState<string | null>(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const dispatch = useAppDispatch();
+ 
 
   const {
     register,
@@ -61,43 +63,30 @@ const EditProfileForm = () => {
     }
 
     const saveUserData = async () => {
-      if (data.username) {
+      if (data.username !== user?.name) {
         updatedDataForUser["name"] = data.username;
       }
 
-      if (data.address) {
+      if (data.address !== user?.address) {
         updatedDataForUser["address"] = data.address;
       }
 
-      if (data.phone) {
+      if (data.phone !== user?.address) {
         updatedDataForUser["phone"] = data.phone;
       }
 
       if (imageLink || image) {
         updatedDataForUser["image"] = image as string;
-       
       }
 
-     
-
       if (Object.keys(updatedDataForUser).length) {
-        const res = (await updateUser(updatedDataForUser)) as any;
+        const res = (await updateUser(updatedDataForUser, false)) as any;
 
         if (res?.error) {
           setError(res?.error?.message || "Something went wrong");
-          throw new Error(res?.error?.message);
         } else {
-          dispatch(signIn({ user: res?.data?.data, token }));
           setOpen(false);
-           setImageLink(null);
-          toast("you are updated!", {
-            icon: "👍",
-            style: {
-              borderRadius: "10px",
-              background: "#333",
-              color: "#fff",
-            },
-          });
+          setImageLink(null);
         }
       }
     };
@@ -198,7 +187,7 @@ const EditProfileForm = () => {
             <div className="col-span-3 flex items-center gap-2">
               <Avatar className="h-12 w-12">
                 <AvatarImage
-                className="object-contain"
+                  className="object-contain"
                   src={
                     imageData
                       ? URL.createObjectURL(imageData as Blob)

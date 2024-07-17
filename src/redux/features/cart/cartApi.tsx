@@ -29,9 +29,15 @@ const cartApi = baseApi.injectEndpoints({
     getStats: builder.query({
       query: () => ({
         url: `/carts/statistics`,
-      
       }),
       providesTags: ["stats"],
+    }),
+    payment: builder.mutation({
+      query: (products) => ({
+        url: `/carts/payment`,
+        body: products,
+        method: "POST",
+      }),
     }),
   }),
 });
@@ -41,5 +47,6 @@ export const {
   useMyCartsQuery,
   useAddCartMutation,
   useChangeStatusMutation,
-  useGetStatsQuery
+  useGetStatsQuery,
+  usePaymentMutation
 } = cartApi;

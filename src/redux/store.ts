@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit/react";
 import authReducer from "./features/auth/authSlice";
-import cartReducer from "./features/cart/cartSlice"
+import cartReducer from "./features/cart/cartSlice";
+import checkoutReducer from "./features/checkout/checkoutSlice";
 import {
   persistStore,
   persistReducer,
@@ -14,18 +15,39 @@ import {
 import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
 
-const persistConfig = {
+const persistAuthConfig = {
   key: "auth",
+
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistCheckoutConfig = {
+  key: "checkout",
+
+  storage,
+};
+
+const persistCartConfig = {
+  key: "cart",
+
+  storage,
+};
+
+const persistedAuthReducer = persistReducer(persistAuthConfig, authReducer);
+const persistCheckoutReducer = persistReducer(
+  persistCheckoutConfig,
+  checkoutReducer
+);
+
+const persistCartReducer = persistReducer(persistCartConfig, cartReducer);
+
 
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
-    auth: persistedReducer,
-    cart: cartReducer,
+    auth: persistedAuthReducer,
+    cart: persistCartReducer,
+    checkout: persistCheckoutReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

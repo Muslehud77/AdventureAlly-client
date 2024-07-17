@@ -1,10 +1,18 @@
 import { Card, CardHeader, CardContent } from "../../components/ui/card";
-import { useMyCartsQuery } from "../../redux/features/cart/cartApi";
+import {
+  useAddCartMutation,
+  useMyCartsQuery,
+} from "../../redux/features/cart/cartApi";
 import { TProduct } from "../AllProducts/AllProducts";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "../../components/ui/button"; // Assuming you have a Button component
 import MyCartSkeleton from "../../components/Skeleton/MyCartSkeleton";
 import { convertTimestamp } from "../../utils/convertTimeStamp";
+
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectCheckout, TCheckout } from "../../redux/features/checkout/checkoutSlice";
+import useAddCartToDB  from "../../hooks/useAddCartToDB";
+import { useEffect } from "react";
 
 type TOrders = {
   address: string;
@@ -16,8 +24,33 @@ type TOrders = {
 }[];
 
 export default function MyOrders() {
+  const { addCart, loading, success } = useAddCartToDB();
+
+  
   const { data, isLoading, isFetching } = useMyCartsQuery(undefined);
+  const [queries] = useSearchParams();
   const orders = data?.data as TOrders;
+
+  const checkoutItems = useAppSelector(selectCheckout);
+
+  const payment_id = queries.get("payment_id");
+
+
+  useEffect(()=>{
+    console.log("hello111");
+  if (payment_id && checkoutItems && !loading) {
+    console.log({ payment_id, checkoutItems, loading });
+    console.log("hello222");
+    const checkOut = {
+      ...checkoutItems,
+      paymentId: payment_id,
+      paymentMethod: "stripe",
+    } as TCheckout;
+    addCart(checkOut);
+  }
+
+
+  },[])
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-8">
