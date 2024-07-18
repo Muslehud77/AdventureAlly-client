@@ -4,7 +4,7 @@ export default function ManageProductsSkeleton() {
   const skeletons = Array.from({ length: 8 }, (_, i) => i);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">
           <Skeleton className="h-8 w-48" />

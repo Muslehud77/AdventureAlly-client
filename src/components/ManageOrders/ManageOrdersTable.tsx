@@ -13,10 +13,11 @@ import { CardContent } from "../ui/card";
 
 import { TUser } from "../../redux/features/auth/authSlice";
 import ManageOrderDropDown from "./ManageOrderDropDown";
+import { convertTimestamp } from "../../utils/convertTimeStamp";
 
 type ManageOrdersTableProps = {
   orders: {
-    data: { _id: string; user: TUser; status: string; address?: string }[];
+    data: { _id: string; user: TUser; paymentMethod:string; status: string; address?: string ; createdAt:string}[];
   };
 };
 
@@ -24,12 +25,14 @@ const ManageOrdersTable = ({ orders }: ManageOrdersTableProps) => {
   const data = orders?.data;
 
   return (
-    <CardContent className="max-h-[80vh] overflow-auto">
+    <CardContent className=" overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Customer</TableHead>
             <TableHead>Address</TableHead>
+            <TableHead>Payment Type</TableHead>
+            <TableHead>Order Time</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Action</TableHead>
             <TableHead>
@@ -46,6 +49,10 @@ const ManageOrdersTable = ({ orders }: ManageOrdersTableProps) => {
                 </div>
               </TableCell>
               <TableCell>{order?.address}</TableCell>
+              <TableCell className="capitalize">
+                {order?.paymentMethod ? order?.paymentMethod : "N/A"}
+              </TableCell>
+              <TableCell>{convertTimestamp(order?.createdAt)}</TableCell>
               <TableCell>
                 <Badge
                   className="capitalize"

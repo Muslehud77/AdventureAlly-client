@@ -8,10 +8,11 @@ import { useGetSingleProductQuery } from "../../redux/features/product/productAp
 import { useEffect, useState } from "react";
 import Magnifier from "react-magnifier";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { addCart, selectCart } from "../../redux/features/cart/cartSlice";
+
 import { TProduct } from "../AllProducts/AllProducts";
 import toast from "react-hot-toast";
 import { useUser } from "../../hooks/useUser";
+import { addCart, selectCart } from "../../redux/features/cart/cartSlice";
 
 const myStyles = {
   itemShapes: Star,
@@ -27,7 +28,7 @@ export default function ProductDetails() {
 
   const { id } = useParams();
 
-  const { data, isFetching, isLoading } = useGetSingleProductQuery(id);
+  const { data, isFetching, isLoading ,refetch} = useGetSingleProductQuery(id);
 
   const product = data?.data as TProduct;
 
@@ -37,7 +38,7 @@ export default function ProductDetails() {
 
   const { user } = useUser();
   const role = user?.role;
-
+  console.log(data)
   useEffect(() => {
     if (product?.images) {
       if (!image) {
@@ -45,6 +46,12 @@ export default function ProductDetails() {
       }
     }
   }, [product]);
+
+  useEffect(()=>{
+    if(product){
+      refetch()
+    }
+  },[])
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(1, parseInt(e.target.value));
@@ -159,10 +166,10 @@ export default function ProductDetails() {
               <div className="flex items-center gap-2">
                 <div
                   className={`${
-                    product.stock ? "bg-black" : "bg-red-400"
+                    product.stock >= 1 ? "bg-black" : "bg-red-400"
                   } text-white px-2 py-1 rounded-md text-sm font-medium`}
                 >
-                  {product.stock ? `${product.stock} In Stock` : "Out of Stock"}
+                  {product.stock >= 1 ? `${product.stock} In Stock` : "Out of Stock"}
                 </div>
                 <span className="text-sm text-muted-foreground">
                   {product.sales} sold
@@ -185,7 +192,7 @@ export default function ProductDetails() {
                     className="w-24 font-bold"
                   />
                 </div>
-                <Button type="button" onClick={addToCart} size="lg">
+                <Button disabled={!product.stock >= 1} type="button" onClick={addToCart} size="lg">
                   Add to cart
                 </Button>
               </form>

@@ -8,14 +8,19 @@ import { PersistGate } from "redux-persist/integration/react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/routes.tsx";
 import { Toaster } from "react-hot-toast";
-
+import {  HelmetProvider } from "react-helmet-async";
+import { ThemeProvider } from "./components/ThemeProvider.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
-      </PersistGate>
-    </Provider>
-    <Toaster position="bottom-center" reverseOrder={false} />
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <HelmetProvider>
+            <RouterProvider router={router} />
+          </HelmetProvider>
+        </PersistGate>
+      </Provider>
+      <Toaster position="bottom-center" reverseOrder={false} />
+    </ThemeProvider>
   </React.StrictMode>
 );

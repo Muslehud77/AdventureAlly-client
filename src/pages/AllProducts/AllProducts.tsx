@@ -5,6 +5,7 @@ import SearchAndFiltering from "./SearchAndFiltering";
 import { Paginate } from "../../components/Pagination/Pagination";
 import SkeletonCards from "../../components/Skeleton/SkeletonProducts";
 import scrollToTop from "../../utils/scrollToTop";
+import { Helmet } from 'react-helmet-async';
 
 export type TProduct = {
   _id?: string;
@@ -98,7 +99,7 @@ export default function AllProducts() {
   }, [page, sort, range, searchTerm, selectedCategories]);
 
   const { data, isLoading, isFetching} = useGetAllProductsQuery(filter);
-  // console.log(data);
+
   const products = data?.data;
   const meta = data?.meta;
 
@@ -111,6 +112,9 @@ export default function AllProducts() {
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-8">
+      <Helmet>
+        <title>AdventureAlly | Products</title>
+      </Helmet>
       <SearchAndFiltering
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}

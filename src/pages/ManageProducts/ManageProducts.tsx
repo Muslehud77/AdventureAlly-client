@@ -58,71 +58,88 @@ export default function ManageProducts() {
 
   return (
     <div className="px-10 mx-auto py-10 border rounded-xl">
-      {isLoading || isFetching ? <ManageProductsSkeleton /> : <></>}
-
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Manage Products</h1>
-        <div className="relative">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 rounded-md bg-background"
-          />
-        </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {!isLoading &&
-          !isFetching &&
-          products?.map((product:TProduct & {createdAt:string;updatedAt:string}) => (
-            <div
-              key={product._id}
-              className="bg-background rounded-lg shadow-md overflow-hidden"
-            >
-              <img
-                src={(product.images as string[])[0]}
-                alt={product.name}
-                width={400}
-                height={300}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-muted-foreground">{product.category}</p>
-                <div className="flex items-center justify-between mt-4">
-                  <p className="text-sm text-muted-foreground">
-                    Last updated:{" "}
-                    {product.updatedAt || product.createdAt
-                      ? convertTimestamp(
-                          product?.updatedAt || product.createdAt
-                        )
-                      : "N/A"}
-                  </p>
-                  <div className="flex gap-2">
-                    <DeleteProduct id={product._id} isIcon={true} />
-
-                    <Link
-                      to={`/dashboard/edit-product/${product._id}`}
-                    >
-                      <Button size="sm">
-                        <FilePenIcon className="w-4 h-4" />
-                        <span className="sr-only">Edit</span>
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
-      {meta ? (
-        <div className="mt-10">
-          <Paginate setPage={setPage} meta={meta} />
-        </div>
+      {isLoading || isFetching ? (
+        <ManageProductsSkeleton />
       ) : (
-        <></>
+        <>
+          {" "}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold">Manage Products</h1>
+            <div className="relative">
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 rounded-md bg-background"
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {!isLoading &&
+              !isFetching &&
+              products?.map(
+                (
+                  product: TProduct & { createdAt: string; updatedAt: string }
+                ) => (
+                  <div
+                    key={product._id}
+                    className="bg-background rounded-lg shadow-md overflow-hidden"
+                  >
+                    <img
+                      src={(product.images as string[])[0]}
+                      alt={product.name}
+                      width={400}
+                      height={300}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold">{product.name}</h3>
+                      <p className="text-muted-foreground">
+                        {product.category}
+                      </p>
+
+                      <p
+                        className={`text-muted-foreground ${
+                          product.stock <= 10 ? "bg-red-500 text-white p-2" : ""
+                        }`}
+                      >
+                        {product.stock} in stock
+                      </p>
+                      <div className="flex items-center justify-between mt-4">
+                        <p className="text-sm text-muted-foreground">
+                          Last updated:{" "}
+                          {product.updatedAt || product.createdAt
+                            ? convertTimestamp(
+                                product?.updatedAt || product.createdAt
+                              )
+                            : "N/A"}
+                        </p>
+                        <div className="flex gap-2">
+                          <DeleteProduct id={product._id as string} isIcon={true} />
+
+                          <Link to={`/dashboard/edit-product/${product._id}`}>
+                            <Button size="sm">
+                              <FilePenIcon className="w-4 h-4" />
+                              <span className="sr-only">Edit</span>
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              )}
+          </div>
+          {meta ? (
+            <div className="mt-10">
+              <Paginate setPage={setPage} meta={meta} />
+            </div>
+          ) : (
+            <></>
+          )}
+        </>
       )}
     </div>
   );
