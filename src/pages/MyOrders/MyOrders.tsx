@@ -10,9 +10,13 @@ import MyCartSkeleton from "../../components/Skeleton/MyCartSkeleton";
 import { convertTimestamp } from "../../utils/convertTimeStamp";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { selectCheckout, TCheckout } from "../../redux/features/checkout/checkoutSlice";
-import useAddCartToDB  from "../../hooks/useAddCartToDB";
-import { useEffect } from "react";
+import {
+  clearCheckout,
+  selectCheckout,
+  TCheckout,
+} from "../../redux/features/checkout/checkoutSlice";
+import useAddCartToDB from "../../hooks/useAddCartToDB";
+import { useEffect, useState } from "react";
 
 type TOrders = {
   address: string;
@@ -25,38 +29,46 @@ type TOrders = {
 
 export default function MyOrders() {
   const { addCart, loading, success } = useAddCartToDB();
-
+  const [cartUploadInit, setCartUploadInit] = useState(false);
   
   const { data, isLoading, isFetching } = useMyCartsQuery(undefined);
   const [queries] = useSearchParams();
   const orders = data?.data as TOrders;
 
-  const checkoutItems = useAppSelector(selectCheckout);
+  const checkout = useAppSelector(selectCheckout) as TCheckout;
 
   const payment_id = queries.get("payment_id");
 
+  useEffect(() => {
+    const uploadCart = ()=>{
+     
 
-  useEffect(()=>{
-    console.log("hello111");
-  if (payment_id && checkoutItems && !loading) {
-    console.log({ payment_id, checkoutItems, loading });
-    console.log("hello222");
-    const checkOut = {
-      ...checkoutItems,
-      paymentId: payment_id,
-      paymentMethod: "stripe",
-    } as TCheckout;
-    addCart(checkOut);
-  }
+      if (payment_id && Object.keys(checkout).length  && !cartUploadInit) {
+        
+        const addCartToDB = async (checkOut: TCheckout) => {
+          (await addCart(checkOut)) as any;
+          setCartUploadInit(true);
+          queries.delete("payment_id");
+        };
 
+        const checkOut = {
+          ...checkout,
+          paymentId: payment_id,
+          paymentMethod: "stripe",
+        } as TCheckout;
 
-  },[])
+        addCartToDB(checkOut);
+      }
+    }
+
+    return ()=> uploadCart()
+  }, []);
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-8">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
-      {isLoading || isFetching ? (
+      {loading || isLoading ? (
         <MyCartSkeleton />
       ) : (
         <div className="grid gap-6">
@@ -92,6 +104,24 @@ export default function MyOrders() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-semibold">Payment Details</h3>
+                      <div className="grid gap-2 mt-2">
+                        <div className="flex items-center justify-between">
+                          <div>Payment Type</div>
+                          <div className="capitalize">
+                            {order?.paymentMethod
+                              ? order?.paymentMethod
+                              : "on-delivery"}
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between ">
+                          <div>Payment Id</div>
+                          <div>{order.paymentId ? order.paymentId : "N/A"}</div>
+                        </div>
+                      </div>
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold">Order Details</h3>

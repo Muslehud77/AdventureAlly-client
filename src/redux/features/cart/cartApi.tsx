@@ -17,7 +17,7 @@ const cartApi = baseApi.injectEndpoints({
         method: "POST",
         body: cartData,
       }),
-      invalidatesTags: ["mycart", "products", "product", "stats"],
+      invalidatesTags: ["mycart", "products", "product", "stats","isExists"],
     }),
     changeStatus: builder.mutation({
       query: ({ _id, status }) => ({
@@ -39,6 +39,12 @@ const cartApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
+    isPaymentIdExist: builder.query({
+      query: (paymentId) => ({
+        url: `/carts/${paymentId}`,
+      }),
+      providesTags: ["idExists"],
+    }),
   }),
 });
 
@@ -48,5 +54,7 @@ export const {
   useAddCartMutation,
   useChangeStatusMutation,
   useGetStatsQuery,
-  usePaymentMutation
+  usePaymentMutation,
+  
+  useLazyIsPaymentIdExistQuery
 } = cartApi;

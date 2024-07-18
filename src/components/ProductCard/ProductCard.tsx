@@ -22,7 +22,7 @@ const ProductCard = ({product}:ProductCardProps) => {
 
 
   return (
-    <div className="bg-background rounded-lg shadow-lg overflow-hidden">
+    <div className="group hover:outline-dashed hover:animate-pulse outline-1 outline-gray-300  hover:pt-2 duration-300 bg-background rounded-lg shadow-lg overflow-hidden cursor-pointer">
       <div>
         <img
           src={
@@ -33,7 +33,7 @@ const ProductCard = ({product}:ProductCardProps) => {
           alt={product?.name}
           width={400}
           height={300}
-          className="w-full h-48 object-contain"
+          className="w-full h-48 object-contain group-hover:scale-105 duration-200"
         />
         <div className="p-4 flex flex-col justify-between h-48">
           <div className="flex items-center justify-between mb-2">
@@ -54,7 +54,6 @@ const ProductCard = ({product}:ProductCardProps) => {
           <h3 className="text-lg font-semibold mb-2 ">{product?.name}</h3>
           <p className="text-muted-foreground mb-4 ">
             {truncateString(product?.description)}
-          
           </p>
           <div className="flex items-center justify-between">
             <span className="text-primary font-semibold">

@@ -9,22 +9,17 @@ import StatisticsSkeleton from "../../components/Skeleton/StatisticsSkeleton";
 import SalesOverview from "../../components/DashBoardStats/SalesOverview";
 import TopSellingTable from "../../components/DashBoardStats/TopSelling";
 import { useGetStatsQuery } from "../../redux/features/cart/cartApi";
-import { useEffect } from "react";
+import { useUser } from "../../hooks/useUser";
+
 
 export default function Statistics() {
   const { data, isLoading, isError } = useGetStatsQuery(undefined);
+  const {user} = useUser()
 
-  // const {
-  //   averageOrderValue,
-  //   orderCountByStatus,
-  //   productSales,
-  //   totalSales,
-  //   activeUsers,
-  // } = data?.data;
 
   const stats = data?.data;
 
-  console.log(stats);
+
 
   const orderCount = stats?.orderCountByStatus?.reduce(
     (i: number, j: { count: number }) => {
@@ -35,7 +30,7 @@ export default function Statistics() {
 
   return (
     <>
-      {isLoading || isError ? (
+      {isLoading && !isError ? (
         <StatisticsSkeleton />
       ) : (
         <div className="flex flex-col min-h-screen bg-background">

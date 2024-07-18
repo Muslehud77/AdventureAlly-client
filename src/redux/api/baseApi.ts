@@ -10,8 +10,11 @@ import {
 import { RootState } from "../store";
 import { logout, signIn } from "../features/auth/authSlice";
 
+
+const baseUrl = import.meta.env.VITE_BASE_URL;
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: baseUrl,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -31,14 +34,15 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions) : Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
 
-  
+
 
 
   if (result?.error?.status === 401) {
-    const res = await fetch("http://localhost:5000/api/auth/refresh-token", {
+    const res = await fetch(`${baseUrl}/auth/refresh-token`, {
       method: "POST",
       credentials: "include",
     });
+
 
     const { data } = await res.json();
 
@@ -50,6 +54,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       api.dispatch(signIn({ user, token: accessToken }));
       result = await baseQuery(args, api, extraOptions);
     } else {
+  
       api.dispatch(logout());
     }
   }
@@ -68,6 +73,7 @@ export const baseApi = createApi({
     "product",
     "deletedProducts",
     "stats",
+    "isExists",
   ],
   endpoints: () => ({}),
 });

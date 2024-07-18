@@ -15,6 +15,7 @@ export type TCheckout = {
   phone: string;
   paymentMethod: "stripe" | "on-delivery";
   orders: TOrder[];
+  paymentId?: string;
 };
 
 
