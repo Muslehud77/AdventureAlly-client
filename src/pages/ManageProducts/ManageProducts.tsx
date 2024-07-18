@@ -57,25 +57,26 @@ export default function ManageProducts() {
   const products = data?.data
 
   return (
-    <div className="px-10 mx-auto py-10 border dark:border-none rounded-xl text-foreground bg-secondary mb-10">
+    <div className="px-8 mx-auto py-6 border dark:border-none rounded-xl text-foreground bg-secondary mb-10">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold">Manage Products</h1>
+        
+        <div className="relative">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-4 py-2 rounded-md bg-background"
+          />
+        </div>
+      </div>
       {isLoading || isFetching ? (
         <ManageProductsSkeleton />
       ) : (
         <>
           {" "}
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold">Manage Products</h1>
-            <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 rounded-md bg-background"
-              />
-            </div>
-          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {!isLoading &&
               !isFetching &&

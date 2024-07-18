@@ -16,7 +16,7 @@ export default function Component() {
   return (
     <Card className="bg-secondary">
       <CardHeader>
-        <CardTitle>Orders</CardTitle>
+        <CardTitle className="text-2xl">Orders</CardTitle>
         <CardDescription>
           Here you can manage your orders and update their status.
         </CardDescription>

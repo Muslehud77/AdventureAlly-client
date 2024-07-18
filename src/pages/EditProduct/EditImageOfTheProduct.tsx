@@ -2,7 +2,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { LuUpload } from "react-icons/lu";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
-import { useEffect } from "react";
 
 
 type EditImageOfTheProductProps = {
@@ -98,9 +97,9 @@ const EditImageOfTheProduct = ({
                 className="aspect-square object-cover rounded-md"
               />
 
-              <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-white">
+              <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-black">
                 <RiDeleteBin6Line
-                  className="hover:text-gray-400 cursor-pointer duration-200"
+                  className="hover:text-gray-500 animate-pulse cursor-pointer duration-900"
                   onClick={() => handleDeleteImage(image)}
                 />
               </div>
@@ -132,13 +131,13 @@ const EditImageOfTheProduct = ({
                 height={150}
                 className="aspect-square object-cover rounded-md"
               />
-              <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-white">
+              <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-black">
                 <RiDeleteBin6Line
-                  className="hover:text-gray-400 cursor-pointer duration-200"
+                  className="hover:text-gray-500 animate-pulse cursor-pointer duration-900"
                   onClick={() => handleRemoveFromLinks(image)}
                 />
               </div>
-
+            
               {image === mainImage && (
                 <div className="absolute top-0 text-sm p-1 text-gray-100 bg-black/50 rounded">
                   <span>Main</span>

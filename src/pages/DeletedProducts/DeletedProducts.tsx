@@ -19,6 +19,8 @@ import SkeletonTable from "../../components/Skeleton/SkeletonTable";
 import { TProduct } from "../AllProducts/AllProducts";
 import { Link } from "react-router-dom";
 import RecoverProduct from "../../components/RecoverProduct/RecoverProduct";
+import defaultImg from '../../assets/default.webp'
+
 
 export default function DeletedProducts() {
   const { data, isLoading } = useGetDeletedProductsQuery(undefined);
@@ -26,28 +28,28 @@ export default function DeletedProducts() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Deleted Products</CardTitle>
+        <CardTitle className="text-2xl">Deleted Products</CardTitle>
         <CardDescription>
           View and recover your deleted products.
         </CardDescription>
       </CardHeader>
-      {isLoading  ? (
+      {isLoading ? (
         <SkeletonTable />
       ) : (
-        <CardContent>
+        <CardContent className="p-3">
           {data?.data.length === 0 ? (
             <div className="text-center p-4">
               <p className="text-lg font-medium">No deleted products found.</p>
             </div>
           ) : (
-            <Table>
+            <Table className="bg-secondary p-5 rounded-xl">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="hidden w-[100px] sm:table-cell">
-                    <span className="sr-only">Image</span>
-                  </TableHead>
+                  <TableHead>Product</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
+                  <TableHead>Stock</TableHead>
+                  <TableHead>Sale</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -59,7 +61,11 @@ export default function DeletedProducts() {
                         alt={product.name}
                         className="aspect-square rounded-md object-cover"
                         height="64"
-                        src={(product.images as string[])[0]}
+                        src={
+                          product.images?.length
+                            ? product?.images[0]
+                            : defaultImg
+                        }
                         width="64"
                       />
                     </TableCell>
@@ -67,15 +73,17 @@ export default function DeletedProducts() {
                       {product.name}
                     </TableCell>
                     <TableCell>{product.category}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Link to={`/product-details/${product._id}`}>
-                          <Button variant="default">
-                            View
-                          </Button>
-                        </Link>
-                        <RecoverProduct _id={product._id as string} />
-                      </div>
+                    <TableCell className="font-medium">
+                      {product.stock}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {product.sales}
+                    </TableCell>
+                    <TableCell className="space-x-2">
+                      <Link to={`/product-details/${product._id}`}>
+                        <Button variant="default">View</Button>
+                      </Link>
+                      <RecoverProduct _id={product._id as string} />
                     </TableCell>
                   </TableRow>
                 ))}

@@ -35,7 +35,7 @@ const User = ({ isDashboard }: UserProps) => {
           <Avatar>
             <AvatarImage
               src={user?.image}
-              className="rounded-full size-10 object-contain bg-black "
+              className="rounded-full size-10 object-contain bg-secondary  "
             />
             <AvatarFallback>{getInitials(user?.name as string)}</AvatarFallback>
           </Avatar>

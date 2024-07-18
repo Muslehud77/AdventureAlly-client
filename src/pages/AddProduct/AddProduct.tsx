@@ -19,7 +19,8 @@ import { sendImageToBB } from "../../utils/sendImageToBB";
 import { useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [mainImage, setMainImage] = useState<File | null>(null);
   const [imageData, setImageData] = useState<File[] | []>([]);
   const [imageLinks, setImageLinks] = useState<string[] | []>([]);
   const {
@@ -34,8 +35,12 @@ export default function AddProduct() {
     if (files && files.length > 0) {
       const fileArray = Array.from(files);
       if (imageData.length) {
+        if (!mainImage) {
+          setMainImage(fileArray[0]);
+        }
         setImageData([...imageData, ...fileArray]);
       } else {
+        setMainImage(fileArray[0]);
         setImageData(fileArray);
       }
     } else {
@@ -46,6 +51,9 @@ export default function AddProduct() {
   const handleDeleteImage = (image: File) => {
     const filtered = imageData?.filter((img) => img !== image);
     setImageData(filtered as File[]);
+    if (filtered.length) {
+      setMainImage(filtered[0]);
+    }
   };
 
   const categories = ["Backpack", "Cloth", "Footwear", "Kitchen", "Tents"];
@@ -55,17 +63,11 @@ export default function AddProduct() {
   const onSubmit = async (data: Record<string, unknown>) => {
     const { name, details, price, quantity, category } = data;
 
-
-
     let images = imageLinks as string[] | [];
-
-    
 
     if (imageData.length && !imageLinks.length) {
       images = await sendImageToBB(imageData);
-      
 
-      
       setImageLinks(images);
     }
 
@@ -85,15 +87,21 @@ export default function AddProduct() {
         if (res?.error) {
           throw new Error("Could not save!");
         }
-        navigate("/dashboard/manage-products")
+        navigate("/dashboard/manage-products");
         return <p>{res.data.message}</p>;
       },
       error: <b>Could not save!</b>,
     });
   };
 
+  const handleMainImage = (image: File) => {
+    setMainImage(image);
+    const filtered = imageData?.filter((img) => img !== image);
+    setImageData([image, ...filtered] as File[]);
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="container mx-auto px-10 rounded-xl mb-10 py-8 max-w-3xl text-foreground bg-secondary">
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
         <div className="grid gap-2">
@@ -221,12 +229,28 @@ export default function AddProduct() {
                     height={150}
                     className="aspect-square object-cover rounded-md"
                   />
-                  <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-white">
+
+                  <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-black">
                     <RiDeleteBin6Line
-                      className="hover:text-gray-400 cursor-pointer duration-200"
+                      className="hover:text-gray-500 animate-pulse cursor-pointer duration-900"
                       onClick={() => handleDeleteImage(image)}
                     />
                   </div>
+                  {image === mainImage && (
+                    <div className="absolute top-0 text-sm p-1 text-gray-100 bg-black/50 rounded">
+                      <span>Main</span>
+                    </div>
+                  )}
+                  {image !== mainImage && (
+                    <div
+                      onClick={() => handleMainImage(image)}
+                      className="group"
+                    >
+                      <div className="group-hover:opacity-100 text-center transition-all duration-300 opacity-0 absolute w-full top-0 text-sm p-1 text-gray-200 bg-black/50 cursor-pointer">
+                        <span>Make it main image</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             ) : (

@@ -5,15 +5,7 @@ export default function ManageProductsSkeleton() {
 
   return (
     <div className="">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">
-          <Skeleton className="h-8 w-48" />
-        </h1>
-        <div className="relative">
-          <Skeleton className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5" />
-          <Skeleton className="pl-10 pr-4 py-2 rounded-md h-10 w-64" />
-        </div>
-      </div>
+     
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {skeletons.map((index) => (
           <div
