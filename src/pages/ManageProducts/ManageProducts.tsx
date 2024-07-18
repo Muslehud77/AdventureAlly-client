@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import ManageProductsSkeleton from "../../components/Skeleton/ManageProductsSkeleton";
@@ -57,7 +57,7 @@ export default function ManageProducts() {
   const products = data?.data
 
   return (
-    <div className="px-10 mx-auto py-10 border rounded-xl">
+    <div className="px-10 mx-auto py-10 border dark:border-none rounded-xl text-foreground bg-secondary mb-10">
       {isLoading || isFetching ? (
         <ManageProductsSkeleton />
       ) : (
@@ -117,7 +117,10 @@ export default function ManageProducts() {
                             : "N/A"}
                         </p>
                         <div className="flex gap-2">
-                          <DeleteProduct id={product._id as string} isIcon={true} />
+                          <DeleteProduct
+                            id={product._id as string}
+                            isIcon={true}
+                          />
 
                           <Link to={`/dashboard/edit-product/${product._id}`}>
                             <Button size="sm">

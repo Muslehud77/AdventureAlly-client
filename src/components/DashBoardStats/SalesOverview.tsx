@@ -7,17 +7,19 @@ import {
   XAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
+
 } from "recharts";
+import { useTheme } from "../ThemeProvider";
 
 const SalesOverview = ({ sales }: { sales: Record<string, unknown>[] }) => {
-  console.log(sales);
+ 
+  const {actualTheme} = useTheme()
 
   return (
     <div className="aspect-[9/4] pt-10">
       <ChartContainer
         config={{
-          sales:{}
+          sales: {},
         }}
       >
         <BarChart
@@ -35,10 +37,10 @@ const SalesOverview = ({ sales }: { sales: Record<string, unknown>[] }) => {
           <XAxis dataKey="name" className="hidden" />
 
           <Tooltip active content={<ChartTooltipContent />} />
-         
+
           <Bar
             dataKey="sales"
-            fill="black"
+            fill={actualTheme === "dark" ? "#3B82F6" : "#2563EB"}
             activeBar={<Rectangle fill="pink" stroke="blue" />}
           />
         </BarChart>

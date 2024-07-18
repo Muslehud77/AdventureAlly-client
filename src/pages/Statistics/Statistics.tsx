@@ -9,17 +9,11 @@ import StatisticsSkeleton from "../../components/Skeleton/StatisticsSkeleton";
 import SalesOverview from "../../components/DashBoardStats/SalesOverview";
 import TopSellingTable from "../../components/DashBoardStats/TopSelling";
 import { useGetStatsQuery } from "../../redux/features/cart/cartApi";
-import { useUser } from "../../hooks/useUser";
-
 
 export default function Statistics() {
   const { data, isLoading, isError } = useGetStatsQuery(undefined);
-  const {user} = useUser()
-
 
   const stats = data?.data;
-
-
 
   const orderCount = stats?.orderCountByStatus?.reduce(
     (i: number, j: { count: number }) => {
@@ -33,9 +27,11 @@ export default function Statistics() {
       {isLoading && !isError ? (
         <StatisticsSkeleton />
       ) : (
-        <div className="flex flex-col min-h-screen bg-background">
-          <header className="flex items-center h-16 px-4 border-b shrink-0 md:px-6">
-            <h1 className="text-3xl font-semibold">Statistics</h1>
+        <div className="flex flex-col min-h-screen bg-secondary rounded-xl">
+          <header className="flex items-center h-16 px-4 border-b shrink-0 border-muted-foreground md:px-6">
+            <h1 className="text-3xl font-semibold text-foreground">
+              Statistics
+            </h1>
           </header>
           <main className="flex-1 grid gap-6 p-4 md:p-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -115,22 +111,24 @@ export default function Statistics() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {stats?.orderCountByStatus.map((count:{_id:string;count:number}) => (
-                <Card key={count._id}>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium capitalize">
-                      {count._id} Orders
-                    </CardTitle>
-                    <TruckIcon className="w-4 h-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{count.count}</div>
-                    <p className="text-xs text-muted-foreground">
-                      0% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+              {stats?.orderCountByStatus.map(
+                (count: { _id: string; count: number }) => (
+                  <Card key={count._id}>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                      <CardTitle className="text-sm font-medium capitalize">
+                        {count._id} Orders
+                      </CardTitle>
+                      <TruckIcon className="w-4 h-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">{count.count}</div>
+                      <p className="text-xs text-muted-foreground">
+                        0% from last month
+                      </p>
+                    </CardContent>
+                  </Card>
+                )
+              )}
             </div>
           </main>
         </div>

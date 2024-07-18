@@ -14,7 +14,7 @@ export default function Component() {
   const { data: orders, isLoading } = useGetAllCartsQuery(undefined);
 
   return (
-    <Card >
+    <Card className="bg-secondary">
       <CardHeader>
         <CardTitle>Orders</CardTitle>
         <CardDescription>
@@ -22,7 +22,13 @@ export default function Component() {
         </CardDescription>
       </CardHeader>
 
-      {isLoading ? <SkeletonTable /> : <ManageOrdersTable orders={orders} />}
+      {isLoading ? (
+        <SkeletonTable />
+      ) : (
+        <div className="p-3 px-5">
+          <ManageOrdersTable orders={orders} />
+        </div>
+      )}
     </Card>
   );
 }
