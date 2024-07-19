@@ -22,7 +22,7 @@ const ProductCard = ({product}:ProductCardProps) => {
 
 
   return (
-    <div className="group hover:outline-dashed hover:animate-pulse outline-1 outline-gray-300  hover:pt-2 duration-300 bg-background rounded-lg shadow-lg overflow-hidden cursor-pointer">
+    <div className="group hover:outline-dashed hover:animate-pulse outline-1 outline-gray-300 hover:bg-accent-foreground hover:text-muted hover:pt-2 duration-300 bg-background rounded-lg shadow-lg overflow-hidden cursor-pointer">
       <div>
         <img
           src={
@@ -33,7 +33,7 @@ const ProductCard = ({product}:ProductCardProps) => {
           alt={product?.name}
           width={400}
           height={300}
-          className="w-full h-48 object-contain group-hover:scale-105 duration-200"
+          className="w-full h-48 object-contain group-hover:scale-105 duration-200 bg-white"
         />
         <div className="p-4 flex flex-col justify-between h-48">
           <div className="flex items-center justify-between mb-2">

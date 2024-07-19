@@ -20,13 +20,17 @@ import { TProduct } from "../AllProducts/AllProducts";
 import { Link } from "react-router-dom";
 import RecoverProduct from "../../components/RecoverProduct/RecoverProduct";
 import defaultImg from '../../assets/default.webp'
+import { Helmet } from "react-helmet-async";
 
 
 export default function DeletedProducts() {
   const { data, isLoading } = useGetDeletedProductsQuery(undefined);
 
   return (
-    <Card>
+    <Card className="!bg-secondary">
+      <Helmet>
+        <title>Dashboard | Deleted Products</title>
+      </Helmet>
       <CardHeader>
         <CardTitle className="text-2xl">Deleted Products</CardTitle>
         <CardDescription>
@@ -36,13 +40,13 @@ export default function DeletedProducts() {
       {isLoading ? (
         <SkeletonTable />
       ) : (
-        <CardContent className="p-3">
+        <CardContent className="p-0">
           {data?.data.length === 0 ? (
             <div className="text-center p-4">
               <p className="text-lg font-medium">No deleted products found.</p>
             </div>
           ) : (
-            <Table className="bg-secondary p-5 rounded-xl">
+            <Table className="bg-background ">
               <TableHeader>
                 <TableRow>
                   <TableHead>Product</TableHead>

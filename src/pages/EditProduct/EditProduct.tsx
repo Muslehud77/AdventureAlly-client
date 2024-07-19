@@ -25,6 +25,7 @@ import EditImageOfTheProduct from "./EditImageOfTheProduct";
 import { TProduct } from "../AllProducts/AllProducts";
 import updateProductFunc from "../../utils/updateProductFunc";
 import RecoverProduct from "../../components/RecoverProduct/RecoverProduct";
+import { Helmet } from "react-helmet-async";
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -110,6 +111,9 @@ export default function EditProduct() {
 
   return (
     <div className="container mx-auto px-10 rounded-xl mb-10 py-8 max-w-3xl text-foreground bg-secondary ">
+      <Helmet>
+        <title>Edit | {product.name}</title>
+      </Helmet>
       <h1 className="text-3xl font-bold mb-6 ">Edit Product</h1>
       {isFetching || isLoading ? (
         <EditProductSkeleton />
@@ -146,7 +150,7 @@ export default function EditProduct() {
           <div className="grid gap-2">
             <Label htmlFor="name">Product Name</Label>
             <Input
-            className=""
+              className=""
               id="name"
               type="text"
               defaultValue={product?.name}
@@ -180,7 +184,7 @@ export default function EditProduct() {
             <div className="grid gap-2">
               <Label htmlFor="price">Price</Label>
               <Input
-              className=""
+                className=""
                 id="price"
                 type="number"
                 defaultValue={product.price}
@@ -199,7 +203,7 @@ export default function EditProduct() {
             <div className="grid gap-2">
               <Label htmlFor="quantity">Quantity</Label>
               <Input
-              className=""
+                className=""
                 id="quantity"
                 type="number"
                 defaultValue={product.stock}

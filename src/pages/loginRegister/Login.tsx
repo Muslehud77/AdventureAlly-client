@@ -12,7 +12,10 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logos/black-without-branding.png"
+import whiteLogo from "../../assets/logos/white-without-branding.png"
 import { IoMdHome } from "react-icons/io";
+import { Helmet } from "react-helmet-async";
+import { useTheme } from "../../components/ThemeProvider";
 
 interface LoginFormInputs {
   email: string;
@@ -28,7 +31,7 @@ const LoginPage = () => {
     defaultValues: { email: "sheikmuslehud@gmail.com", password: "hello123" },
   });
 
-  const {state} = useLocation()
+  const {actualTheme} = useTheme()
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -60,14 +63,17 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex relative justify-center items-center min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex text-foreground relative justify-center items-center min-h-screen bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <Helmet>
+        <title>AdventureAlly | Login</title>
+      </Helmet>
       <Link to={"/"} className="absolute left-10 top-10 text-2xl">
         <IoMdHome />
       </Link>
       <div className="mx-auto w-full max-w-md space-y-8">
         <div className="relative text-center space-y-4">
           <div className="flex flex-col justify-center items-center">
-            <img src={logo} className="h-20" />
+            <img src={actualTheme==="dark"?whiteLogo:logo} className="h-20" />
             <h2 className="text-center mt-2 text-3xl font-bold tracking-tight text-foreground">
               Sign In
             </h2>

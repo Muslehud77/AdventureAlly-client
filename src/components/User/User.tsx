@@ -35,9 +35,9 @@ const User = ({ isDashboard }: UserProps) => {
           <Avatar>
             <AvatarImage
               src={user?.image}
-              className="rounded-full size-10 object-contain bg-secondary  "
+              className="rounded-full size-10 object-contain bg-black "
             />
-            <AvatarFallback>{getInitials(user?.name as string)}</AvatarFallback>
+            <AvatarFallback className="!text-foreground">{getInitials(user?.name as string)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

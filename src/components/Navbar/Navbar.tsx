@@ -1,14 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logos/black_without_slogan.png";
 import User from "../User/User";
-
+import whiteLogo from "../../assets/logos/white_without_slogan.png"
 import { useUser } from "../../hooks/useUser";
 import { useCart } from "../../hooks/useCart";
+import { ThemeChanger } from "../ThemeChanger/ThemeChanger";
+import { useTheme } from "../ThemeProvider";
 
 export default function Navbar() {
   const { user } = useUser();
   const { pathname } = useLocation();
-
+  const {actualTheme} = useTheme()
   const { cart } = useCart();
 
   const navBarRoutes = [
@@ -31,23 +33,22 @@ export default function Navbar() {
   return (
     <header className="flex h-16 w-full items-center bg-background px-4 md:px-6">
       <Link to="/" className="mr-6 flex items-center">
-        <img src={logo} className="w-20" />
+        <img src={actualTheme === "dark" ? whiteLogo:logo} className="w-20" />
         <span className="sr-only">AdventureAlly</span>
       </Link>
       <nav className="ml-auto flex items-center gap-4 md:gap-6">
         {navBarRoutes.map((route) => (
           <Link
-          key={route.path}
+            key={route.path}
             to={route.path}
             className={`${
-              pathname === route.path ? "text-gray-500" : "text-gray-800"
+              pathname === route.path ? "text-foreground" : "text-muted-foreground"
             } text-sm font-medium hover:text-foreground`}
           >
-            
             {route.name}
           </Link>
         ))}
-
+        <ThemeChanger />
         {user ? (
           user?.role === "admin" ? (
             <>

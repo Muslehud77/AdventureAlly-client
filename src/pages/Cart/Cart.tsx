@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useAppSelector } from "../../redux/hooks";
-import { removeACart, selectCart } from "../../redux/features/cart/cartSlice";
+
 import { useDispatch } from "react-redux";
 import { FieldValues, useForm } from "react-hook-form";
 
@@ -21,6 +21,7 @@ import CartForm from "../../components/Cart/CartForm";
 
 import { useUpdateUser } from "../../hooks/useUpdateUser";
 import useAddCartToDB from "../../hooks/useAddCartToDB";
+import { removeACart, selectCart } from "../../redux/features/cart/cartSlice";
 
 export type TItems = {
   product: string;
@@ -135,11 +136,11 @@ export default function Cart() {
   const isCartAvailable = !carts?.length || updatingUser;
 
   return (
-    <section className="w-full py-12 border rounded-lg">
-      <div className="container grid gap-6 md:gap-8 px-4 py-10 md:px-6 border rounded-lg">
+    <section className="w-full py-12 border rounded-lg bg-secondary text-foreground">
+      <div className="container bg-background grid gap-6 md:gap-8 px-4 py-10 md:px-6 border rounded-lg">
         <CartHeadWithData carts={carts} />
         <CartCard carts={carts} removeFromCart={removeFromCart} />
-        <div className="grid gap-4 border-t pt-8">
+        <div className="grid gap-4 border-t pt-8 ">
           <CartForm
             loading={loading}
             error={error}

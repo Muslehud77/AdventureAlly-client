@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardContent } from "../../components/ui/card";
 import {
-  useAddCartMutation,
+
   useMyCartsQuery,
 } from "../../redux/features/cart/cartApi";
 import { TProduct } from "../AllProducts/AllProducts";
@@ -9,9 +9,9 @@ import { Button } from "../../components/ui/button"; // Assuming you have a Butt
 import MyCartSkeleton from "../../components/Skeleton/MyCartSkeleton";
 import { convertTimestamp } from "../../utils/convertTimeStamp";
 
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {  useAppSelector } from "../../redux/hooks";
 import {
-  clearCheckout,
+  
   selectCheckout,
   TCheckout,
 } from "../../redux/features/checkout/checkoutSlice";
@@ -28,10 +28,10 @@ type TOrders = {
 }[];
 
 export default function MyOrders() {
-  const { addCart, loading, success } = useAddCartToDB();
+  const { addCart, loading } = useAddCartToDB();
   const [cartUploadInit, setCartUploadInit] = useState(false);
   
-  const { data, isLoading, isFetching } = useMyCartsQuery(undefined);
+  const { data, isLoading } = useMyCartsQuery(undefined);
   const [queries] = useSearchParams();
   const orders = data?.data as TOrders;
 
@@ -65,7 +65,7 @@ export default function MyOrders() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-8">
+    <div className="container mx-auto px-4 md:px-6 py-8 text-foreground">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
       {loading || isLoading ? (
@@ -74,7 +74,7 @@ export default function MyOrders() {
         <div className="grid gap-6">
           {orders?.length ? (
             orders.map((order, i) => (
-              <Card key={order._id}>
+              <Card key={order._id} className="!bg-secondary">
                 <CardHeader className="flex items-center justify-between">
                   <div className="font-semibold">Order #{i + 1}</div>
                   <div

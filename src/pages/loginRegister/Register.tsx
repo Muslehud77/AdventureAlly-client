@@ -14,6 +14,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { signIn } from "../../redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
 import { IoMdHome } from "react-icons/io";
+import { Helmet } from "react-helmet-async";
 
 interface RegisterFormInputs {
   name: string;
@@ -35,41 +36,34 @@ const Register = () => {
 
   const [signUp, { isLoading }] = useSignUpMutation();
 
-
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     setError("");
     const { name, email, password } = data;
 
-    let image = imageLink
+    let image = imageLink;
 
     if (imageData && !imageLink) {
-       image = (await sendImageToBB(imageData as File))
+      image = await sendImageToBB(imageData as File);
       setImageLink(image);
-      
     }
-
-
 
     const userData = {
       name,
       email,
       password,
-      image
+      image,
     };
-
 
     toast.promise(signUp(userData), {
       loading: "Logging in...",
       success: (res: any) => {
-     
         if (res?.error) {
           throw new Error(res?.error?.data?.message);
         }
 
-
-         dispatch(signIn({ user: res?.data?.data, token: res?.data?.token }));
+        dispatch(signIn({ user: res?.data?.data, token: res?.data?.token }));
 
         return (
           <p className="font-bold text-gray-500">
@@ -99,7 +93,10 @@ const Register = () => {
   };
 
   return (
-    <div className="flex relative items-center justify-center min-h-screen  bg-gray-200">
+    <div className="flex relative items-center justify-center min-h-screen bg-secondary text-foreground">
+      <Helmet>
+        <title>AdventureAlly | Register</title>
+      </Helmet>
       <Link to={"/"} className="absolute left-10 top-10 text-2xl">
         <IoMdHome />
       </Link>
@@ -187,6 +184,12 @@ const Register = () => {
             <Button disabled={isLoading} type="submit" className="w-full">
               Create Account
             </Button>
+            <p className="text-center text-muted-foreground">
+              Have an account?{" "}
+              <Link to="/login" className="text-primary">
+                Login
+              </Link>
+            </p>
           </form>
         </div>
         <div className="flex-1 space-y-6">

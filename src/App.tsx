@@ -29,9 +29,9 @@ function App() {
 
 
   return (
-    <div>
-      <Navbar/>
-     <Outlet/>
+    <div className="bg-secondary">
+      <Navbar />
+      <Outlet />
     </div>
   );
 }

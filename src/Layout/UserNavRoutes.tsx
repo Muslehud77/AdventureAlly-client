@@ -35,7 +35,7 @@ export const UserRoutes = () => {
                 } transition-colors  md:h-8 md:w-8`}
               >
                 {path.route === "cart" && cart.length ? (
-                  <div className="absolute rounded-full top-0 right-0 text-white bg-red-500 size-4 text-xs flex justify-center items-center">
+                  <div className="absolute rounded-full -top-2 -right-2 text-white bg-red-500 size-4 text-xs flex justify-center items-center">
                     <span>{cart.length}</span>
                   </div>
                 ) : (

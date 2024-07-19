@@ -13,12 +13,9 @@ import { TProduct } from "../AllProducts/AllProducts";
 import toast from "react-hot-toast";
 import { useUser } from "../../hooks/useUser";
 import { addCart, selectCart } from "../../redux/features/cart/cartSlice";
+import { Helmet } from 'react-helmet-async';
 
-const myStyles = {
-  itemShapes: Star,
-  activeFillColor: "black",
-  inactiveFillColor: "#C5C5C5",
-};
+
 
 export default function ProductDetails() {
   const [image, setImage] = useState("");
@@ -110,12 +107,16 @@ export default function ProductDetails() {
   };
 
   return (
-    <>
+    <div className="min-h-screen pt-10">
       {isFetching || isLoading ? (
         <ProductDetailsSkeleton />
       ) : (
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
+        <div className="grid text-foreground md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
           <div className="flex flex-col gap-4">
+            <Helmet>
+              <title>{product?.name}</title>
+             
+            </Helmet>
             <Magnifier
               src={image}
               mgShape="square"
@@ -153,7 +154,6 @@ export default function ProductDetails() {
               <div className="flex items-center gap-2">
                 <Rating
                   style={{ maxWidth: 100 }}
-                  itemStyles={myStyles}
                   value={product?.ratings}
                   readOnly
                 />
@@ -169,7 +169,9 @@ export default function ProductDetails() {
                     product.stock >= 1 ? "bg-black" : "bg-red-400"
                   } text-white px-2 py-1 rounded-md text-sm font-medium`}
                 >
-                  {product.stock >= 1 ? `${product.stock} In Stock` : "Out of Stock"}
+                  {product.stock >= 1
+                    ? `${product.stock} In Stock`
+                    : "Out of Stock"}
                 </div>
                 <span className="text-sm text-muted-foreground">
                   {product.sales} sold
@@ -192,7 +194,12 @@ export default function ProductDetails() {
                     className="w-24 font-bold"
                   />
                 </div>
-                <Button disabled={!product.stock >= 1} type="button" onClick={addToCart} size="lg">
+                <Button
+                  disabled={!product.stock >= 1}
+                  type="button"
+                  onClick={addToCart}
+                  size="lg"
+                >
                   Add to cart
                 </Button>
               </form>
@@ -213,6 +220,6 @@ export default function ProductDetails() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

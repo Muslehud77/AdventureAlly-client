@@ -25,7 +25,7 @@ const ManageOrdersTable = ({ orders }: ManageOrdersTableProps) => {
   const data = orders?.data;
 
   return (
-    <CardContent className="bg-secondary overflow-auto p-2 rounded-xl outline outline-1 dark:outline-none">
+    <CardContent className="bg-background overflow-auto p-2">
       <Table>
         <TableHeader>
           <TableRow>

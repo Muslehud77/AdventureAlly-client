@@ -9,12 +9,16 @@ import {
 import { useGetAllCartsQuery } from "../../redux/features/cart/cartApi";
 import SkeletonTable from "../../components/Skeleton/SkeletonTable";
 import ManageOrdersTable from "../../components/ManageOrders/ManageOrdersTable";
+import { Helmet } from "react-helmet-async";
 
 export default function Component() {
   const { data: orders, isLoading } = useGetAllCartsQuery(undefined);
 
   return (
-    <Card className="bg-secondary">
+    <Card className="!bg-secondary">
+      <Helmet>
+        <title>Dashboard | Manage Orders</title>
+      </Helmet>
       <CardHeader>
         <CardTitle className="text-2xl">Orders</CardTitle>
         <CardDescription>
@@ -22,13 +26,7 @@ export default function Component() {
         </CardDescription>
       </CardHeader>
 
-      {isLoading ? (
-        <SkeletonTable />
-      ) : (
-        <div className="p-3 px-5">
-          <ManageOrdersTable orders={orders} />
-        </div>
-      )}
+      {isLoading ? <SkeletonTable /> : <ManageOrdersTable orders={orders} />}
     </Card>
   );
 }

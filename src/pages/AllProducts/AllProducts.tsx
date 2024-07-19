@@ -111,7 +111,7 @@ export default function AllProducts() {
   };
 
   return (
-    <div className="container mx-auto px-4 md:px-6 py-8">
+    <div className="container mx-auto px-4 md:px-6 py-8 text-foreground">
       <Helmet>
         <title>AdventureAlly | Products</title>
       </Helmet>

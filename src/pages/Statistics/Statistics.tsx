@@ -9,6 +9,7 @@ import StatisticsSkeleton from "../../components/Skeleton/StatisticsSkeleton";
 import SalesOverview from "../../components/DashBoardStats/SalesOverview";
 import TopSellingTable from "../../components/DashBoardStats/TopSelling";
 import { useGetStatsQuery } from "../../redux/features/cart/cartApi";
+import { Helmet } from "react-helmet-async";
 
 export default function Statistics() {
   const { data, isLoading, isError } = useGetStatsQuery(undefined);
@@ -24,6 +25,9 @@ export default function Statistics() {
 
   return (
     <>
+      <Helmet>
+        <title>Dashboard | Statistics</title>
+      </Helmet>
       {isLoading && !isError ? (
         <StatisticsSkeleton />
       ) : (

@@ -17,6 +17,7 @@ import { useCreateProductMutation } from "../../redux/features/product/productAp
 import toast from "react-hot-toast";
 import { sendImageToBB } from "../../utils/sendImageToBB";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function AddProduct() {
   const navigate = useNavigate();
@@ -102,6 +103,9 @@ export default function AddProduct() {
 
   return (
     <div className="container mx-auto px-10 rounded-xl mb-10 py-8 max-w-3xl text-foreground bg-secondary">
+      <Helmet>
+        <title>Dashboard | Add Product</title>
+      </Helmet>
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
         <div className="grid gap-2">
