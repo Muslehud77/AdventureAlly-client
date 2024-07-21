@@ -80,7 +80,7 @@ export default function ProductDetails() {
 
        if (cart.length >= 3) {
          toast((t) => (
-           <div className="">
+           <div className="text-foreground bg-background p-2 rounded-xl">
              <span> You have {cart.length + 1} items on your cart</span>
              <div className="flex gap-2 mt-2">
                <Button variant="outline" onClick={() => toast.dismiss(t.id)}>

@@ -22,7 +22,7 @@ const ProductCard = ({product}:ProductCardProps) => {
 
 
   return (
-    <div className="group hover:outline-dashed hover:animate-pulse outline-1 outline-gray-300 hover:bg-accent-foreground hover:text-muted hover:pt-2 duration-300 bg-background rounded-lg shadow-lg overflow-hidden cursor-pointer">
+    <div className="group hover:outline-dashed outline-1 outline-gray-300 hover:bg-accent-background dark:hover:bg-accent-foreground  dark:hover:text-muted hover:pt-2 duration-300 bg-background rounded-lg shadow-lg overflow-hidden">
       <div>
         <img
           src={

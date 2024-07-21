@@ -112,3 +112,14 @@
 .animate-leave {
   animation: leaveAnimation 0.3s ease-in forwards;
 }
+
+
+.main{
+  cursor: none;
+}
+.main a{
+  cursor: none !important;
+}
+.main button{
+  cursor: none !important;
+}

@@ -6,8 +6,15 @@ import { useUser } from "../../hooks/useUser";
 import { useCart } from "../../hooks/useCart";
 import { ThemeChanger } from "../ThemeChanger/ThemeChanger";
 import { useTheme } from "../ThemeProvider";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
+
+gsap.registerPlugin(useGSAP);
+
 
 export default function Navbar() {
+  const navBar = useRef(null) as any
   const { user } = useUser();
   const { pathname } = useLocation();
   const {actualTheme} = useTheme()
@@ -29,9 +36,22 @@ export default function Navbar() {
   ];
 
 
+   useGSAP(
+     () => {
+       navBar.current = gsap.timeline().from("a,button", {
+         y: -50,
+         duration: 0.8,
+         delay: 0,
+         stagger: 0.1,
+         ease: "elastic.out(2,1)",
+       });
+     },
+     { scope: navBar }
+   );
+
 
   return (
-    <header className="flex h-16 w-full items-center bg-background px-4 md:px-6">
+    <header ref={navBar} className="flex h-16 w-full items-center bg-background px-4 md:px-6">
       <Link to="/" className="mr-6 flex items-center">
         <img src={actualTheme === "dark" ? whiteLogo:logo} className="w-20" />
         <span className="sr-only">AdventureAlly</span>
