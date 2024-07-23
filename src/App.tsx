@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from "react";
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useLocalStorage } from "@uidotdev/usehooks";
+
 import Navbar from "./components/Navbar/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
-import { FaLinkSlash } from "react-icons/fa6";
+
 
 gsap.registerPlugin(useGSAP);
 
 function App() {
-
+  const {pathname} = useLocation()
   const main = useRef(null) as any;
 
  
@@ -22,10 +22,7 @@ function App() {
   //loading section
   const text = useRef(null) as any;
   const loadingContainer = useRef(null) as any;
-  const [initialLoading, setInitialLoading] = useLocalStorage(
-    "initialLoading",
-    true
-  );
+  const [initialLoading, setInitialLoading] = useState(true)
   const adventure = "Adventure".split("") as string[];
   const ally = "Ally".split("") as string[];
 
@@ -63,11 +60,14 @@ function App() {
   );
 
   useEffect(() => {
-    if (initialLoading) {
-      setTimeout(() => {
-        setInitialLoading(false);
-      }, 4000);
+    if (pathname !== "/"){
+      setInitialLoading(false);
     }
+      if (initialLoading) {
+        setTimeout(() => {
+          setInitialLoading(false);
+        }, 4000);
+      }
   }, []);
 
   const onMouseMove = contextSafe((e: any) => {
@@ -92,6 +92,7 @@ function App() {
       button.addEventListener("mouseenter", () => {
         gsap.to(cursor.current, {
           scale: 4,
+          
           duration:0.5
         });
       });
@@ -148,13 +149,13 @@ function App() {
         </h1>
       </div>
       <Navbar />
-      <div className="flex-1">
+      <div className={`flex-1 transition all duration-300 ${pathname === "/" ? "" : "mt-16"}`}>
         <Outlet />
       </div>
       <Footer />
       <div
         ref={cursor}
-        className="cursor z-[999] fixed rounded-full size-0 bg-white pointer-events-none mix-blend-difference"
+        className="cursor z-[999] fixed rounded-full size-0 bg-white pointer-events-none "
       ></div>
     </div>
   );
@@ -162,20 +163,3 @@ function App() {
 
 export default App;
 
-// useEffect(()=>{
-
-//   const handleOnBeforeUnload=(e:BeforeUnloadEvent)=>{
-//     e.preventDefault()
-
-//     return (e.returnValue = "")
-//   }
-
-//   window.addEventListener("beforeunload", handleOnBeforeUnload, {
-//     capture: true,
-//   });
-
-//   return () => {
-//     window.removeEventListener("beforeunload", handleOnBeforeUnload);
-//   };
-
-// },[])

@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { useUser } from "../../hooks/useUser";
 import { addCart, selectCart } from "../../redux/features/cart/cartSlice";
 import { Helmet } from 'react-helmet-async';
+import scrollToTop from "../../utils/scrollToTop";
 
 
 
@@ -35,20 +36,20 @@ export default function ProductDetails() {
 
   const { user } = useUser();
   const role = user?.role;
-  console.log(data)
+
   useEffect(() => {
     if (product?.images) {
       if (!image) {
         setImage(product?.images[0]);
       }
     }
+     if (product) {
+       refetch();
+     }
+     scrollToTop();
   }, [product]);
 
-  useEffect(()=>{
-    if(product){
-      refetch()
-    }
-  },[])
+
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(1, parseInt(e.target.value));

@@ -49,20 +49,33 @@ export default function Navbar() {
      { scope: navBar }
    );
 
+  
 
   return (
-    <header ref={navBar} className="flex h-16 w-full items-center bg-background px-4 md:px-6">
-      <Link to="/" className="mr-6 flex items-center">
-        <img src={actualTheme === "dark" ? whiteLogo:logo} className="w-20" />
-        <span className="sr-only">AdventureAlly</span>
-      </Link>
+    <header
+      ref={navBar}
+      className={`fixed z-50 flex h-16 w-full items-center  px-4 md:px-6 ${
+        pathname === "/" ? "" : "bg-background"
+      }`}
+    >
+      {pathname !== "/" && (
+        <Link to="/" className="mr-6 flex items-center">
+          <img
+            src={actualTheme === "dark" ? whiteLogo : logo}
+            className="w-20"
+          />
+          <span className="sr-only">AdventureAlly</span>
+        </Link>
+      )}
       <nav className="ml-auto flex items-center gap-4 md:gap-6">
         {navBarRoutes.map((route) => (
           <Link
             key={route.path}
             to={route.path}
             className={`${
-              pathname === route.path ? "text-foreground" : "text-muted-foreground"
+              pathname === route.path
+                ? "text-foreground"
+                : "text-muted-foreground"
             } text-sm font-medium hover:text-foreground`}
           >
             {route.name}
