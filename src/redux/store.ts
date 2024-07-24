@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit/react";
 import authReducer from "./features/auth/authSlice";
 import cartReducer from "./features/cart/cartSlice";
 import checkoutReducer from "./features/checkout/checkoutSlice";
+import cursorReducer from "./features/cursor/cursorSlice";
 import {
   persistStore,
   persistReducer,
@@ -48,6 +49,7 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     cart: persistCartReducer,
     checkout: persistCheckoutReducer,
+    cursor: cursorReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

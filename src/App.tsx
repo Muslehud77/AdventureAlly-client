@@ -6,15 +6,17 @@ import { useGSAP } from "@gsap/react";
 import Navbar from "./components/Navbar/Navbar";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
-
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { controlSize, selectCursor } from "./redux/features/cursor/cursorSlice";
 
 gsap.registerPlugin(useGSAP);
 
 function App() {
-  const {pathname} = useLocation()
-  const main = useRef(null) as any;
+  const dispatch = useAppDispatch();
+  const cursorSizeIsBig = useAppSelector(selectCursor);
 
- 
+  const { pathname } = useLocation();
+  const main = useRef(null) as any;
 
   const cursor = useRef(null) as any;
   const { contextSafe } = useGSAP({ scope: main });
@@ -22,9 +24,27 @@ function App() {
   //loading section
   const text = useRef(null) as any;
   const loadingContainer = useRef(null) as any;
-  const [initialLoading, setInitialLoading] = useState(true)
+  const [initialLoading, setInitialLoading] = useState(true);
   const adventure = "Adventure".split("") as string[];
   const ally = "Ally".split("") as string[];
+
+  useGSAP(
+    () => {
+      if (cursorSizeIsBig) {
+        gsap.to(cursor.current, {
+          scale: 4,
+          duration: 0.5,
+        });
+      } else {
+        gsap.to(cursor.current, {
+          scale: 1,
+          duration: 0.5,
+        });
+      }
+    },
+
+    { scope: text, dependencies: [cursorSizeIsBig] }
+  );
 
   useGSAP(
     () => {
@@ -60,19 +80,17 @@ function App() {
   );
 
   useEffect(() => {
-    if (pathname !== "/"){
+    if (pathname !== "/") {
       setInitialLoading(false);
     }
-      if (initialLoading) {
-        setTimeout(() => {
-          setInitialLoading(false);
-        }, 4000);
-      }
+    if (initialLoading) {
+      setTimeout(() => {
+        setInitialLoading(false);
+      }, 4000);
+    }
   }, []);
 
   const onMouseMove = contextSafe((e: any) => {
-  
-
     gsap.to(cursor.current, {
       x: e.clientX - 10,
       y: e.clientY - 10,
@@ -83,36 +101,23 @@ function App() {
     });
   });
 
-
-
   const onMouseEnter = contextSafe(() => {
     const links = main?.current?.querySelectorAll("a");
-     const buttons = main?.current?.querySelectorAll("button");
+    const buttons = main?.current?.querySelectorAll("button");
     buttons?.forEach((button: HTMLElement) => {
       button.addEventListener("mouseenter", () => {
-        gsap.to(cursor.current, {
-          scale: 4,
-          
-          duration:0.5
-        });
+        dispatch(controlSize(true));
       });
       button.addEventListener("mouseleave", () => {
-        gsap.to(cursor.current, {
-          scale: 1,
-          duration: 0.5,
-        });
+        dispatch(controlSize(false));
       });
     });
-    links?.forEach((link:HTMLElement) => {
+    links?.forEach((link: HTMLElement) => {
       link.addEventListener("mouseenter", () => {
-        gsap.to(cursor.current, {
-          scale: 4,
-        });
+        dispatch(controlSize(true));
       });
       link.addEventListener("mouseleave", () => {
-        gsap.to(cursor.current, {
-          scale: 1,
-        });
+        dispatch(controlSize(false));
       });
     });
   });
@@ -124,6 +129,7 @@ function App() {
       ref={main}
       className="main bg-secondary flex flex-col min-h-screen relative"
     >
+      
       <div
         ref={loadingContainer}
         className={`absolute h-screen w-full transition-all duration-1000 flex justify-center items-center ${
@@ -148,18 +154,24 @@ function App() {
           ))}
         </h1>
       </div>
+
       <Navbar />
-      <div className={`flex-1 transition all duration-300 ${pathname === "/" ? "" : "mt-16"}`}>
+      <div
+        className={`flex-1 transition all duration-300 ${
+          pathname === "/" ? "" : "mt-16"
+        }`}
+      >
         <Outlet />
       </div>
       <Footer />
       <div
         ref={cursor}
-        className="cursor z-[999] fixed rounded-full size-0 bg-white pointer-events-none "
+        className={`cursor  z-[999] fixed rounded-full size-0 bg-white pointer-events-none ${
+          cursorSizeIsBig ? "mix-blend-difference" : "bg-foreground"
+        } `}
       ></div>
     </div>
   );
 }
 
 export default App;
-
