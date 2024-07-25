@@ -2,7 +2,9 @@
   @tailwind components;
   @tailwind utilities;
 
-  
+ .banner video{
+  object-fit: cover;
+ }
 
 @layer base {
   :root {

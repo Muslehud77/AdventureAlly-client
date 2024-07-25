@@ -83,11 +83,11 @@ function App() {
     if (pathname !== "/") {
       setInitialLoading(false);
     }
-    if (initialLoading) {
-      setTimeout(() => {
-        setInitialLoading(false);
-      }, 4000);
-    }
+    // if (initialLoading) {
+    //   setTimeout(() => {
+    //     setInitialLoading(false);
+    //   }, 4000);
+    // }
   }, []);
 
   const onMouseMove = contextSafe((e: any) => {
@@ -132,8 +132,8 @@ function App() {
       
       <div
         ref={loadingContainer}
-        className={`absolute h-screen w-full transition-all duration-1000 flex justify-center items-center ${
-          initialLoading ? "bg-background/80" : "bg-transparent"
+        className={`fixed z-50 h-screen w-full transition-all duration-1000 flex justify-center items-center ${
+          initialLoading ? "bg-background/90" : "bg-transparent"
         } `}
       >
         <h1

@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import bannerVideo from "../../assets/banner/banner_video.mp4";
+import bannerVideo from "../../assets/banner/banner_video_3.mp4";
 import gsap from "gsap";
 import logo from "../../assets/logos/white-without-branding.png";
+import { useAppDispatch } from "../../redux/hooks";
+import { controlSize } from "../../redux/features/cursor/cursorSlice";
+import ReactPlayer from "react-player";
 
 const Banner = () => {
   const headingContainer = useRef(null);
   const [index, setIndex] = useState(0);
+  const dispatch = useAppDispatch()
 
   const headings = [
     ["Gear Up", "for Your Next", "Adventure"],
@@ -15,8 +19,8 @@ const Banner = () => {
     ["Where", "Adventure", "Begins"],
     ["Discover.", "Adventure.", "Thrive."],
     ["Camping Essentials", "for Every", "Journey"],
-    ["Adventure", "Awaits - Are", "You Ready?"],
-    ["Nature’s Calling", "– Answer with", "AdventureAlly"],
+    ["Adventure", "Awaits", "Are You Ready?"],
+    ["Nature’s Calling", "with", "AdventureAlly"],
     ["Equip.", "Explore.", "Experience."],
     ["Elevate Your", "Camping", "Experience"],
     ["Find Your", "Perfect Camp", "Gear Here"],
@@ -90,26 +94,38 @@ const Banner = () => {
     });
   }, [index]);
 
+
+  const headingMouseEnter = ()=>{
+    dispatch(controlSize(true))
+  }
+  const headingMouseLeave = ()=>{
+    dispatch(controlSize(false))
+  }
+
+
+
+
+
   return (
     <div className="max-h-screen relative">
-      <video
-        autoPlay
-        src={bannerVideo}
-        className="h-screen w-screen object-fill"
-       
-      />
-      <div className="absolute duration-300 inset-0 h-full w-full bg-white/20 dark:bg-black/50"></div>
+      <ReactPlayer playing url={bannerVideo} width="100%" height="100vh" className="banner"  loop muted />
+      <div className="absolute duration-300 inset-0 h-full w-full  dark:bg-black/50"></div>
       <div
         className={`absolute inset-0 h-full w-full flex justify-start items-center container mx-auto`}
       >
         <div
           ref={headingContainer}
-          className="text-4xl md:text-8xl w-full lg:w-[50vw] overflow-hidden py-10 font-semibold text-white tracking-tighter"
+          className="text-4xl md:text-8xl w-full md:w-[60vw] overflow-hidden py-10 font-semibold text-white tracking-tighter"
         >
           {headings[index]?.map((item, i) => (
-            <div key={i} className="flex headings">
+            <div
+              onMouseEnter={headingMouseEnter}
+              onMouseLeave={headingMouseLeave}
+              key={i}
+              className="flex headings"
+            >
               {i === 1 && (
-                <div className="logoInHeadings relative top-2 w-20 flex justify-center items-center mr-5">
+                <div className="logoInHeadings relative top-2 w-10 md:w-20 flex justify-center items-center mr-2 md:mr-5 pb-3 md:pb-0">
                   <img src={logo} alt="Logo" />
                 </div>
               )}
