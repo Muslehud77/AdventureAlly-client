@@ -1,13 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import Banner from "./Banner";
+import Spotlight from "./Spotlight";
 
 const Home = () => {
   return (
-    <div>
+    <div className="bg-secondary">
      <Helmet>
       <title>AdventureAlly</title>
      </Helmet>
      <Banner/>
+     <Spotlight/>
     </div>
   );
 };

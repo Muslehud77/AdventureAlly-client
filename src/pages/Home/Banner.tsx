@@ -108,8 +108,16 @@ const Banner = () => {
 
   return (
     <div className="max-h-screen relative">
-      <ReactPlayer playing url={bannerVideo} width="100%" height="100vh" className="banner"  loop muted />
-      <div className="absolute duration-300 inset-0 h-full w-full  dark:bg-black/50"></div>
+      <ReactPlayer
+        playing
+        url={bannerVideo}
+        width="100%"
+        height="100vh"
+        className="banner"
+        loop
+        muted
+      />
+      <div className="absolute duration-300 inset-0 h-full w-full bg-background/10 dark:bg-background/50"></div>
       <div
         className={`absolute inset-0 h-full w-full flex justify-start items-center container mx-auto`}
       >
@@ -118,18 +126,18 @@ const Banner = () => {
           className="text-4xl md:text-8xl w-full md:w-[60vw] overflow-hidden py-10 font-semibold text-white tracking-tighter"
         >
           {headings[index]?.map((item, i) => (
-            <div
-              onMouseEnter={headingMouseEnter}
-              onMouseLeave={headingMouseLeave}
-              key={i}
-              className="flex headings"
-            >
+            <div key={i} className="flex headings">
               {i === 1 && (
                 <div className="logoInHeadings relative top-2 w-10 md:w-20 flex justify-center items-center mr-2 md:mr-5 pb-3 md:pb-0">
                   <img src={logo} alt="Logo" />
                 </div>
               )}
-              <h1>{item}</h1>
+              <h1
+                onMouseEnter={headingMouseEnter}
+                onMouseLeave={headingMouseLeave}
+              >
+                {item}
+              </h1>
             </div>
           ))}
         </div>

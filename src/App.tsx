@@ -83,11 +83,11 @@ function App() {
     if (pathname !== "/") {
       setInitialLoading(false);
     }
-    // if (initialLoading) {
-    //   setTimeout(() => {
-    //     setInitialLoading(false);
-    //   }, 4000);
-    // }
+    if (initialLoading) {
+      setTimeout(() => {
+        setInitialLoading(false);
+      }, 4000);
+    }
   }, []);
 
   const onMouseMove = contextSafe((e: any) => {
@@ -140,7 +140,7 @@ function App() {
           ref={text}
           className={` ${
             initialLoading ? "text-foreground" : "opacity-0"
-          }  font-bold text-7xl p-10 overflow-hidden transition-all duration-1000`}
+          }  font-bold  text-3xl md:text-7xl p-10 overflow-hidden transition-all duration-1000`}
         >
           {adventure?.map((text, i) => (
             <span className="adventure inline-block" key={i}>
@@ -166,7 +166,7 @@ function App() {
       <Footer />
       <div
         ref={cursor}
-        className={`cursor  z-[999] fixed rounded-full size-0 bg-white pointer-events-none ${
+        className={`cursor  z-[999] fixed rounded-full size-0 bg-accent-foreground pointer-events-none ${
           cursorSizeIsBig ? "mix-blend-difference" : "bg-foreground"
         } `}
       ></div>
