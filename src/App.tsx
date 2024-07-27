@@ -103,15 +103,7 @@ function App() {
 
   const onMouseEnter = contextSafe(() => {
     const links = main?.current?.querySelectorAll("a");
-    const buttons = main?.current?.querySelectorAll("button");
-    buttons?.forEach((button: HTMLElement) => {
-      button.addEventListener("mouseenter", () => {
-        dispatch(controlSize(true));
-      });
-      button.addEventListener("mouseleave", () => {
-        dispatch(controlSize(false));
-      });
-    });
+
     links?.forEach((link: HTMLElement) => {
       link.addEventListener("mouseenter", () => {
         dispatch(controlSize(true));
@@ -129,7 +121,6 @@ function App() {
       ref={main}
       className="main bg-secondary flex flex-col min-h-screen relative"
     >
-      
       <div
         ref={loadingContainer}
         className={`fixed z-50 h-screen w-full transition-all duration-1000 flex justify-center items-center ${

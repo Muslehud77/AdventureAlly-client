@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/button';
 import defaultImg from "../../assets/default.webp"
 import { Rating } from "@smastrom/react-rating";
 import { TProduct } from '../../pages/AllProducts/AllProducts';
+import useCursorResize from '../../hooks/useCursorResize';
 
 
 
@@ -13,9 +14,13 @@ type ProductCardProps = {
 
 const ProductCard = ({product}:ProductCardProps) => {
 
+  
+  const { mouseLeaveCursorResize } = useCursorResize();
+
+
   function truncateString(str:string) {
     if (str.length > 70) {
-      return str.slice(0, ) + "...";
+      return str.slice(0, 70) + "...";
     }
     return str;
   }
@@ -63,7 +68,10 @@ const ProductCard = ({product}:ProductCardProps) => {
               <ShoppingCartIcon className="w-4 h-4" />
               <span>{product.sales}</span>
             </div>
-            <Link to={`/product-details/${product?._id}`}>
+            <Link
+              onClick={mouseLeaveCursorResize}
+              to={`/product-details/${product?._id}`}
+            >
               <Button
                 size="sm"
                 className="px-4 py-2 rounded-lg  hover:bg-black/80"

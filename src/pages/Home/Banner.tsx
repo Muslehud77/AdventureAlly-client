@@ -25,7 +25,7 @@ const Banner = () => {
     ["Elevate Your", "Camping", "Experience"],
     ["Find Your", "Perfect Camp", "Gear Here"],
     ["Outfit Your", "Wild", "Side"],
-    ["From Trail", "to Tent,", "We’ve Got You Covered"],
+    ["From Trail", "to Tent", "We’ve Got You Covered"],
     ["Journey", "Beyond", "Limits"],
   ];
 
@@ -123,12 +123,16 @@ const Banner = () => {
       >
         <div
           ref={headingContainer}
-          className="text-4xl md:text-8xl w-full md:w-[60vw] overflow-hidden py-10 font-semibold text-white tracking-tighter"
+          className="text-4xl md:text-8xl w-full md:w-[60vw] overflow-hidden py-10 font-thin text-white tracking-tighter"
         >
           {headings[index]?.map((item, i) => (
             <div key={i} className="flex headings">
               {i === 1 && (
-                <div className="logoInHeadings relative top-2 w-10 md:w-20 flex justify-center items-center mr-2 md:mr-5 pb-3 md:pb-0">
+                <div
+                  onMouseEnter={headingMouseEnter}
+                  onMouseLeave={headingMouseLeave}
+                  className="logoInHeadings relative top-2 w-10 md:w-20 flex justify-center items-center mr-2 md:mr-5 pb-3 md:pb-0"
+                >
                   <img src={logo} alt="Logo" />
                 </div>
               )}

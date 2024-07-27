@@ -13,8 +13,8 @@ import { TUser } from "../../redux/features/auth/authSlice";
 import { TCart } from "../../redux/features/cart/cartSlice";
 
 import { Sling as Hamburger } from "hamburger-react";
-import { useAppDispatch } from "../../redux/hooks";
-import { controlSize } from "../../redux/features/cursor/cursorSlice";
+
+import useCursorResize from "../../hooks/useCursorResize";
 
 gsap.registerPlugin(useGSAP);
 
@@ -28,15 +28,9 @@ export default function Navbar() {
   const { cart } = useCart();
   const [sideNav,setSideNav] = useState<boolean>(false)
 
-  const dispatch = useAppDispatch()
+  const { mouseEnterCursorResize, mouseLeaveCursorResize } = useCursorResize()
 
-  const headingMouseEnter = () => {
-    dispatch(controlSize(true));
-  };
-  const headingMouseLeave = () => {
-    dispatch(controlSize(false));
-  };
-  
+
 
    useGSAP(
      () => {
@@ -96,8 +90,8 @@ export default function Navbar() {
       )}
       <nav className="ml-auto flex items-center gap-4 md:gap-6">
         <div
-          onMouseEnter={headingMouseEnter}
-          onMouseLeave={headingMouseLeave}
+          onMouseEnter={mouseEnterCursorResize}
+          onMouseLeave={mouseLeaveCursorResize}
           className={`absolute top-3 right-2 z-50  md:hidden ${
             sideNav ? "text-white" : "text-muted-foreground"
           } `}

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { useForm, FieldValues } from "react-hook-form";
-import SvgLoading from "../../hooks/SvgLoading/SvgLoading";
+import SvgLoading from "../SvgLoading/SvgLoading";
 
 type CartFormProps = {
     loading:boolean;
