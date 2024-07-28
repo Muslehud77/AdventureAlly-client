@@ -40,6 +40,11 @@ export default function AllProducts() {
 
   const isInitialRender = useRef(true);
 
+  useEffect(()=>{
+    scrollToTop();
+  },[])
+
+
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
