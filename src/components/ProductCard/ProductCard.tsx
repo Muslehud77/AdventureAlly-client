@@ -1,30 +1,23 @@
-
-import { Link } from 'react-router-dom';
-import { Button } from '../../components/ui/button';
-import defaultImg from "../../assets/default.webp"
+import { Link } from "react-router-dom";
+import { Button } from "../../components/ui/button";
+import defaultImg from "../../assets/default.webp";
 import { Rating } from "@smastrom/react-rating";
-import { TProduct } from '../../pages/AllProducts/AllProducts';
-import useCursorResize from '../../hooks/useCursorResize';
-
-
+import { TProduct } from "../../pages/AllProducts/AllProducts";
+import useCursorController from "../../hooks/useCursorController";
 
 type ProductCardProps = {
-  product: TProduct
+  product: TProduct;
 };
 
-const ProductCard = ({product}:ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
+  const { mouseLeaveCursorResize } = useCursorController();
 
-  
-  const { mouseLeaveCursorResize } = useCursorResize();
-
-
-  function truncateString(str:string) {
+  function truncateString(str: string) {
     if (str.length > 70) {
       return str.slice(0, 70) + "...";
     }
     return str;
   }
-
 
   return (
     <div className="group hover:outline-dashed outline-1 outline-gray-300 hover:bg-accent-background dark:hover:bg-accent-foreground  dark:hover:text-muted hover:pt-2 duration-300 bg-background rounded-lg shadow-lg overflow-hidden">
@@ -89,7 +82,6 @@ const ProductCard = ({product}:ProductCardProps) => {
 
 export default ProductCard;
 
-
 function ShoppingCartIcon(props) {
   return (
     <svg
@@ -129,4 +121,3 @@ function StarIcon(props) {
     </svg>
   );
 }
-

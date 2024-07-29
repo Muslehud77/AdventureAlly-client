@@ -1,4 +1,4 @@
-import { useUser } from "../hooks/useUser";
+import { useUser } from "../../hooks/useUser";
 import { AdminNavRoutes } from "./AdminNavRoutes";
 import { UserRoutes } from "./UserNavRoutes";
 

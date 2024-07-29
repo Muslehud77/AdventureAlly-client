@@ -29,7 +29,7 @@ export const CustomerFavoriteCards = ({ products } : {products:TProduct[]}) => {
               key={product._id}
               className={`col-span-12 ${colSpan(i)}`}
             >
-              <BounceCard className="">
+              <BounceCard className="shadow-3xl">
                 <div className="w-full text-white flex justify-center items-center relative">
                   <span className="absolute bg-black top-0 right-0 duration-500 opacity-0 group-hover:opacity-100 group-hover:p-2 rounded-full group-hover:-rotate-45">
                     <FaArrowRight />

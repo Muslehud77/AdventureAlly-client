@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logos/black_without_slogan.png";
 import User from "../User/User";
-import whiteLogo from "../../assets/logos/white_without_slogan.png"
+import whiteLogo from "../../assets/logos/white_without_slogan.png";
 import { useUser } from "../../hooks/useUser";
 import { useCart } from "../../hooks/useCart";
 import { ThemeChanger } from "../ThemeChanger/ThemeChanger";
@@ -14,35 +14,32 @@ import { TCart } from "../../redux/features/cart/cartSlice";
 
 import { Sling as Hamburger } from "hamburger-react";
 
-import useCursorResize from "../../hooks/useCursorResize";
+import useCursorController from "../../hooks/useCursorController";
 
 gsap.registerPlugin(useGSAP);
 
-
 export default function Navbar() {
-  const sideNavBar = useRef(null)
-  const navBar = useRef(null) as any
+  const sideNavBar = useRef(null);
+  const navBar = useRef(null) as any;
   const { user } = useUser();
   const { pathname } = useLocation();
-  const {actualTheme} = useTheme()
+  const { actualTheme } = useTheme();
   const { cart } = useCart();
-  const [sideNav,setSideNav] = useState<boolean>(false)
+  const [sideNav, setSideNav] = useState<boolean>(false);
 
-  const { mouseEnterCursorResize, mouseLeaveCursorResize } = useCursorResize()
+  const { mouseEnterCursorResize, mouseLeaveCursorResize } =
+    useCursorController();
 
+  useGSAP(
+    () => {
+      gsap.from("a,button", {
+        y: -80,
+        duration: 0.8,
+        delay: 0,
 
-
-   useGSAP(
-     () => {
-      
-       gsap.from("a,button", {
-         y: -80,
-         duration: 0.8,
-         delay: 0,
-
-         stagger: 0.1,
-         ease: "elastic.out(2,1)",
-       });
+        stagger: 0.1,
+        ease: "elastic.out(2,1)",
+      });
 
       if (sideNav) {
         gsap.fromTo(
@@ -65,12 +62,9 @@ export default function Navbar() {
           ease: "back.out(1.7)",
         });
       }
-
-     },
-     { scope: navBar,dependencies:[sideNav] }
-   );
-
-  
+    },
+    { scope: navBar, dependencies: [sideNav] }
+  );
 
   return (
     <header
@@ -147,8 +141,6 @@ function ShoppingCartIcon(props) {
   );
 }
 
-
-
 const NavbarMenus = ({
   user,
   cart,
@@ -156,7 +148,7 @@ const NavbarMenus = ({
 }: {
   user: TUser;
   cart: TCart[];
-  sideNav?:boolean
+  sideNav?: boolean;
 }) => {
   return (
     <div

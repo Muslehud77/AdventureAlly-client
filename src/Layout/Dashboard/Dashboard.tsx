@@ -1,11 +1,11 @@
-import logo from "../assets/logos/black-without-branding.png";
-import whiteLogo from "../assets/logos/white-without-branding.png"
+import logo from "../../assets/logos/black-without-branding.png";
+import whiteLogo from "../../assets/logos/white-without-branding.png"
 import { Link, Outlet } from "react-router-dom";
 
-import User from "../components/User/User";
+import User from "../../components/User/User";
 import NavRoutes from "./NavRoutes";
-import { ThemeChanger } from "../components/ThemeChanger/ThemeChanger";
-import { useTheme } from "../components/ThemeProvider";
+import { ThemeChanger } from "../../components/ThemeChanger/ThemeChanger";
+import { useTheme } from "../../components/ThemeProvider";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";

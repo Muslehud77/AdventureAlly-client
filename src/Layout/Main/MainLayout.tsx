@@ -3,17 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import { Outlet, useLocation } from "react-router-dom";
-import Footer from "./components/Footer/Footer";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { controlSize, selectCursor } from "./redux/features/cursor/cursorSlice";
+import Footer from "../../components/Footer/Footer";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCursor } from "../../redux/features/cursor/cursorSlice";
+import useCursorController from "../../hooks/useCursorController";
 
 gsap.registerPlugin(useGSAP);
 
-function App() {
-  const dispatch = useAppDispatch();
-  const cursorSizeIsBig = useAppSelector(selectCursor);
+function MainLayout() {
+  const { mouseEnterColorBlend, mouseLeaveCursorDefault } =
+    useCursorController();
+  const { isBig, defaultColor } = useAppSelector(selectCursor);
 
   const { pathname } = useLocation();
   const main = useRef(null) as any;
@@ -30,7 +32,7 @@ function App() {
 
   useGSAP(
     () => {
-      if (cursorSizeIsBig) {
+      if (isBig) {
         gsap.to(cursor.current, {
           scale: 4,
           duration: 0.5,
@@ -43,7 +45,7 @@ function App() {
       }
     },
 
-    { scope: text, dependencies: [cursorSizeIsBig] }
+    { scope: text, dependencies: [isBig, defaultColor] }
   );
 
   useGSAP(
@@ -106,10 +108,10 @@ function App() {
 
     links?.forEach((link: HTMLElement) => {
       link.addEventListener("mouseenter", () => {
-        dispatch(controlSize(true));
+        mouseEnterColorBlend();
       });
       link.addEventListener("mouseleave", () => {
-        dispatch(controlSize(false));
+        mouseLeaveCursorDefault();
       });
     });
   });
@@ -158,11 +160,11 @@ function App() {
       <div
         ref={cursor}
         className={`cursor  z-[999] fixed rounded-full size-0 bg-accent-foreground pointer-events-none ${
-          cursorSizeIsBig ? "mix-blend-difference" : "bg-foreground"
+          !defaultColor ? "mix-blend-difference" : "bg-foreground"
         } `}
       ></div>
     </div>
   );
 }
 
-export default App;
+export default MainLayout;

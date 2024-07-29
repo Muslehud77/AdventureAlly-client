@@ -3,13 +3,16 @@ import bannerVideo from "../../assets/banner/banner_video_3.mp4";
 import gsap from "gsap";
 import logo from "../../assets/logos/white-without-branding.png";
 import { useAppDispatch } from "../../redux/hooks";
-import { controlSize } from "../../redux/features/cursor/cursorSlice";
+import { cursorControl } from "../../redux/features/cursor/cursorSlice";
 import ReactPlayer from "react-player";
+import useCursorController from "../../hooks/useCursorController";
 
 const Banner = () => {
   const headingContainer = useRef(null);
   const [index, setIndex] = useState(0);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+  const { mouseEnterControlBoth, mouseLeaveControlBoth } =
+    useCursorController();
 
   const headings = [
     ["Gear Up", "for Your Next", "Adventure"],
@@ -46,7 +49,6 @@ const Banner = () => {
       gsap.to(".headings .logoInHeadings", {
         x: -110,
         duration: 1,
-       
       });
     }, 10000);
 
@@ -54,7 +56,6 @@ const Banner = () => {
   }, [headings.length]);
 
   useEffect(() => {
-   
     gsap.set(".headings h1", {
       opacity: 0,
       y: -400,
@@ -68,12 +69,12 @@ const Banner = () => {
       rotate: 0,
     });
 
-     gsap.from(".headings .logoInHeadings", {
-       opacity: 0,
-       scale: 1,
-       x: -110,
-       duration: 2,
-     });
+    gsap.from(".headings .logoInHeadings", {
+      opacity: 0,
+      scale: 1,
+      x: -110,
+      duration: 2,
+    });
 
     // Animation for the new elements
     gsap.to(".headings h1", {
@@ -94,17 +95,12 @@ const Banner = () => {
     });
   }, [index]);
 
-
-  const headingMouseEnter = ()=>{
-    dispatch(controlSize(true))
-  }
-  const headingMouseLeave = ()=>{
-    dispatch(controlSize(false))
-  }
-
-
-
-
+  const headingMouseEnter = () => {
+ mouseEnterControlBoth()
+  };
+  const headingMouseLeave = () => {
+   mouseLeaveControlBoth()
+  };
 
   return (
     <div className="max-h-screen relative">

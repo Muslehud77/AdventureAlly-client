@@ -3,10 +3,10 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from "../components/ui/tooltip";
+} from "../../components/ui/tooltip";
 import { NavLink, useLocation } from "react-router-dom";
-import { userPaths } from "../routes/UserRoutes";
-import { useCart } from "../hooks/useCart";
+import { userPaths } from "../../routes/UserRoutes";
+import { useCart } from "../../hooks/useCart";
 
 export const UserRoutes = () => {
 

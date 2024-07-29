@@ -3,10 +3,10 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from "../components/ui/tooltip";
+} from "../../components/ui/tooltip";
 import { NavLink, useLocation } from "react-router-dom";
 
-import { adminPaths } from "../routes/AdminRoutes";
+import { adminPaths } from "../../routes/AdminRoutes";
 
 export const AdminNavRoutes = () => {
   const { pathname } = useLocation();

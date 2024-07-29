@@ -3,16 +3,14 @@ import { useGetRandomThreeQuery } from "../../redux/features/product/productApi"
 import { TProduct } from "../AllProducts/AllProducts";
 import { FaArrowRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import useCursorResize from "../../hooks/useCursorResize";
-import SpotlightSkeleton from './../../components/Skeleton/SpotlightSkeleton';
+import useCursorController from "../../hooks/useCursorController";
+import SpotlightSkeleton from "./../../components/Skeleton/SpotlightSkeleton";
 
 const Spotlight = () => {
+  const { mouseLeaveCursorResize } = useCursorController();
 
-    
-  const { mouseLeaveCursorResize } = useCursorResize();
-
-  const { data ,isLoading} = useGetRandomThreeQuery(undefined, {
-      pollingInterval: 10000,
+  const { data, isLoading } = useGetRandomThreeQuery(undefined, {
+    pollingInterval: 10000,
   });
 
   function truncateString(str: string) {
@@ -20,7 +18,7 @@ const Spotlight = () => {
       return str.slice(0, 42) + "...";
     }
     return str;
-  } 
+  }
 
   return (
     <div className="h-full  text-foreground bg-background rounded-t-3xl outline">

@@ -1,26 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
-
-
-
-const initialState = {
-   isBig : false
+type TCursorControl = {
+  isBig : boolean;
+  defaultColor:boolean
 }
 
+
+const initialState : TCursorControl = {
+  isBig: false,
+  defaultColor: true,
+};
 
 const cursorSlice = createSlice({
   name: "cursor",
   initialState,
-  reducers:{
-    controlSize : (state,action)=>{
-        state.isBig = action.payload
-    }
-  }
+  reducers: {
+    cursorControl: (state, action) => {
+     
+      
+    
+     
+        state.defaultColor = typeof action?.payload?.color === "boolean" ?  action?.payload?.color : true;
+      state.isBig =
+        typeof action?.payload?.size === "boolean"
+          ? action?.payload?.size
+          : false;
+     
+    },
+  },
 });
 
-export default cursorSlice.reducer
+export default cursorSlice.reducer;
 
-export const {controlSize} = cursorSlice.actions
+export const { cursorControl } = cursorSlice.actions;
 
-export const selectCursor = (state:RootState)=>state.cursor.isBig
+export const selectCursor = (state: RootState) => state.cursor;

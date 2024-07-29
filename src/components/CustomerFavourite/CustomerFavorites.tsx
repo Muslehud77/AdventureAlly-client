@@ -1,16 +1,12 @@
-import { Link } from "react-router-dom";
 import { useGetBestSellingQuery } from "../../redux/features/product/productApi";
-import CustomerFavoriteCardsSkeleton from "../Skeleton/CustomerFavouritesSkeleton";
-import { CustomerFavoriteCards } from "./CustomerFavouriteCards";
-import { FaArrowRight } from "react-icons/fa6";
-import useCursorResize from "../../hooks/useCursorResize";
+import CustomerFavoriteCardsSkeleton from "../Skeleton/CustomerFavoriteCardsSkeleton";
+import { CustomerFavoriteCards } from "./CustomerFavoriteCards";
+
+
 import AnimatedButton from "../AnimatedButton/AnimatedButton";
 
 const CustomerFavorites = () => {
-    const {mouseLeaveCursorResize} = useCursorResize()
-    const {data,isLoading} = useGetBestSellingQuery(undefined)
-
- 
+  const { data, isLoading } = useGetBestSellingQuery(undefined);
 
   return (
     <div className="h-full text-foreground rounded-t-3xl outline">
@@ -34,7 +30,7 @@ const CustomerFavorites = () => {
         ) : (
           <CustomerFavoriteCards products={data?.data} />
         )}
-        <AnimatedButton route="/all-products" title="all products"/>
+        <AnimatedButton route="/all-products" title="all products" />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { FaArrowRight } from "react-icons/fa6";
-import useCursorResize from "../../hooks/useCursorResize";
+
 import { Link } from "react-router-dom";
 
 type AnimatedButtonProps = {
@@ -9,14 +9,13 @@ type AnimatedButtonProps = {
 
 const AnimatedButton = ({ route, title }: AnimatedButtonProps) => {
 
-    const { mouseLeaveCursorResize } = useCursorResize();
-
+    
+    
 
   return (
     <div className="w-full flex justify-center items-center pt-3 ">
       <Link
-        onClick={mouseLeaveCursorResize}
-        to={route}
+        to={route as string}
         className="bg-background py-3 px-5 pr-8 relative group uppercase rounded overflow-hidden"
       >
         <div className="absolute bg-black dark:bg-white overflow-hidden text-white dark:text-black text-center w-full h-full duration-500 inset-0 flex justify-center items-center pr-3 translate-y-44 rotate-45 group-hover:translate-y-0 group-hover:rotate-0">
