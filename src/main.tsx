@@ -1,24 +1,21 @@
-
 import ReactDOM from "react-dom/client";
 import "@smastrom/react-rating/style.css";
 import "./index.css";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store.ts";
 import { PersistGate } from "redux-persist/integration/react";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes/routes.tsx";
-import { Toaster } from "react-hot-toast";
-import {  HelmetProvider } from "react-helmet-async";
+
+import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./components/ThemeProvider.tsx";
+import App from "./App.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <HelmetProvider>
-          <RouterProvider router={router} />
+          <App />
         </HelmetProvider>
       </PersistGate>
     </Provider>
-    <Toaster position="bottom-center" reverseOrder={false} />
   </ThemeProvider>
 );

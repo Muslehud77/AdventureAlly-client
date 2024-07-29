@@ -118,12 +118,13 @@
 }
 
 
-.main{
+body{
+  position: relative;
   cursor: none !important;
 }
-.main a{
+body a{
   cursor: none !important;
 }
-.main button{
+body button{
   cursor: none !important;
 }

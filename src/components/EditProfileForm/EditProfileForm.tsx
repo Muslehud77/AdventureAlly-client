@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom/client";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Label } from "../ui/label";
 import {
@@ -13,7 +14,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { useUser } from "../../hooks/useUser";
-import { useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn, TUser } from "../../redux/features/auth/authSlice";
 import { useUpdateUserMutation } from "../../redux/features/user/userApi";
@@ -21,6 +22,7 @@ import { sendImageToBB } from "../../utils/sendImageToBB";
 import { useAppDispatch } from "../../redux/hooks";
 import toast from "react-hot-toast";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
+import CustomCursor from "../CustomCursor/CustomCursor";
 
 type ProfileFormValues = {
   username?: string;
@@ -30,6 +32,7 @@ type ProfileFormValues = {
 };
 
 const EditProfileForm = () => {
+  const dialog = useRef(null)
   const { updateUser, updatingUser: isLoading } = useUpdateUser();
 
   const { user } = useUser();
@@ -38,8 +41,6 @@ const EditProfileForm = () => {
   const [imageData, setImageData] = useState<File | null>(null);
   const [imageLink, setImageLink] = useState<string | null>(null);
   const [submitDisabled, setSubmitDisabled] = useState(true);
-
- 
 
   const {
     register,
@@ -118,8 +119,10 @@ const EditProfileForm = () => {
     }
   };
 
+ 
+
   return (
-    <Dialog  open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger>
