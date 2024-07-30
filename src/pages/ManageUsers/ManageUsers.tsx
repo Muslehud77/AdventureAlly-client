@@ -14,7 +14,7 @@ import ManageUsersTable from "./ManageUsersTable";
 import { Helmet } from "react-helmet-async";
 export default function Component() {
 
-  const {data,isLoading} = useGetAllUsersQuery(undefined)
+  const { data, isLoading, isError } = useGetAllUsersQuery(undefined);
 
 
 
@@ -25,7 +25,7 @@ const users = data?.data
       <Helmet>
         <title>Dashboard | Manage Users</title>
       </Helmet>
-      {isLoading ? (
+      {isLoading || isError || !data? (
         <ManageUsersSkeleton />
       ) : (
         <Card className="w-full !bg-secondary ">

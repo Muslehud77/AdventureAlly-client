@@ -12,7 +12,7 @@ import ManageOrdersTable from "../../components/ManageOrders/ManageOrdersTable";
 import { Helmet } from "react-helmet-async";
 
 export default function Component() {
-  const { data: orders, isLoading } = useGetAllCartsQuery(undefined);
+  const { data: orders, isLoading, isError } = useGetAllCartsQuery(undefined);
 
   return (
     <Card className="!bg-secondary">
@@ -26,7 +26,11 @@ export default function Component() {
         </CardDescription>
       </CardHeader>
 
-      {isLoading ? <SkeletonTable /> : <ManageOrdersTable orders={orders} />}
+      {isLoading || isError || !orders ? (
+        <SkeletonTable />
+      ) : (
+        <ManageOrdersTable orders={orders} />
+      )}
     </Card>
   );
 }

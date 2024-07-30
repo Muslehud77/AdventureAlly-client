@@ -28,7 +28,7 @@ export default function Statistics() {
       <Helmet>
         <title>Dashboard | Statistics</title>
       </Helmet>
-      {isLoading && !isError ? (
+      {isLoading || isError || !data ? (
         <StatisticsSkeleton />
       ) : (
         <div className="flex flex-col min-h-screen bg-secondary rounded-xl">

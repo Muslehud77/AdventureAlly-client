@@ -31,7 +31,7 @@ export default function MyOrders() {
   const { addCart, loading } = useAddCartToDB();
   const [cartUploadInit, setCartUploadInit] = useState(false);
   
-  const { data, isLoading } = useMyCartsQuery(undefined);
+  const { data, isLoading, isError } = useMyCartsQuery(undefined);
   const [queries] = useSearchParams();
   const orders = data?.data as TOrders;
 
@@ -68,7 +68,7 @@ export default function MyOrders() {
     <div className="container mx-auto px-4 md:px-6 py-8 text-foreground">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
 
-      {loading || isLoading ? (
+      {loading || isLoading || isError ? (
         <MyCartSkeleton />
       ) : (
         <div className="grid gap-6">

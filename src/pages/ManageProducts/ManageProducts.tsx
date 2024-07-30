@@ -26,7 +26,8 @@ export default function ManageProducts() {
   const [filter, setFilter] = useState<TQuery>({ page, limit: 8 });
  
 
-  const { data, isLoading, isFetching } = useGetAllProductsQuery(filter);
+  const { data, isLoading, isFetching, isError } =
+    useGetAllProductsQuery(filter);
 
   const meta = data?.meta;
 
@@ -76,7 +77,7 @@ export default function ManageProducts() {
           />
         </div>
       </div>
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || isError || !data ? (
         <ManageProductsSkeleton />
       ) : (
         <>

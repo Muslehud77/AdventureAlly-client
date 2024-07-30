@@ -6,7 +6,7 @@ import { CustomerFavoriteCards } from "./CustomerFavoriteCards";
 import AnimatedButton from "../AnimatedButton/AnimatedButton";
 
 const CustomerFavorites = () => {
-  const { data, isLoading } = useGetBestSellingQuery(undefined);
+  const { data, isLoading, isError } = useGetBestSellingQuery(undefined);
 
   return (
     <div className="h-full text-foreground rounded-t-3xl outline">
@@ -25,7 +25,7 @@ const CustomerFavorites = () => {
           </p>
         </div>
 
-        {isLoading ? (
+        {isLoading || isError || !data ? (
           <CustomerFavoriteCardsSkeleton />
         ) : (
           <CustomerFavoriteCards products={data?.data} />

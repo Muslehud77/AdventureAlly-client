@@ -24,7 +24,7 @@ import { Helmet } from "react-helmet-async";
 
 
 export default function DeletedProducts() {
-  const { data, isLoading } = useGetDeletedProductsQuery(undefined);
+  const { data, isLoading, isError } = useGetDeletedProductsQuery(undefined);
 
   return (
     <Card className="!bg-secondary">
@@ -37,7 +37,7 @@ export default function DeletedProducts() {
           View and recover your deleted products.
         </CardDescription>
       </CardHeader>
-      {isLoading ? (
+      {isLoading || isError || !data ? (
         <SkeletonTable />
       ) : (
         <CardContent className="p-0">

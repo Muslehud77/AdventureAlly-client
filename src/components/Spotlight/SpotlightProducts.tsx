@@ -7,15 +7,20 @@ import { FaArrowRight } from "react-icons/fa6";
 
 type SpotlightProps = {
   products: TProduct[];
-  isLoading:boolean
+  isLoading: boolean;
+  isError: boolean;
 };
 
-const SpotlightProducts = ({ products, isLoading }: SpotlightProps) => {
+const SpotlightProducts = ({
+  products,
+  isLoading,
+  isError,
+}: SpotlightProps) => {
   const { mouseLeaveCursorResize } = useCursorController();
 
   return (
     <div className="flex flex-wrap w-full justify-center md:justify-between gap-10 items-center text-white mb-4">
-      {isLoading ? (
+      {isLoading || isError || !products ? (
         <SpotlightSkeleton />
       ) : (
         products.map((product: TProduct) => (

@@ -1,7 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import Banner from "./Banner";
 import Spotlight from "./Spotlight";
-import CustomerFavorites from "../../components/CustomerFavourite/CustomerFavorites";
+import CustomerFavorites from "../../components/CustomerFavorite/CustomerFavorite";
+import CustomerReview from "./CustomerReview";
+
 
 const Home = () => {
   return (
@@ -12,6 +14,7 @@ const Home = () => {
       <Banner />
       <Spotlight />
       <CustomerFavorites />
+      <CustomerReview/>
     </div>
   );
 };

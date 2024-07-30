@@ -103,7 +103,8 @@ export default function AllProducts() {
     };
   }, [page, sort, range, searchTerm, selectedCategories]);
 
-  const { data, isLoading, isFetching} = useGetAllProductsQuery(filter);
+  const { data, isLoading, isFetching, isError } =
+    useGetAllProductsQuery(filter);
 
   const products = data?.data;
   const meta = data?.meta;
@@ -132,7 +133,7 @@ export default function AllProducts() {
         clearFilters={clearFilters}
       />
 
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || isError || !data ? (
         <SkeletonCards />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

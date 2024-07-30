@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useAppSelector } from "../../redux/hooks";
@@ -52,9 +52,14 @@ const CustomCursor = () => {
 
       // Attach event listeners to links within bodyRef
       const links = bodyElement.querySelectorAll("a");
+      const inputs = bodyElement.querySelectorAll("input");
       links?.forEach((link) => {
         link.addEventListener("mouseenter", mouseEnterColorBlend);
         link.addEventListener("mouseleave", mouseLeaveCursorDefault);
+      });
+      inputs?.forEach((input) => {
+        input.addEventListener("mouseenter", mouseEnterColorBlend);
+        input.addEventListener("mouseleave", mouseLeaveCursorDefault);
       });
 
       // Cleanup function to remove event listeners
@@ -63,6 +68,10 @@ const CustomCursor = () => {
         links?.forEach((link) => {
           link.removeEventListener("mouseenter", mouseEnterColorBlend);
           link.removeEventListener("mouseleave", mouseLeaveCursorDefault);
+        });
+        inputs?.forEach((input) => {
+          input.removeEventListener("mouseenter", mouseEnterColorBlend);
+          input.removeEventListener("mouseleave", mouseLeaveCursorDefault);
         });
       };
     }

@@ -7,7 +7,7 @@ import AnimatedButton from "../../components/AnimatedButton/AnimatedButton";
 const Spotlight = () => {
   
 
-  const { data, isLoading } = useGetRandomThreeQuery(undefined, {
+  const { data, isLoading ,isError} = useGetRandomThreeQuery(undefined, {
     pollingInterval: 10000,
   });
 
@@ -33,8 +33,16 @@ const Spotlight = () => {
             must-have item today!
           </p>
         </div>
-       <SpotlightProducts isLoading={isLoading} products={data?.data}/>
-       <AnimatedButton title="Want more?" route="/all-products" justify="end"/>
+        <SpotlightProducts
+          isLoading={isLoading}
+          products={data?.data}
+          isError={isError}
+        />
+        <AnimatedButton
+          title="Want more?"
+          route="/all-products"
+          justify="end"
+        />
       </div>
     </div>
   );
