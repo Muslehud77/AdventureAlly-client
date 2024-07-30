@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import Spotlight from "./Spotlight";
 import CustomerFavorites from "../../components/CustomerFavorite/CustomerFavorite";
 import CustomerReview from "./CustomerReview";
+import ShopByCategory from "./ShopByCategory";
 
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
       </Helmet>
       <Banner />
       <Spotlight />
+      <ShopByCategory/>
       <CustomerFavorites />
       <CustomerReview/>
     </div>

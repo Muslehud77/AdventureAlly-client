@@ -6,7 +6,7 @@ const CustomerReview = () => {
     const {actualTheme} = useTheme()
 
   return (
-    <div className="h-full  text-foreground bg-background rounded-t-3xl outline">
+    <div className="h-full  text-foreground bg-background rounded-t-3xl">
       <div className="text-center pt-10">
         <h1 className="text-3xl md:text-5xl font-light  mb-4">
           Hear from Our Happy Campers

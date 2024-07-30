@@ -1,11 +1,13 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect,useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { useGetAllProductsQuery } from "../../redux/features/product/productApi";
+
 import SearchAndFiltering from "./SearchAndFiltering";
 import { Paginate } from "../../components/Pagination/Pagination";
 import SkeletonCards from "../../components/Skeleton/SkeletonProducts";
 import scrollToTop from "../../utils/scrollToTop";
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
+import useAllProductsQuery from "../../hooks/useAllProductsQuery";
 
 export type TProduct = {
   _id?: string;
@@ -20,91 +22,75 @@ export type TProduct = {
   sales?: number;
 };
 
-type TQuery = {
-  searchTerm?: string;
-  page: number;
-  limit: number;
-  sort?: string;
-  priceRange?: number;
-  category?: string;
-};
+
 
 export default function AllProducts() {
-  
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState<TQuery>({ page, limit: 8 });
-  const [sort, setSort] = useState("");
-  const [range, setRange] = useState([0]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+ 
+  const [searchParams] = useSearchParams();
+
+  const {
+    page,
+    setPage,
+    sort,
+    setSort,
+    range,
+    setRange,
+    searchTerm,
+    setSearchTerm,
+    selectedCategories,
+    setSelectedCategories,
+    queryBuilder,
+    product,
+  } = useAllProductsQuery();
 
   const isInitialRender = useRef(true);
 
-  useEffect(()=>{
+  useEffect(() => {
     scrollToTop();
-  },[])
-
+  }, []);
 
   useEffect(() => {
+   
+    const pageParam = searchParams.get("page");
+    const sortParam = searchParams.get("sort");
+    const rangeParam = searchParams.get("priceRange");
+    const searchTermParam = searchParams.get("searchTerm");
+    const categoryParam = searchParams.get("category");
+   
+
+
     if (isInitialRender.current) {
       isInitialRender.current = false;
-     
-      return;
+
+      setPage(pageParam ? pageParam : "1");
+      setSort(sortParam || "");
+      setRange(rangeParam ? [Number(rangeParam)] : [0]);
+      setSearchTerm(searchTermParam || "");
+      setSelectedCategories(categoryParam ? categoryParam.split(",") : []);
+
     }
 
 
-    const handler = setTimeout(() => {
-      let categories = "";
-       
-      if (selectedCategories.length > 0) {
-        selectedCategories.forEach((c, index) => {
-          categories += c;
-          if (index < selectedCategories.length - 1) {
-            categories += ",";
-          }
-        });
-      }
+    if (
+      pageParam ||
+      sortParam ||
+      rangeParam ||
+      searchTermParam ||
+      categoryParam
+    ) {
+      queryBuilder();
+    } else {
+      const handler = setTimeout(queryBuilder, 1000);
 
-      const query: TQuery = {
-        page,
-        limit: 8,
+      return () => {
+        clearTimeout(handler);
       };
+    }
 
-      if (searchTerm) {
-        query["searchTerm"] = searchTerm;
-      }
-
-      if (sort) {
-        query["sort"] = sort;
-      }
-
-      if (range[0] > 0) {
-        query["priceRange"] = range[0];
-      }
-
-      if (categories) {
-        query["category"] = categories;
-        if(filter.category !== categories){
-           query["page"] = 1;
-        }
-      }
-
-      if(filter!==query){
-         setFilter(query);
-         scrollToTop()
-      }
-      
-      
-    }, 1000);
-
-   
-    return () => {
-      clearTimeout(handler);
-    };
+  
   }, [page, sort, range, searchTerm, selectedCategories]);
 
-  const { data, isLoading, isFetching, isError } =
-    useGetAllProductsQuery(filter);
+  const { data, isLoading, isFetching, isError } = product;
 
   const products = data?.data;
   const meta = data?.meta;

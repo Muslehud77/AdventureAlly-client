@@ -14,7 +14,7 @@ const Spotlight = () => {
   
 
   return (
-    <div className="h-full  text-foreground bg-background rounded-t-3xl outline">
+    <div className="h-full  text-foreground bg-background rounded-t-3xl">
       <div className="container mx-auto py-10">
         <div className="flex flex-wrap w-full mb-20">
           <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
