@@ -160,7 +160,7 @@ const Register = () => {
                   })}
                 />
                 <div
-                  className="absolute right-4 top-2 cursor-pointer"
+                  className="absolute right-4 top-2 cursor-pointer md:cursor-none"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -210,7 +210,7 @@ const Register = () => {
             />
             <label
               htmlFor="profile-image"
-              className="flex flex-col items-center justify-center gap-2 cursor-pointer"
+              className="flex flex-col items-center justify-center gap-2 cursor-pointer md:cursor-none"
             >
               {imageData ? (
                 <>

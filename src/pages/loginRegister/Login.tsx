@@ -11,8 +11,8 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/logos/black-without-branding.png"
-import whiteLogo from "../../assets/logos/white-without-branding.png"
+import logo from "../../assets/logos/black-without-branding.png";
+import whiteLogo from "../../assets/logos/white-without-branding.png";
 import { IoMdHome } from "react-icons/io";
 import { Helmet } from "react-helmet-async";
 import { useTheme } from "../../components/ThemeProvider";
@@ -31,7 +31,7 @@ const LoginPage = () => {
     defaultValues: { email: "sheikmuslehud@gmail.com", password: "hello123" },
   });
 
-  const {actualTheme} = useTheme()
+  const { actualTheme } = useTheme();
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -73,7 +73,10 @@ const LoginPage = () => {
       <div className="mx-auto w-full max-w-md space-y-8">
         <div className="relative text-center space-y-4">
           <div className="flex flex-col justify-center items-center">
-            <img src={actualTheme==="dark"?whiteLogo:logo} className="h-20" />
+            <img
+              src={actualTheme === "dark" ? whiteLogo : logo}
+              className="h-20"
+            />
             <h2 className="text-center mt-2 text-3xl font-bold tracking-tight text-foreground">
               Sign In
             </h2>
@@ -134,7 +137,7 @@ const LoginPage = () => {
                 {...register("password", { required: "Password is required" })}
               />
               <div
-                className="absolute right-3 top-2 cursor-pointer"
+                className="absolute right-3 top-2 cursor-pointer md:cursor-none"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (

@@ -6,15 +6,13 @@ const CustomerReview = () => {
     const {actualTheme} = useTheme()
 
   return (
-    <div className="h-full  text-foreground bg-background rounded-t-3xl">
+    <div className="h-full  text-foreground bg-background rounded-t-3xl pb-10">
       <div className="text-center pt-10">
         <h1 className="text-3xl md:text-5xl font-light  mb-4">
           Hear from Our Happy Campers
         </h1>
         <p className="text-xl font-light leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
-          Read real reviews from fake campers who haven't tested our gear. Discover why
-          outdoor enthusiasts trust and love our products. Find your perfect
-          match for your next adventure!
+          Read real reviews from fake campers who haven't tested our gear. Lol
         </p>
         <div className="flex mt-6 justify-center">
           <div className="w-16 h-1 rounded-full bg-foreground inline-flex"></div>

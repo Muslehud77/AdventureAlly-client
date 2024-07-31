@@ -4,6 +4,7 @@ import Spotlight from "./Spotlight";
 import CustomerFavorites from "../../components/CustomerFavorite/CustomerFavorite";
 import CustomerReview from "./CustomerReview";
 import ShopByCategory from "./ShopByCategory";
+import FaqSection from "./FaqSection";
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
       <ShopByCategory/>
       <CustomerFavorites />
       <CustomerReview/>
+      <FaqSection/>
     </div>
   );
 };

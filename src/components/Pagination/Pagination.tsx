@@ -27,7 +27,7 @@ export function Paginate({ meta, setPage }: TPaginateProps) {
 
   return (
     <Pagination>
-      <PaginationContent className="cursor-pointer">
+      <PaginationContent className="cursor-pointer md:cursor-none ">
         {pageNumber > 1 && (
           <PaginationItem>
             <PaginationPrevious onClick={() => setPage(pageNumber - 1)} />

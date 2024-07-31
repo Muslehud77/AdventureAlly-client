@@ -210,7 +210,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Label
               htmlFor="product-image"
-              className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground hover:border-gray-500 cursor-pointer transition-colors"
+              className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground hover:border-gray-500 cursor-pointer md:cursor-none md:cursor-none transition-colors"
             >
               <LuUpload className="w-6 h-6 text-muted-foreground" />
             </Label>
@@ -236,7 +236,7 @@ export default function AddProduct() {
 
                   <div className="absolute w-full h-full inset-0 flex justify-end items-end p-3 text-3xl text-black">
                     <RiDeleteBin6Line
-                      className="hover:text-gray-500 animate-pulse cursor-pointer duration-900"
+                      className="hover:text-gray-500 animate-pulse cursor-pointer md:cursor-none duration-900"
                       onClick={() => handleDeleteImage(image)}
                     />
                   </div>
@@ -250,7 +250,7 @@ export default function AddProduct() {
                       onClick={() => handleMainImage(image)}
                       className="group"
                     >
-                      <div className="group-hover:opacity-100 text-center transition-all duration-300 opacity-0 absolute w-full top-0 text-sm p-1 text-gray-200 bg-black/50 cursor-pointer">
+                      <div className="group-hover:opacity-100 text-center transition-all duration-300 opacity-0 absolute w-full top-0 text-sm p-1 text-gray-200 bg-black/50 cursor-pointer md:cursor-none">
                         <span>Make it main image</span>
                       </div>
                     </div>

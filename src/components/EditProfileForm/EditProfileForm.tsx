@@ -32,7 +32,7 @@ type ProfileFormValues = {
 };
 
 const EditProfileForm = () => {
-  const dialog = useRef(null)
+  const dialog = useRef(null);
   const { updateUser, updatingUser: isLoading } = useUpdateUser();
 
   const { user } = useUser();
@@ -119,8 +119,6 @@ const EditProfileForm = () => {
     }
   };
 
- 
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -204,7 +202,10 @@ const EditProfileForm = () => {
                 variant="outline"
                 size="sm"
               >
-                <Label htmlFor="profile-image" className="cursor-pointer">
+                <Label
+                  htmlFor="profile-image"
+                  className="cursor-pointer md:cursor-none"
+                >
                   Change
                 </Label>
               </Button>

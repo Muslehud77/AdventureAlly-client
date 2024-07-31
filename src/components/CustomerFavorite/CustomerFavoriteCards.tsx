@@ -29,7 +29,7 @@ export const CustomerFavoriteCards = ({ products } : {products:TProduct[]}) => {
               key={product._id}
               className={`col-span-12 ${colSpan(i)}`}
             >
-              <BounceCard className="shadow-3xl">
+              <BounceCard >
                 <div className="w-full text-white flex justify-center items-center relative">
                   <span className="absolute bg-black top-0 right-0 duration-500 opacity-0 group-hover:opacity-100 group-hover:p-2 rounded-full group-hover:-rotate-45">
                     <FaArrowRight />
@@ -61,7 +61,7 @@ const BounceCard = ({
   return (
     <motion.div
       whileHover={{ scale: 0.95, rotate: "-1deg" }}
-      className={`group relative min-h-[300px] flex justify-center items-center  overflow-hidden rounded-2xl bg-white p-8 ${className}`}
+      className={`group relative min-h-[300px] flex justify-center items-center  overflow-hidden rounded-2xl bg-white p-8 drop-shadow-md ${className}`}
     >
       {children}
     </motion.div>
