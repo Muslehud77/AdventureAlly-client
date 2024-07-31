@@ -21,7 +21,7 @@ const AnimatedButton = ({ route, title, justify }: AnimatedButtonProps) => {
     >
       <Link
         to={route as string}
-        className="bg-background py-3 px-5 pr-8 relative group uppercase rounded overflow-hidden "
+        className="bg-secondary py-3 px-5 pr-8 relative group uppercase rounded overflow-hidden drop-shadow-xl"
       >
         <div className="absolute bg-black dark:bg-white overflow-hidden text-white dark:text-black text-center w-full h-full duration-500 inset-0 flex justify-center items-center pr-3 translate-y-44 rotate-45 group-hover:translate-y-0 group-hover:rotate-0">
           <span>{title}</span>

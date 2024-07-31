@@ -80,7 +80,7 @@ const CustomCursor = () => {
   return (
     <div
       ref={cursor}
-      className={`cursor top-0 z-[999] fixed rounded-full size-0 bg-accent-foreground pointer-events-none ${
+      className={`cursor hidden lg:block top-0 z-[999] fixed rounded-full size-0 bg-accent-foreground pointer-events-none ${
         !defaultColor ? "mix-blend-difference" : "bg-foreground"
       }`}
     ></div>

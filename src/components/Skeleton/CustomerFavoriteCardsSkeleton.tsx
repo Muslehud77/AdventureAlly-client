@@ -37,16 +37,14 @@ const BounceCardSkeleton = () => {
   return (
     <motion.div
       whileHover={{ scale: 0.95, rotate: "-1deg" }}
-      className="group relative min-h-[300px] flex justify-center items-center overflow-hidden rounded-2xl bg-white p-8"
+      className="group relative min-h-[300px] flex justify-center items-center overflow-hidden rounded-2xl bg-white "
     >
-      <div className="w-full text-white flex justify-center items-center relative">
-        <Skeleton className="h-96 w-full" />
-      </div>
-      <div className="absolute bottom-0 left-4 right-4 top-64 translate-y-8 rounded-t-2xl bg-black/90 p-4 transition-transform duration-[250ms] group-hover:translate-y-4 group-hover:rotate-[2deg] text-white">
+      <Skeleton className="h-96 w-full" />
+      <div className="absolute bottom-0 left-4 right-4 top-52 translate-y-8 rounded-t-2xl bg-black/90 p-4 transition-transform duration-200 group-hover:translate-y-4 group-hover:rotate-[2deg] text-white">
         <div className="text-center space-y-2">
-          <Skeleton className="h-6 w-1/2 mx-auto" />
-          <Skeleton className="h-4 w-1/4 mx-auto" />
-          <Skeleton className="h-6 w-1/3 mx-auto" />
+          <Skeleton className="h-6 w-1/2 mx-auto bg-white" />
+          <Skeleton className="h-4 w-1/4 mx-auto bg-white" />
+          <Skeleton className="h-6 w-1/3 mx-auto bg-white" />
         </div>
       </div>
     </motion.div>

@@ -2,15 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import bannerVideo from "../../assets/banner/banner_video_3.mp4";
 import gsap from "gsap";
 import logo from "../../assets/logos/white-without-branding.png";
-import { useAppDispatch } from "../../redux/hooks";
-import { cursorControl } from "../../redux/features/cursor/cursorSlice";
+
 import ReactPlayer from "react-player";
 import useCursorController from "../../hooks/useCursorController";
 
 const Banner = () => {
   const headingContainer = useRef(null);
   const [index, setIndex] = useState(0);
-  const dispatch = useAppDispatch();
+
   const { mouseEnterControlBoth, mouseLeaveControlBoth } =
     useCursorController();
 
@@ -103,16 +102,11 @@ const Banner = () => {
   };
 
   return (
-    <div className="max-h-screen relative">
-      <ReactPlayer
-        playing
-        url={bannerVideo}
-        width="100%"
-        height="100vh"
-        className="banner"
-        loop
-        muted
-      />
+    <div className="h-screen relative  overflow-hidden">
+   
+      <video className="h-[120vh] w-full object-cover"  autoPlay loop muted playsInline controls={false} >
+        <source src={bannerVideo} type="video/mp4"/>
+      </video>
       <div className="absolute duration-300 inset-0 h-full w-full bg-background/10 dark:bg-background/50"></div>
       <div
         className={`absolute inset-0 h-full w-full flex justify-start items-center container mx-auto`}
