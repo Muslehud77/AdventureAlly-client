@@ -5,6 +5,7 @@ import CustomerFavorites from "../../components/CustomerFavorite/CustomerFavorit
 import CustomerReview from "./CustomerReview";
 import ShopByCategory from "./ShopByCategory";
 import FaqSection from "./FaqSection";
+import ExploreOutdoors from "./ExploreOutdoors";
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
       <Spotlight />
       <ShopByCategory/>
       <CustomerFavorites />
+      <ExploreOutdoors/>
       <CustomerReview/>
       <FaqSection/>
     </div>
