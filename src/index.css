@@ -128,3 +128,9 @@ body a{
 body button{
   cursor: none !important;
 }
+
+@media (max-width: 768px) {
+  body, body a, body button {
+    cursor: auto !important;
+  }
+}

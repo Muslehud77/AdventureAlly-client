@@ -87,7 +87,7 @@ export default function Navbar() {
           onMouseEnter={mouseEnterCursorResize}
           onMouseLeave={mouseLeaveCursorResize}
           className={`absolute top-3 right-2 z-50  md:hidden ${
-            sideNav ? "text-white" : "text-muted-foreground"
+            sideNav ? "text-white" : "text-foreground"
           } `}
         >
           <Hamburger toggled={sideNav} toggle={setSideNav} />

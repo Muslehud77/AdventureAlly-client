@@ -19,6 +19,7 @@ import scrollToTop from "../../utils/scrollToTop";
 
 
 export default function ProductDetails() {
+  
   const [image, setImage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const {pathname} = useLocation()
@@ -26,7 +27,7 @@ export default function ProductDetails() {
 
   const { id } = useParams();
 
-  const { data, isFetching, isLoading ,refetch} = useGetSingleProductQuery(id);
+  const { data, isLoading ,refetch} = useGetSingleProductQuery(id);
 
   const product = data?.data as TProduct;
 
@@ -46,10 +47,14 @@ export default function ProductDetails() {
      if (product) {
        refetch();
      }
-     scrollToTop();
+     window.scrollTo({
+       top: 0,
+       left: 0,
+       behavior: "smooth",
+     });
   }, [product]);
 
-
+  
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(1, parseInt(e.target.value));
@@ -196,13 +201,14 @@ export default function ProductDetails() {
                   />
                 </div>
                 <Button
-                  disabled={!product.stock >= 1}
+                  disabled={product.stock <= 1}
                   type="button"
                   onClick={addToCart}
                   size="lg"
                 >
                   Add to cart
                 </Button>
+              
               </form>
             ) : (
               <>

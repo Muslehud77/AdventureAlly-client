@@ -6,7 +6,11 @@ const CustomerReview = () => {
     const {actualTheme} = useTheme()
 
   return (
-    <div className="h-full  text-foreground bg-background rounded-t-3xl pb-10">
+    <div
+      data-scroll
+      data-scroll-speed="-.1"
+      className="h-full  text-foreground bg-background rounded-t-3xl pb-10"
+    >
       <div className="text-center pt-10">
         <h1 className="text-3xl md:text-5xl font-light  mb-4">
           Hear from Our Happy Campers
@@ -21,9 +25,8 @@ const CustomerReview = () => {
       <div className="pt-14 space-y-5">
         <Marquee
           gradient
-          gradientColor={actualTheme === 'dark' ? "black" : "white"}
+          gradientColor={actualTheme === "dark" ? "black" : "white"}
           gradientWidth={100}
-         
           speed={20}
         >
           <div className="flex gap-3 w-full mr-3">
@@ -56,7 +59,7 @@ const CustomerReview = () => {
         </Marquee>
         <Marquee
           gradient
-          gradientColor={actualTheme === 'dark' ? "black" : "white"}
+          gradientColor={actualTheme === "dark" ? "black" : "white"}
           gradientWidth={100}
           direction="right"
         >
@@ -90,9 +93,8 @@ const CustomerReview = () => {
         </Marquee>
         <Marquee
           gradient
-          gradientColor={actualTheme === 'dark' ? "black" : "white"}
+          gradientColor={actualTheme === "dark" ? "black" : "white"}
           gradientWidth={100}
-         
           speed={10}
         >
           <div className="flex gap-3 w-full mr-3">

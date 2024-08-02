@@ -118,60 +118,62 @@ const ExploreOutdoors = () => {
       onClick={() => setPlay(!play)}
       className="h-[90vh] overflow-hidden w-full relative flex justify-center items-center"
     >
-      <div className="w-full h-full absolute flex justify-center items-center">
-        <img className="w-1/2" src={explore} />
-      </div>
+      <div data-scroll data-scroll-speed="-.7" className="h-full w-full relative flex justify-center items-center">
+        <div className="w-full h-full absolute flex justify-center items-center">
+          <img className="w-10/12" src={explore} />
+        </div>
 
-      <div
-        className={`absolute duration-500 flex gap-5 ${
-          play ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        <div className="size-56 bg-background rounded-full overflow-hidden flex justify-center items-center relative">
-          <h2 className="text-2xl absolute text-background top-[40%] z-40">
-            PLAY
-          </h2>
-          <div className="flex justify-center items-center size-36 bg-foreground rounded-full overflow-hidden eyeball">
-            <div
-              style={{ transform: `rotate(${mouseAngle}deg)` }}
-              className="w-full h-6 "
-            >
-              <div className="bg-background rounded-full w-2/12  h-full"></div>
+        <div
+          className={`absolute duration-500 flex gap-5 ${
+            play ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <div className="size-56 bg-background rounded-full overflow-hidden flex justify-center items-center relative">
+            <h2 className="text-2xl absolute text-background top-[40%] z-40">
+              PLAY
+            </h2>
+            <div className="flex justify-center items-center size-36 bg-foreground rounded-full overflow-hidden eyeball">
+              <div
+                style={{ transform: `rotate(${mouseAngle}deg)` }}
+                className="w-full h-6 "
+              >
+                <div className="bg-background rounded-full w-2/12  h-full"></div>
+              </div>
+            </div>
+          </div>
+          <div className="size-56 bg-background rounded-full overflow-hidden flex justify-center items-center relative">
+            <h2 className="text-2xl absolute text-background top-[40%] z-40">
+              PLAY
+            </h2>
+            <div className="flex justify-center items-center size-36 bg-foreground rounded-full overflow-hidden eyeball">
+              <div
+                style={{ transform: `rotate(${mouseAngle}deg)` }}
+                className="w-full h-6"
+              >
+                <div className="bg-background rounded-full w-2/12  h-full"></div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="size-56 bg-background rounded-full overflow-hidden flex justify-center items-center relative">
-          <h2 className="text-2xl absolute text-background top-[40%] z-40">
-            PLAY
-          </h2>
-          <div className="flex justify-center items-center size-36 bg-foreground rounded-full overflow-hidden eyeball">
-            <div
-              style={{ transform: `rotate(${mouseAngle}deg)` }}
-              className="w-full h-6"
-            >
-              <div className="bg-background rounded-full w-2/12  h-full"></div>
-            </div>
-          </div>
-        </div>
+        <FaPause
+          onMouseEnter={mouseEnterControlBoth}
+          onMouseLeave={mouseLeaveControlBoth}
+          className={`text-7xl duration-500 opacity-0 text-white absolute z-40 ${
+            play ? "hover:opacity-100" : "hidden"
+          }`}
+        />
+        <video
+          className={`absolute h-full w-full object-cover duration-500 ${
+            play ? "opacity-100" : "opacity-0"
+          }`}
+          loop
+          muted
+          playsInline
+          controls={false}
+        >
+          <source src={exploreVideo} type="video/mp4" />
+        </video>
       </div>
-      <FaPause
-        onMouseEnter={mouseEnterControlBoth}
-        onMouseLeave={mouseLeaveControlBoth}
-        className={`text-7xl duration-500 opacity-0 text-white absolute z-40 ${
-          play ? "hover:opacity-100" : "hidden"
-        }`}
-      />
-      <video
-        className={`absolute h-full w-full object-cover duration-500 ${
-          play ? "opacity-100" : "opacity-0"
-        }`}
-        loop
-        muted
-        playsInline
-        controls={false}
-      >
-        <source src={exploreVideo} type="video/mp4" />
-      </video>
     </div>
   );
 };

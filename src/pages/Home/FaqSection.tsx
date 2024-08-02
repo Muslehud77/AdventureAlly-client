@@ -19,7 +19,7 @@ const FaqSection = () => {
           <div className="w-16 h-1 rounded-full bg-foreground inline-flex"></div>
         </div>
       </div>
-      <div className="max-w-5xl mx-auto mt-3">
+      <div className="max-w-5xl px-10 mx-auto mt-3">
         {faq.map((q) => (
           <Accordion key={q.question} type="single" collapsible className="w-full">
             <AccordionItem value="item-1" >

@@ -10,7 +10,11 @@ import { Link } from "react-router-dom";
 
 const ShopByCategory = () => {
   return (
-    <div className="h-full  text-foreground bg-secondary rounded-t-3xl">
+    <div
+      data-scroll
+      data-scroll-speed=".20"
+      className="h-full  text-foreground bg-secondary rounded-t-3xl pb-20"
+    >
       <div className="container mx-auto py-10">
         <div className="flex flex-col md:flex-row-reverse w-full mb-20">
           <div className="lg:w-1/2 w-full mb-6 lg:mb-0 flex flex-col items-end">
