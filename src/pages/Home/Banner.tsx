@@ -3,7 +3,6 @@ import bannerVideo from "../../assets/banner/banner_video_3.mp4";
 import gsap from "gsap";
 import logo from "../../assets/logos/white-without-branding.png";
 
-import ReactPlayer from "react-player";
 import useCursorController from "../../hooks/useCursorController";
 
 const Banner = () => {

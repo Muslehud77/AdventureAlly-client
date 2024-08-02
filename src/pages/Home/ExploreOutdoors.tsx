@@ -1,15 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import exploreVideo from "../../assets/VideoSection/nature.mp4";
 import explore from "../../assets/explore.jpg";
-
+import { FaPause } from "react-icons/fa";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import useCursorController from "../../hooks/useCursorController";
+import { useTheme } from "../../components/ThemeProvider";
 
 gsap.registerPlugin(useGSAP);
 
 const ExploreOutdoors = () => {
+  const { setTheme, actualTheme, theme } = useTheme();
+  const [userTheme, setUserTheme] = useState<"dark" | "system" | "light" | "">(
+    ""
+  );
+  const { mouseEnterControlBoth, mouseLeaveControlBoth } =
+    useCursorController();
+  const [play, setPlay] = useState(false);
   const [mouseAngle, setMouseAngle] = useState(0);
-  const eyes = useRef(null);
+  const container = useRef(null) as any;
 
   const mouseDirection = (e: MouseEvent) => {
     const mouseX = e.clientX;
@@ -79,51 +88,90 @@ const ExploreOutdoors = () => {
       gsap.to(".eyeball", {
         x,
         y,
-        ease: "circ.out",
       });
     },
-    { scope: eyes, dependencies: [mouseAngle] }
+    { scope: container, dependencies: [mouseAngle] }
   );
 
-  return (
-    <div className="h-[90vh] w-full relative flex justify-center items-center">
-      {/* <div className="w-full h-full  flex justify-center items-center">
-        <img className="w-1/2" src={explore} />
-      </div> */}
+  useEffect(() => {
+    const video = container?.current?.querySelector("video");
 
-      <div ref={eyes} className="flex gap-5">
-        <div className="size-56 bg-white rounded-full overflow-hidden flex justify-center items-center">
-          <div className="flex justify-center items-center size-36 bg-black rounded-full overflow-hidden eyeball">
+    if (play) {
+      video?.play();
+      if (actualTheme === "light") {
+        setUserTheme(theme);
+        setTheme("dark");
+      } else {
+        setUserTheme(theme);
+      }
+    } else {
+      video?.pause();
+      if (userTheme) {
+        setTheme(userTheme);
+      }
+    }
+  }, [play]);
+
+  return (
+    <div
+      ref={container}
+      onClick={() => setPlay(!play)}
+      className="h-[90vh] overflow-hidden w-full relative flex justify-center items-center"
+    >
+      <div className="w-full h-full absolute flex justify-center items-center">
+        <img className="w-1/2" src={explore} />
+      </div>
+
+      <div
+        className={`absolute duration-500 flex gap-5 ${
+          play ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="size-56 bg-background rounded-full overflow-hidden flex justify-center items-center relative">
+          <h2 className="text-2xl absolute text-background top-[40%] z-40">
+            PLAY
+          </h2>
+          <div className="flex justify-center items-center size-36 bg-foreground rounded-full overflow-hidden eyeball">
             <div
               style={{ transform: `rotate(${mouseAngle}deg)` }}
               className="w-full h-6 "
             >
-              <div className="bg-white rounded-full w-2/12  h-full"></div>
+              <div className="bg-background rounded-full w-2/12  h-full"></div>
             </div>
           </div>
         </div>
-        <div className="size-56 bg-white rounded-full overflow-hidden flex justify-center items-center">
-          <div className="flex justify-center items-center size-36 bg-black rounded-full overflow-hidden eyeball">
+        <div className="size-56 bg-background rounded-full overflow-hidden flex justify-center items-center relative">
+          <h2 className="text-2xl absolute text-background top-[40%] z-40">
+            PLAY
+          </h2>
+          <div className="flex justify-center items-center size-36 bg-foreground rounded-full overflow-hidden eyeball">
             <div
               style={{ transform: `rotate(${mouseAngle}deg)` }}
               className="w-full h-6"
             >
-              <div className="bg-white rounded-full w-2/12  h-full"></div>
+              <div className="bg-background rounded-full w-2/12  h-full"></div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* <video
-        className="h-[120vh] w-full object-cover"
-        
+      <FaPause
+        onMouseEnter={mouseEnterControlBoth}
+        onMouseLeave={mouseLeaveControlBoth}
+        className={`text-7xl duration-500 opacity-0 text-white absolute z-40 ${
+          play ? "hover:opacity-100" : "hidden"
+        }`}
+      />
+      <video
+        className={`absolute h-full w-full object-cover duration-500 ${
+          play ? "opacity-100" : "opacity-0"
+        }`}
         loop
         muted
         playsInline
         controls={false}
       >
         <source src={exploreVideo} type="video/mp4" />
-      </video> */}
+      </video>
     </div>
   );
 };
