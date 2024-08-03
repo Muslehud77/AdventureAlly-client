@@ -11,6 +11,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef, useState } from "react";
 import { TUser } from "../../redux/features/auth/authSlice";
 import { TCart } from "../../redux/features/cart/cartSlice";
+import Headroom from 'react-headroom'
 
 import { Sling as Hamburger } from "hamburger-react";
 
@@ -67,56 +68,58 @@ export default function Navbar() {
   );
 
   return (
-    <header
-      ref={navBar}
-      className={`fixed z-50 flex duration-500 w-full items-center  px-4 md:px-6 ${
-        pathname === "/" ? "" : "bg-background"
-      }`}
-    >
-      {pathname !== "/" && (
-        <Link to="/" className="mr-6 flex items-center">
-          <img
-            src={actualTheme === "dark" ? whiteLogo : logo}
-            className="w-20"
-          />
-          <span className="sr-only">AdventureAlly</span>
-        </Link>
-      )}
-      <nav className="ml-auto flex items-center gap-4 md:gap-6">
-        <div
-          onMouseEnter={mouseEnterCursorResize}
-          onMouseLeave={mouseLeaveCursorResize}
-          className={`absolute top-3 right-2 z-50  md:hidden ${
-            sideNav ? "text-white" : "text-foreground"
-          } `}
-        >
-          <Hamburger toggled={sideNav} toggle={setSideNav} />
-        </div>
-        <div
-          ref={sideNavBar}
-          className={`fixed inset-0 bg-black/90 ${
-            sideNav ? "flex" : "hidden"
-          } justify-center items-center z-40`}
-        >
-          <div className="flex flex-col justify-center items-center gap-10">
-            <NavbarMenus user={user as TUser} cart={cart} sideNav={sideNav} />
-            <NavRoutes
-              pathname={pathname}
-              sideNav={sideNav}
-              setSideNav={setSideNav}
+    <Headroom>
+      <header
+        ref={navBar}
+        className={`relative z-50 flex duration-500 w-full items-center  px-4 md:px-6 ${
+          pathname === "/" ? "" : "bg-background"
+        }`}
+      >
+        {pathname !== "/" && (
+          <Link to="/" className="mr-6 flex items-center">
+            <img
+              src={actualTheme === "dark" ? whiteLogo : logo}
+              className="w-20"
             />
-          </div>
-        </div>
-        {!sideNav && (
-          <div className="w-full flex justify-center items-center px-4 py-5 gap-5">
-            <div className=" justify-center items-center gap-6 hidden md:flex">
-              <NavRoutes pathname={pathname} />
-            </div>
-            <NavbarMenus user={user as TUser} cart={cart} />
-          </div>
+            <span className="sr-only">AdventureAlly</span>
+          </Link>
         )}
-      </nav>
-    </header>
+        <nav className="ml-auto flex items-center gap-4 md:gap-6">
+          <div
+            onMouseEnter={mouseEnterCursorResize}
+            onMouseLeave={mouseLeaveCursorResize}
+            className={`absolute top-3 right-2 z-50  md:hidden ${
+              sideNav ? "text-white" : "text-foreground"
+            } `}
+          >
+            <Hamburger toggled={sideNav} toggle={setSideNav} />
+          </div>
+          <div
+            ref={sideNavBar}
+            className={`fixed inset-0 bg-black/90 ${
+              sideNav ? "flex" : "hidden"
+            } justify-center items-center z-40`}
+          >
+            <div className="flex flex-col justify-center items-center gap-10">
+              <NavbarMenus user={user as TUser} cart={cart} sideNav={sideNav} />
+              <NavRoutes
+                pathname={pathname}
+                sideNav={sideNav}
+                setSideNav={setSideNav}
+              />
+            </div>
+          </div>
+          {!sideNav && (
+            <div className="w-full flex justify-center items-center px-4 py-5 gap-5">
+              <div className=" justify-center items-center gap-6 hidden md:flex">
+                <NavRoutes pathname={pathname} />
+              </div>
+              <NavbarMenus user={user as TUser} cart={cart} />
+            </div>
+          )}
+        </nav>
+      </header>
+    </Headroom>
   );
 }
 

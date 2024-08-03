@@ -101,7 +101,7 @@ const Banner = () => {
   };
 
   return (
-    <div data-scroll data-scroll-container data-scroll-speed="-.8" className="h-screen relative  overflow-hidden">
+    <div data-scroll data-scroll-container data-scroll-speed="-.8" className="h-[101vh] -mt-20 relative  overflow-hidden">
    
       <video className="h-[120vh] w-full object-cover"  autoPlay loop muted playsInline controls={false} >
         <source src={bannerVideo} type="video/mp4"/>

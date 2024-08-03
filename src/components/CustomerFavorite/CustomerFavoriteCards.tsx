@@ -34,7 +34,7 @@ export const CustomerFavoriteCards = ({ products } : {products:TProduct[]}) => {
                   <span className="absolute bg-black top-0 right-0 duration-500 opacity-0 group-hover:opacity-100 group-hover:p-2 rounded-full group-hover:-rotate-45">
                     <FaArrowRight />
                   </span>
-                  <img src={(product.images as string[])[0]} className="h-96" />
+                  <img src={(product.images as string[])[0]} className="h-96 object-cover" />
                 </div>
                 <div className="absolute bottom-0 left-4 right-4 top-64 translate-y-8 rounded-t-2xl bg-black/90 p-4 transition-transform duration-200 group-hover:translate-y-4 group-hover:rotate-[2deg] text-white">
                   <div className="text-center">

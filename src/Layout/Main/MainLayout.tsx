@@ -13,9 +13,7 @@ function MainLayout() {
 
       <Navbar />
       <div
-        className={`flex-1 transition all duration-300 ${
-          pathname === "/" ? "" : "mt-16"
-        }`}
+        className={`flex-1 transition all duration-300 `}
       >
         <Outlet />
       </div>

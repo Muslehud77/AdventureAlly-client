@@ -3,6 +3,8 @@ import Contact from "./Contact";
 import MeetOurTeam from "./MeetOurTeam";
 import scrollToTop from "../../utils/scrollToTop";
 import GetInTouch from "./GetInTouch";
+import Vision from "./Vision";
+import { Helmet } from "react-helmet-async";
 
 const About = () => {
 
@@ -12,9 +14,13 @@ const About = () => {
 
   return (
     <>
-     <MeetOurTeam/>
-     <Contact/>
-     <GetInTouch/>
+      <Helmet>
+        <title>AdventureAlly | Contact</title>
+      </Helmet>
+      <MeetOurTeam />
+      <Vision />
+      <Contact />
+      <GetInTouch />
     </>
   );
 };

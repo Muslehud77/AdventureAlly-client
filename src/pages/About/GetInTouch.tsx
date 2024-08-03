@@ -2,17 +2,7 @@ const GetInTouch = () => {
   return (
     <section className="bg-white text-foreground dark:bg-gray-900">
       <div className="container px-6 py-12 mx-auto">
-        <div className="text-center">
-          <h1 className="text-3xl md:text-5xl font-light  mb-4">
-            Get in touch
-          </h1>
-          <p className="text-xl font-light leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
-            Our friendly team is always here to chat.
-          </p>
-          <div className="flex mt-6 justify-center">
-            <div className="w-16 h-1 rounded-full bg-foreground inline-flex"></div>
-          </div>
-        </div>
+        
        
 
         <div className="grid grid-cols-1 gap-12 mt-10 md:grid-cols-2 lg:grid-cols-3">

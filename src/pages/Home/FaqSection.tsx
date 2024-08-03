@@ -56,7 +56,7 @@ const FaqSection = () => {
             <div
               className={`relative z-0 transition-all duration-500 ${
                 expandedIndex === index
-                  ? "translate-y-0 h-24"
+                  ? "translate-y-0  h-40 md:h-24"
                   : "-translate-y-28 h-0 overflow-hidden opacity-0"
               }`}
             >

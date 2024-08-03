@@ -1,4 +1,3 @@
-
 import { IconType } from "react-icons";
 
 import { MdOutlineBackpack } from "react-icons/md";
@@ -7,13 +6,12 @@ import { TbToolsKitchen } from "react-icons/tb";
 import { GiRunningShoe, GiCampingTent, GiLoincloth } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
-
 const ShopByCategory = () => {
   return (
     <div
       data-scroll
       data-scroll-speed=".20"
-      className="h-full  text-foreground bg-secondary rounded-t-3xl pb-20"
+      className="h-full  text-foreground bg-secondary rounded-t-3xl pb-10 ms:pb-20"
     >
       <div className="container mx-auto py-10">
         <div className="flex flex-col md:flex-row-reverse w-full mb-20">
@@ -70,7 +68,6 @@ const Card = ({ title, subtitle, Icon, href }: CardType) => {
 };
 
 export default ShopByCategory;
-
 
 export const categories = [
   {

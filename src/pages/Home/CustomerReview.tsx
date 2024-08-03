@@ -11,7 +11,7 @@ const CustomerReview = () => {
       data-scroll-speed="-.1"
       className="h-full  text-foreground bg-background rounded-t-3xl pb-10"
     >
-      <div className="text-center pt-10">
+      <div className="container mx-auto text-center pt-10">
         <h1 className="text-3xl md:text-5xl font-light  mb-4">
           Hear from Our Happy Campers
         </h1>

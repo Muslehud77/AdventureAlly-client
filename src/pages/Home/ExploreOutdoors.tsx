@@ -124,7 +124,7 @@ const ExploreOutdoors = () => {
         </div>
 
         <div
-          className={`absolute duration-500 flex gap-5 ${
+          className={`absolute duration-500 flex gap-5 scale-50 md:scale-100 ${
             play ? "opacity-0" : "opacity-100"
           }`}
         >
