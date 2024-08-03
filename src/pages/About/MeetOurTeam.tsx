@@ -1,17 +1,13 @@
-import { CiInstagram } from "react-icons/ci";
-import { FaFacebook, FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaWhatsapp, FaInstagramSquare } from "react-icons/fa";
 
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "../../components/ui/drawer";
-
 
 const MeetOurTeam = () => {
   return (
@@ -49,7 +45,7 @@ const MeetOurTeam = () => {
                     className="mx-2 text-2xl text-gray-600 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-300 group-hover:text-white"
                     aria-label="Reddit"
                   >
-                    <CiInstagram />
+                    <FaInstagramSquare />
                   </a>
 
                   <a
@@ -72,9 +68,7 @@ const MeetOurTeam = () => {
               <DrawerContent className="text-foreground">
                 <DrawerHeader>
                   <DrawerTitle>{member.name}</DrawerTitle>
-                  <DrawerDescription>
-                    {member.bio}
-                  </DrawerDescription>
+                  <DrawerDescription>{member.bio}</DrawerDescription>
                 </DrawerHeader>
               </DrawerContent>
             </Drawer>

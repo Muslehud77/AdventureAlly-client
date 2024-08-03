@@ -1,15 +1,16 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../../components/ui/accordion";
+import { useState } from "react";
 
 const FaqSection = () => {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
   return (
-    <div className="h-full  text-foreground  rounded-t-3xl py-10">
+    <div className="h-full text-foreground rounded-t-3xl py-10">
       <div className="text-center pt-10">
-        <h1 className="text-3xl md:text-5xl font-light  mb-4">
+        <h1 className="text-3xl md:text-5xl font-light mb-4">
           Frequently Asked Questions
         </h1>
         <p className="text-xl font-light leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
@@ -20,15 +21,53 @@ const FaqSection = () => {
         </div>
       </div>
       <div className="max-w-5xl px-10 mx-auto mt-3">
-        {faq.map((q) => (
-          <Accordion key={q.question} type="single" collapsible className="w-full">
-            <AccordionItem value="item-1" >
-              <AccordionTrigger>{q.question}</AccordionTrigger>
-              <AccordionContent>
+        {faq.map((q, index) => (
+          <div
+            key={index}
+            className="border-2 bg-background border-gray-100 rounded-lg dark:border-gray-700 mb-4"
+          >
+            <button
+              onClick={() => toggleFAQ(index)}
+              className="relative z-1 flex items-center justify-between w-full p-8"
+            >
+              <h1 className="font-semibold ">{q.question}</h1>
+              <span
+                className={`rounded-full transition-transform ${
+                  expandedIndex === index ? "rotate-45" : ""
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </span>
+            </button>
+
+            <div
+              className={`relative z-0 transition-all duration-500 ${
+                expandedIndex === index
+                  ? "translate-y-0 h-24"
+                  : "-translate-y-28 h-0 overflow-hidden opacity-0"
+              }`}
+            >
+              <hr
+                className={`border-gray-200 dark:border-gray-700`}
+              />
+              <p className="p-8 text-sm text-gray-500 dark:text-gray-300">
                 {q.answer}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+              </p>
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -36,7 +75,6 @@ const FaqSection = () => {
 };
 
 export default FaqSection;
-
 
 export const faq = [
   {
