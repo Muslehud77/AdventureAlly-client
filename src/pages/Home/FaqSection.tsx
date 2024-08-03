@@ -8,8 +8,8 @@ const FaqSection = () => {
   };
 
   return (
-    <div className="h-full text-foreground rounded-t-3xl py-10">
-      <div className="text-center pt-10">
+    <div className="h-full text-foreground rounded-t-3xl pt-20 py-10">
+      <div className="text-center py-10">
         <h1 className="text-3xl md:text-5xl font-light mb-4">
           Frequently Asked Questions
         </h1>

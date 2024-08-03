@@ -13,11 +13,13 @@ import ProtectedRouteForLoginRegister from "../ProtectedRoute/ProtectedRouteForL
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { adminDashboardRoutes } from "./AdminRoutes";
 import Dashboard from "../Layout/Dashboard/Dashboard";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement:<ErrorPage/>,
     children: [
       {
         path: "/",
