@@ -13,6 +13,7 @@ const MeetOurTeam = () => {
   return (
     <section className="bg-background text-foreground">
       <div className="text-center py-10 container mx-auto">
+        
         <h1 className="text-3xl md:text-5xl font-light  mb-4">Meet Our Team</h1>
         <p className="text-xl font-light leading-relaxed xl:w-2/4 lg:w-3/4 mx-auto">
           Meet the dedicated team behind AdventureAlly.

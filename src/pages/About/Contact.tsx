@@ -3,14 +3,15 @@ import { Input } from "../../components/ui/input";
 import { Textarea } from "../../components/ui/textarea";
 
 const Contact = () => {
-
-    const {actualTheme} = useTheme()
+  const { actualTheme } = useTheme();
 
   return (
     <div className=" body-font relative text-foreground ">
       <div className="absolute inset-0 bg-gray-300">
         <iframe
-          className={`hover:opacity-100 duration-500 ${actualTheme === "dark" ? "invert-[90%]" : ""}`}
+          className={`hover:opacity-100 duration-500 ${
+            actualTheme === "dark" ? "invert-[90%]" : ""
+          }`}
           width="100%"
           height="100%"
           title="map"
