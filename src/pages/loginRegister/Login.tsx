@@ -28,8 +28,8 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>({
-    defaultValues: { email: "sheikmuslehud@gmail.com", password: "hello123" },
-  });
+    // defaultValues: { email: "sheikmuslehud@gmail.com", password: "hello123" },
+  });``
 
   const { actualTheme } = useTheme();
 

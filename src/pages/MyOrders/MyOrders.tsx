@@ -28,14 +28,16 @@ export default function MyOrders() {
   const { addCart, loading } = useAddCartToDB();
   const [cartUploadInit, setCartUploadInit] = useState(false);
   const { data, isLoading, isError } = useMyCartsQuery(undefined);
-  const [queries] = useSearchParams();
   const orders = data?.data as TOrders;
   const checkout = useAppSelector(selectCheckout) as TCheckout;
+  const [queries] = useSearchParams();
   const payment_id = queries.get("payment_id");
 
+
   useEffect(() => {
-    const uploadCart = () => {
+    const uploadCartFunc = () => {
       if (payment_id && Object.keys(checkout).length && !cartUploadInit) {
+
         const addCartToDB = async (checkOut: TCheckout) => {
           (await addCart(checkOut)) as any;
           setCartUploadInit(true);
@@ -52,7 +54,12 @@ export default function MyOrders() {
       }
     };
 
-    return () => uploadCart();
+    const uploadCart = setTimeout(uploadCartFunc, 500);
+
+    return ()=>{
+      clearTimeout(uploadCart);
+    }
+    
   }, [addCart, cartUploadInit, checkout, payment_id, queries]);
 
   return (
@@ -66,7 +73,7 @@ export default function MyOrders() {
           {orders?.length ? (
             orders.map((order, i) => (
               <Card key={order._id} className="!bg-secondary w-72 md:w-full">
-                <CardHeader className="flex flex-col md:flex-row items-center justify-between">
+                <CardHeader className="flex flex-col items-center justify-between">
                   <div className="font-semibold">Order #{i + 1}</div>
                   <div
                     className={`px-2 py-1 rounded-full text-xs font-medium ${

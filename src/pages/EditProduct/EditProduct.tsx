@@ -112,10 +112,10 @@ export default function EditProduct() {
   return (
     <div className="container mx-auto px-10 rounded-xl mb-10 py-8 max-w-3xl text-foreground bg-secondary ">
       <Helmet>
-        <title>Edit | {product.name}</title>
+        <title>Edit Product</title>
       </Helmet>
       <h1 className="text-3xl font-bold mb-6 ">Edit Product</h1>
-      {isFetching || isLoading ? (
+      {isFetching || isLoading || !product ? (
         <EditProductSkeleton />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">

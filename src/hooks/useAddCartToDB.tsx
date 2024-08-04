@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   clearCheckout,
   TCheckout,
@@ -12,6 +12,7 @@ import axios from "axios";
 import { useUser } from "./useUser";
 
 const useAddCartToDB = () => {
+  const [queries, setQueries] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [addCartToDataBase] = useAddCartMutation();
@@ -35,7 +36,14 @@ const useAddCartToDB = () => {
         if (res.data.success) {
           dispatch(clearCart());
           dispatch(clearCheckout());
-          navigate("/dashboard/my-orders");
+          const payment_id = queries.get("payment_id");
+          if (payment_id) {
+            const newQueries = new URLSearchParams(queries.toString());
+
+            newQueries.delete("payment_id");
+
+            navigate({ search: newQueries.toString() }, { replace: true });
+          }
           setSuccess(true);
         } else {
           throw new Error(res.error?.message || "Save failed");
