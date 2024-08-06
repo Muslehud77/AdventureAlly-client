@@ -10,6 +10,7 @@ const ShopByCategory = () => {
   return (
     <div
       data-scroll
+      data-scroll-container
       data-scroll-speed=".20"
       className="h-full  text-foreground bg-secondary rounded-t-3xl pb-10 ms:pb-20"
     >

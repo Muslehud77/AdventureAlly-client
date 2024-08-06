@@ -101,10 +101,24 @@ const Banner = () => {
   };
 
   return (
-    <div data-scroll data-scroll-container data-scroll-speed="-.8" className="h-[101vh] -mt-20 relative  overflow-hidden">
-   
-      <video className="h-[120vh] w-full object-cover"  autoPlay loop muted playsInline controls={false} >
-        <source src={bannerVideo} type="video/mp4"/>
+    <div
+      data-scroll
+      data-scroll-container
+      data-scroll-speed="-.8"
+      className="h-[101vh] -mt-20 relative  overflow-hidden"
+    >
+      <video
+        data-scroll
+       
+        data-scroll-speed=".3"
+        className="h-[120vh] w-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+        controls={false}
+      >
+        <source src={bannerVideo} type="video/mp4" />
       </video>
       <div className="absolute duration-300 inset-0 h-full w-full bg-background/10 dark:bg-background/50"></div>
       <div
