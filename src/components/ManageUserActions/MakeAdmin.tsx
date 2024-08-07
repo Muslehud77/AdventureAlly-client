@@ -42,7 +42,7 @@ const MakeAdmin = ({ user }: MakeAdminProps) => {
                   placeholder="Enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-2 p-2 border rounded"
+                  className="mt-2 p-2 border rounded text-foreground"
                 />
               </div>
             </div>
