@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-
+import toast from "react-hot-toast";
 
 export interface TCart {
   _id: string;
@@ -8,6 +8,7 @@ export interface TCart {
   image: string;
   quantity: number;
   price: number;
+  stock: number;
 }
 
 type TState = {
@@ -39,15 +40,45 @@ export const cartSlice = createSlice({
     removeACart: (state, action: PayloadAction<{ _id: string }>) => {
       state.cart = state.cart.filter((c) => c._id !== action.payload._id);
     },
+
+    increaseQuantity: (state, action: PayloadAction<{ _id: string }>) => {
+      state.cart = state.cart.map((c) => {
+        if (c._id === action.payload._id) {
+          if (c.stock >= c.quantity + 1) {
+            c.quantity += 1;
+          }else{
+            toast.error("Not enough in stock")
+          }
+        }
+        return c;
+      });
+    },
+
+    decreaseQuantity: (state, action: PayloadAction<{ _id: string }>) => {
+      state.cart = state.cart.map((c) => {
+        if (c._id === action.payload._id) {
+          if (c.quantity > 1) {
+            c.quantity -= 1;
+          }
+        }
+        return c;
+      });
+    },
+
     clearCart: (state) => {
       state.cart = [];
     },
   },
 });
 
-export const { addCart,removeACart,clearCart } = cartSlice.actions;
+export const {
+  addCart,
+  removeACart,
+  clearCart,
+  increaseQuantity,
+  decreaseQuantity,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
 
 export const selectCart = (state: RootState) => state.cart.cart;
-

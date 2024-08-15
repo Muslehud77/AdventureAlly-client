@@ -47,7 +47,7 @@ export default function Navbar() {
           sideNavBar.current,
           { height: 0, autoAlpha: 0, duration: 0.8, ease: "back.out(1.7)" },
           {
-            height: "100%",
+            height: "100vh",
             autoAlpha: 1,
             display: "flex",
             duration: 0.8,

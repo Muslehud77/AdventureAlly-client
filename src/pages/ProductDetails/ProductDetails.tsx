@@ -71,7 +71,7 @@ export default function ProductDetails() {
     if(!user){
       navigate("/login",{state:pathname})
     }else{
-       const { name, price } = product;
+       const { name, price,stock } = product;
 
        dispatch(
          addCart({
@@ -80,6 +80,7 @@ export default function ProductDetails() {
            image,
            price,
            quantity,
+           stock
          })
        );
        toast.success(`Successfully added ${name} to the cart`);
