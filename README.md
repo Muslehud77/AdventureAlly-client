@@ -17,7 +17,7 @@ AdventureAlly is an e-commerce platform dedicated to camping enthusiasts. Our mi
 AdventureAlly is a comprehensive campers' shop where you can find everything you need for your next adventure. This project showcases my skills in Redux, Redux Persist, RTK Query, and Mongoose with a TypeScript backend. It’s my first complete project using these technologies.
 
 ## Technologies Used
-- **Frontend**: React, Redux, Redux Persist, RTK Query, TailwindCSS
+- **Frontend**: React, Redux, Redux Persist, RTK Query, ShadCN, TailwindCSS
 - **Backend**: Node.js, Express, Mongoose, TypeScript
 - **Other Tools**: Vite, Axios, GSAP, React Router DOM, ESLint, PostCSS, Stripe
 
