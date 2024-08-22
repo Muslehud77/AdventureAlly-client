@@ -1,7 +1,7 @@
 
 # AdventureAlly
 
-AdventureAlly is an e-commerce platform dedicated to camping enthusiasts. Our mission is to provide top-notch camping gear and accessories to ensure a safe, enjoyable, and memorable outdoor experience for everyone.
+AdventureAlly is a comprehensive campers' shop where you can find everything you need for your next adventure. This project showcases my skills in Redux, Redux Persist, RTK Query, and Mongoose with a TypeScript backend. It’s my first complete project using these technologies.
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -12,9 +12,6 @@ AdventureAlly is an e-commerce platform dedicated to camping enthusiasts. Our mi
 - [Project Setup](#project-setup)
 - [Environment Variables](#environment-variables)
 
-
-## Introduction
-AdventureAlly is a comprehensive campers' shop where you can find everything you need for your next adventure. This project showcases my skills in Redux, Redux Persist, RTK Query, and Mongoose with a TypeScript backend. It’s my first complete project using these technologies.
 
 ## Technologies Used
 - **Frontend**: TypeScript, React, Redux, Redux Persist, RTK Query, ShadCN, TailwindCSS
