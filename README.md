@@ -44,7 +44,7 @@ To access the admin dashboard, use the following credentials:
 
 ## Links
 
-[![Frontend Live Demo](https://img.shields.io/badge/Frontend%20Live%20Demo-AdventureAlly-blue?style=for-the-badge&logo=appveyor)](https://adventure-ally.netlify.app/)
+[![Frontend Live Demo](https://img.shields.io/badge/Frontend%20Live%20Demo-AdventureAlly-blue?style=for-the-badge&logo=appveyor)](https://adventure-ally-client.vercel.app/)
 [![Server Repository](https://img.shields.io/badge/Server%20Repository-AdventureAlly-blue?style=for-the-badge&logo=github)](https://github.com/Muslehud77/AdventureAlly-Server)
 
 ## Project Setup
